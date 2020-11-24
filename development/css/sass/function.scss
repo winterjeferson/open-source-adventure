@@ -1,0 +1,35 @@
+@function color-extra-light($key) {
+    @return map-get($arr-color-extra-light, $key);
+}
+
+@function color-extra-light-border($key) {
+    @return map-get($arr-color-extra-light-border, $key);
+}
+
+@function color-light($key) {
+    @return map-get($arr-color-light, $key);
+}
+
+@function color-light-border($key) {
+    @return map-get($arr-color-light-border, $key);
+}
+
+@function color-regular($key) {
+    @return map-get($arr-color-regular, $key);
+}
+
+@function color-regular-invalid($key) {
+    @return map-get($arr-color-regular-invalid, $key);
+}
+
+@function color-regular-border($key) {
+    @return map-get($arr-color-regular-border, $key);
+}
+
+@function color-regular-contrast($key) {
+    @return map-get($arr-color-regular-contrast, $key);
+}
+
+@function color-dark($key) {
+    @return map-get($arr-color-dark, $key);
+}
