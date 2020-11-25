@@ -1,0 +1,55 @@
+audio[controls],
+canvas,
+video {
+    display: inline-block;
+    zoom: 1;
+}
+
+audio:not([controls]) {
+    display: none;
+    height: 0;
+}
+
+hr {
+    box-sizing: content-box;
+    height: 0;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    min-height: 100%;
+    min-width: 100%;
+    padding: 0;
+    text-rendering: optimizeLegibility;
+    width: 100%;
+}
+
+* {
+    box-sizing: border-box;
+
+    &:focus {
+        outline: none;
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+    }
+}
+
+textarea {
+    overflow: auto;
+    vertical-align: top;
+    resize: vertical;
+}
+
+table,
+table td {
+    border-collapse: collapse;
+}
+
+img {
+    max-width: 100%;
+    align-self: start;
+}
