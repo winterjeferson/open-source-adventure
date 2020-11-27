@@ -1,3 +1,6 @@
+# **Confira o jogo em sua última versão:**
+https://winterjeferson.github.io/open-source-adventure/production/
+
 # **Objetivos:**
 * Manter um código limpo e acessível, independente do nível de experiência do desenvolvedor.
 * Separar o **Front end** do **Back end**, facilitando a integração em diferentes linguagens.

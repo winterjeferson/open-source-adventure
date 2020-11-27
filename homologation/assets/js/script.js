@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 class Backpack {
     build() {
         console.log('backpack build');
@@ -162,11 +163,24 @@ class Player {
         console.log('moveRight');
     }
 }
+=======
+class Management {
+    verifyLoad() {
+        window.addEventListener('load', this.build(), { once: true });
+    }
+
+    build() {
+        console.log('loaded');
+        window.theme.build();
+    }
+}
+>>>>>>> f30f89632f009989ca6533a4990d22102f6383d5
 class Theme {
     build() {
         console.log('theme build');
     }
 }
+<<<<<<< HEAD
 window.backpack = new Backpack();
 window.craft = new Craft();
 window.enemy = new Enemy();
@@ -176,6 +190,9 @@ window.helper = new Helper();
 window.management = new Management();
 window.map = new Map();
 window.player = new Player();
+=======
+window.management = new Management();
+>>>>>>> f30f89632f009989ca6533a4990d22102f6383d5
 window.theme = new Theme();
 
 management.verifyLoad();
