@@ -8,10 +8,6 @@ class Player {
         this.thirstCurrent = 70;
     }
 
-    build() {
-        console.log('player build');
-    }
-
     catch() {
         console.log('catch');
     }

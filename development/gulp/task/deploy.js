@@ -6,5 +6,7 @@ const template = require('./template.js');
 gulp.task('deploy', gulp.series(
         'buildCssMinify',
         'buildJsMinify',
+        'buildApiJsMinify',
+        'buildDataBaseJsonMinify',
         'buildTemplateMinify',
 ));

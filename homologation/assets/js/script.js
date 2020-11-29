@@ -1,29 +1,68 @@
-class Backpack {
-    build() {
-        console.log('backpack build');
+class Api {
+    constructor() {
+        this.api = 'js';
+        this.apiUrl = `api/${this.api}/api.${this.api}`;
     }
 
+    loadMap(obj) {
+        return new Promise((resolve, reject) => {
+            let xhr = new XMLHttpRequest();
+            const kind = typeof obj.kind === 'undefined' ? 'GET' : obj.kind;
+            const controller = this.apiUrl;
+
+            xhr.open(kind, controller, true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onload = () => {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    this.loadMapSuccess(xhr.responseText);
+                    resolve(xhr.responseText);
+                } else {
+                    reject(xhr.statusText);
+                }
+            };
+            xhr.onerror = () => reject(xhr.statusText);
+            xhr.send();
+        });
+    }
+
+    loadMapSuccess(data) {
+        const script = document.createElement('script');
+
+        document.getElementsByTagName('head')[0].appendChild(script);
+        script.text = data;
+    }
+}
+class Backpack {
     open() {
         console.log('backpack open');
     }
 }
 class Craft {
-    build() {
-        console.log('craft build');
-    }
-
     open() {
         console.log('craft open');
     }
 }
 class Enemy {
-    build() {
-        console.log('enemy build');
-    }
+
 }
 class Helper {
-    build() {
-        console.log('helper build');
+    ajax(obj) {
+        return new Promise((resolve, reject) => {
+            let xhr = new XMLHttpRequest();
+            const kind = typeof obj.kind === 'undefined' ? 'GET' : obj.kind;
+
+            xhr.open(kind, obj.controller, true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onload = () => {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    resolve(xhr.responseText);
+                } else {
+                    reject(xhr.statusText);
+                }
+            };
+            xhr.onerror = () => reject(xhr.statusText);
+            xhr.send(obj.parameter);
+        });
     }
 }
 class Interface {
@@ -96,9 +135,7 @@ class Interface {
     }
 }
 class Item {
-    build() {
-        console.log('item build');
-    }
+    
 }
 class Management {
     verifyLoad() {
@@ -108,20 +145,29 @@ class Management {
     }
 
     build() {
-        window.backpack.build();
-        window.craft.build();
-        window.enemy.build();
         window.interface.build();
-        window.helper.build();
-        window.item.build();
         window.map.build();
-        window.player.build();
-        window.theme.build();
     }
 }
 class Map {
+    constructor() {
+        this.current = 0;
+        this.mapJson;
+    }
+
     build() {
-        console.log('map build');
+        this.load();
+    }
+
+    buildMap(data) {
+        // console.log(data.response);
+    }
+
+    load() {
+        const parameter = { 'map': this.current };
+        let data = api.loadMap(parameter);
+
+        data.then((response) => this.buildMap({ response }));
     }
 }
 class Player {
@@ -132,10 +178,6 @@ class Player {
         this.hungerCurrent = 80;
         this.thirst = 100;
         this.thirstCurrent = 70;
-    }
-
-    build() {
-        console.log('player build');
     }
 
     catch() {
@@ -163,16 +205,15 @@ class Player {
     }
 }
 class Theme {
-    build() {
-        console.log('theme build');
-    }
+
 }
+window.helper = new Helper();
+window.api = new Api();
 window.backpack = new Backpack();
 window.craft = new Craft();
 window.enemy = new Enemy();
 window.interface = new Interface();
 window.item = new Item();
-window.helper = new Helper();
 window.management = new Management();
 window.map = new Map();
 window.player = new Player();
