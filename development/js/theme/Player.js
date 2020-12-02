@@ -1,11 +1,27 @@
 class Player {
     constructor() {
-        this.life = 100;
-        this.lifeCurrent = 70;
-        this.hunger = 100;
-        this.hungerCurrent = 80;
-        this.thirst = 100;
-        this.thirstCurrent = 70;
+        // https://github.com/bgrins/javascript-astar
+    }
+
+    build() {
+        this.load();
+    }
+
+    buildPlayer(data) {
+        const json = JSON.parse(data);
+
+        this.life = json.life;
+        this.lifeCurrent = json.lifeCurrent;
+        this.hunger = json.hunger;
+        this.hungerCurrent = json.hungerCurrent;
+        this.thirst = json.thirst;
+        this.thirstCurrent = json.thirstCurrent;
+
+        window.interface.updateBar();
+    }
+
+    load() {
+        window.data.loadPlayer();
     }
 
     catch() {

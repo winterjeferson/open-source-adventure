@@ -2,7 +2,7 @@ const gulp = require('gulp');
 const css = require('./css.js');
 const js = require('./js.js');
 const template = require('./template.js');
-const apiJs = require('./api-js.js');
+const apiJson = require('./api-json.js');
 const dataBaseJson = require('./data-base-json.js');
 
 gulp.task('default', function () {
@@ -21,7 +21,7 @@ gulp.task('default', function () {
             console.log(evt);
         });
 
-    gulp.watch(apiJs.fileAll, gulp.series('buildApiJs'))
+    gulp.watch(apiJson.fileAll, gulp.series('buildApiJson'))
         .on('change', function (evt) {
             console.log(evt);
         });

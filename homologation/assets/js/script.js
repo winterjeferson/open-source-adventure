@@ -1,37 +1,3 @@
-class Api {
-    constructor() {
-        this.api = 'js';
-        this.apiUrl = `api/${this.api}/api.${this.api}`;
-    }
-
-    loadMap(obj) {
-        return new Promise((resolve, reject) => {
-            let xhr = new XMLHttpRequest();
-            const kind = typeof obj.kind === 'undefined' ? 'GET' : obj.kind;
-            const controller = this.apiUrl;
-
-            xhr.open(kind, controller, true);
-            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhr.onload = () => {
-                if (xhr.status >= 200 && xhr.status < 300) {
-                    this.loadMapSuccess(xhr.responseText);
-                    resolve(xhr.responseText);
-                } else {
-                    reject(xhr.statusText);
-                }
-            };
-            xhr.onerror = () => reject(xhr.statusText);
-            xhr.send();
-        });
-    }
-
-    loadMapSuccess(data) {
-        const script = document.createElement('script');
-
-        document.getElementsByTagName('head')[0].appendChild(script);
-        script.text = data;
-    }
-}
 class Backpack {
     open() {
         console.log('backpack open');
@@ -40,6 +6,32 @@ class Backpack {
 class Craft {
     open() {
         console.log('craft open');
+    }
+}
+class Data {
+    constructor(api) {
+        this.api = api;
+        this.apiUrl = `./api/${this.api}/`;
+    }
+
+    loadMap(map) {
+        const parameter = {
+            kind: 'POST',
+            controller: `${this.apiUrl}map-${map}.${this.api}`,
+        };
+        let data = window.helper.ajax(parameter);
+
+        data.then((result) => window.map.buildMap(result));
+    }
+
+    loadPlayer() {
+        const parameter = {
+            kind: 'POST',
+            controller: `${this.apiUrl}player.${this.api}`,
+        };
+        let data = window.helper.ajax(parameter);
+
+        data.then((result) => window.player.buildPlayer(result));
     }
 }
 class Enemy {
@@ -70,7 +62,6 @@ class Interface {
         this.update();
         this.buildAction();
         this.buildDirection();
-        this.updateBar();
     }
 
     buildAction() {
@@ -137,6 +128,11 @@ class Interface {
 class Item {
     
 }
+class Keyboard {
+    build() {
+
+    }
+}
 class Management {
     verifyLoad() {
         document.addEventListener('DOMContentLoaded', () => {
@@ -146,13 +142,15 @@ class Management {
 
     build() {
         window.interface.build();
+        window.keyboard.build();
         window.map.build();
+        window.player.build();
     }
 }
 class Map {
     constructor() {
         this.current = 0;
-        this.mapJson;
+        this.json = {};
     }
 
     build() {
@@ -160,24 +158,42 @@ class Map {
     }
 
     buildMap(data) {
-        // console.log(data.response);
+        this.json = JSON.parse(data);
+        this.decode();
+    }
+
+    decode() {
+
     }
 
     load() {
-        const parameter = { 'map': this.current };
-        let data = api.loadMap(parameter);
-
-        data.then((response) => this.buildMap({ response }));
+        window.data.loadMap(this.current);
     }
 }
 class Player {
     constructor() {
-        this.life = 100;
-        this.lifeCurrent = 70;
-        this.hunger = 100;
-        this.hungerCurrent = 80;
-        this.thirst = 100;
-        this.thirstCurrent = 70;
+        // https://github.com/bgrins/javascript-astar
+    }
+
+    build() {
+        this.load();
+    }
+
+    buildPlayer(data) {
+        const json = JSON.parse(data);
+
+        this.life = json.life;
+        this.lifeCurrent = json.lifeCurrent;
+        this.hunger = json.hunger;
+        this.hungerCurrent = json.hungerCurrent;
+        this.thirst = json.thirst;
+        this.thirstCurrent = json.thirstCurrent;
+
+        window.interface.updateBar();
+    }
+
+    load() {
+        window.data.loadPlayer();
     }
 
     catch() {
@@ -208,12 +224,13 @@ class Theme {
 
 }
 window.helper = new Helper();
-window.api = new Api();
+window.data = new Data('json');
 window.backpack = new Backpack();
 window.craft = new Craft();
 window.enemy = new Enemy();
 window.interface = new Interface();
 window.item = new Item();
+window.keyboard = new Keyboard();
 window.management = new Management();
 window.map = new Map();
 window.player = new Player();

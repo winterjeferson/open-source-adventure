@@ -3,7 +3,6 @@ class Interface {
         this.update();
         this.buildAction();
         this.buildDirection();
-        this.updateBar();
     }
 
     buildAction() {

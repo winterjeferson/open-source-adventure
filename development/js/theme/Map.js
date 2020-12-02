@@ -1,7 +1,7 @@
 class Map {
     constructor() {
         this.current = 0;
-        this.mapJson;
+        this.json = {};
     }
 
     build() {
@@ -9,13 +9,15 @@ class Map {
     }
 
     buildMap(data) {
-        // console.log(data.response);
+        this.json = JSON.parse(data);
+        this.decode();
+    }
+
+    decode() {
+
     }
 
     load() {
-        const parameter = { 'map': this.current };
-        let data = api.loadMap(parameter);
-
-        data.then((response) => this.buildMap({ response }));
+        window.data.loadMap(this.current);
     }
 }
