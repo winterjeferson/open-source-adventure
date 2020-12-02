@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "gulp-imagemin": "^5.0.3",
+    "gulp-jsonmin": "^1.2.0",
     "gulp-newer": "^1.4.0",
     "gulp-remove-code": "^3.0.4",
     "gulp-sass": "^4.1.0"

@@ -6,13 +6,9 @@ const configuration = require('./configuration.js');
 
 const extension = 'css';
 const folder = `${configuration.development}${extension}/`;
-const file = [
-    folder + `theme/index.s${extension}`,
-];
+const file = folder + `theme/index.s${extension}`;
 const fileName = `style.${extension}`;
-const fileAll = [
-    folder + '**/*.*',
-];
+const fileAll = folder + '**/*.*';
 
 gulp.task('buildCssMinify', function () {
     return gulp
