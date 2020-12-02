@@ -7,12 +7,8 @@ const configuration = require('./configuration.js');
 
 const extension = 'html';
 const folder = `${configuration.development}template/`;
-const file = [
-    folder + `index.${extension}`,
-];
-const fileAll = [
-    folder + '**/*.*',
-];
+const file = folder + `index.${extension}`;
+const fileAll = folder + '**/*.*';
 
 function clean(path) {
     return del(path, { force: true });

@@ -1,29 +1,60 @@
 class Backpack {
-    build() {
-        console.log('backpack build');
-    }
-
     open() {
         console.log('backpack open');
     }
 }
 class Craft {
-    build() {
-        console.log('craft build');
-    }
-
     open() {
         console.log('craft open');
     }
 }
-class Enemy {
-    build() {
-        console.log('enemy build');
+class Data {
+    constructor(api) {
+        this.api = api;
+        this.apiUrl = `./api/${this.api}/`;
+    }
+
+    loadMap(map) {
+        const parameter = {
+            kind: 'POST',
+            controller: `${this.apiUrl}map-${map}.${this.api}`,
+        };
+        let data = window.helper.ajax(parameter);
+
+        data.then((result) => window.map.buildMap(result));
+    }
+
+    loadPlayer() {
+        const parameter = {
+            kind: 'POST',
+            controller: `${this.apiUrl}player.${this.api}`,
+        };
+        let data = window.helper.ajax(parameter);
+
+        data.then((result) => window.player.buildPlayer(result));
     }
 }
+class Enemy {
+
+}
 class Helper {
-    build() {
-        console.log('helper build');
+    ajax(obj) {
+        return new Promise((resolve, reject) => {
+            let xhr = new XMLHttpRequest();
+            const kind = typeof obj.kind === 'undefined' ? 'GET' : obj.kind;
+
+            xhr.open(kind, obj.controller, true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onload = () => {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    resolve(xhr.responseText);
+                } else {
+                    reject(xhr.statusText);
+                }
+            };
+            xhr.onerror = () => reject(xhr.statusText);
+            xhr.send(obj.parameter);
+        });
     }
 }
 class Interface {
@@ -31,7 +62,6 @@ class Interface {
         this.update();
         this.buildAction();
         this.buildDirection();
-        this.updateBar();
     }
 
     buildAction() {
@@ -96,8 +126,11 @@ class Interface {
     }
 }
 class Item {
+    
+}
+class Keyboard {
     build() {
-        console.log('item build');
+
     }
 }
 class Management {
@@ -108,34 +141,59 @@ class Management {
     }
 
     build() {
-        window.backpack.build();
-        window.craft.build();
-        window.enemy.build();
         window.interface.build();
-        window.helper.build();
-        window.item.build();
+        window.keyboard.build();
         window.map.build();
         window.player.build();
-        window.theme.build();
     }
 }
 class Map {
+    constructor() {
+        this.current = 0;
+        this.json = {};
+    }
+
     build() {
-        console.log('map build');
+        this.load();
+    }
+
+    buildMap(data) {
+        this.json = JSON.parse(data);
+        this.decode();
+    }
+
+    decode() {
+
+    }
+
+    load() {
+        window.data.loadMap(this.current);
     }
 }
 class Player {
     constructor() {
-        this.life = 100;
-        this.lifeCurrent = 70;
-        this.hunger = 100;
-        this.hungerCurrent = 80;
-        this.thirst = 100;
-        this.thirstCurrent = 70;
+        // https://github.com/bgrins/javascript-astar
     }
 
     build() {
-        console.log('player build');
+        this.load();
+    }
+
+    buildPlayer(data) {
+        const json = JSON.parse(data);
+
+        this.life = json.life;
+        this.lifeCurrent = json.lifeCurrent;
+        this.hunger = json.hunger;
+        this.hungerCurrent = json.hungerCurrent;
+        this.thirst = json.thirst;
+        this.thirstCurrent = json.thirstCurrent;
+
+        window.interface.updateBar();
+    }
+
+    load() {
+        window.data.loadPlayer();
     }
 
     catch() {
@@ -163,16 +221,16 @@ class Player {
     }
 }
 class Theme {
-    build() {
-        console.log('theme build');
-    }
+
 }
+window.helper = new Helper();
+window.data = new Data('json');
 window.backpack = new Backpack();
 window.craft = new Craft();
 window.enemy = new Enemy();
 window.interface = new Interface();
 window.item = new Item();
-window.helper = new Helper();
+window.keyboard = new Keyboard();
 window.management = new Management();
 window.map = new Map();
 window.player = new Player();
