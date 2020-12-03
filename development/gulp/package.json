@@ -20,11 +20,17 @@
     "run-sequence": "^2.2.1"
   },
   "devDependencies": {
+    "gulp-eslint": "^6.0.0",
+    "gulp-htmllint": "0.0.19",
     "gulp-imagemin": "^5.0.3",
     "gulp-jsonmin": "^1.2.0",
     "gulp-newer": "^1.4.0",
     "gulp-remove-code": "^3.0.4",
-    "gulp-sass": "^4.1.0"
+    "gulp-sass": "^4.1.0",
+    "gulp-stylelint": "^13.0.0",
+    "gulp-webserver": "^0.9.1",
+    "stylelint": "^13.8.0",
+    "stylelint-order": "^4.1.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

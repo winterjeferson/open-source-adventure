@@ -40,8 +40,8 @@ body {
 
 textarea {
     overflow: auto;
-    vertical-align: top;
     resize: vertical;
+    vertical-align: top;
 }
 
 table,
@@ -50,6 +50,6 @@ table td {
 }
 
 img {
-    max-width: 100%;
     align-self: start;
+    max-width: 100%;
 }
