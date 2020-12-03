@@ -1,0 +1,10 @@
+{
+  "class-style": "none",
+  "id-class-ignore-regex": "none",
+  "attr-name-style": false,
+  "attr-quote-style": "double",
+  "attr-req-value": false,
+  "html-req-lang": true,
+  "img-req-src": true,
+  "tag-bans": ["!style"]
+}

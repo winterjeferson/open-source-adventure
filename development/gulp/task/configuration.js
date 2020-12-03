@@ -1,6 +1,17 @@
+const path = '../../';
+const allFile = '*.*';
+
 module.exports = {
-    development: '../../development/',
-    homologation: '../../homologation/',
-    production: '../../production/',
+    allFile: allFile,
+    allFolderFile: `**/${allFile}`,
+    development: `${path}development/`,
+    homologation: `${path}homologation/`,
+    production: `${path}production/`,
+    index: 'index',
+    theme: 'theme',
+    plugin: 'plugin',
+    prefix: '',
     assets: 'assets/',
+    ip: '127.0.0.1',
+    port: '3015',
 }

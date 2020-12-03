@@ -1,0 +1,15 @@
+{
+    "plugins": [
+        "stylelint-order"
+    ],
+    "rules": {
+        "block-opening-brace-space-before": "always",
+        "selector-max-id": [0],
+        "order/properties-alphabetical-order": [
+            true,
+            {
+                "disableFix": true
+            }
+        ]
+    }
+}
