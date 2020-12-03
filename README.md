@@ -12,5 +12,5 @@ https://github.com/winterjeferson/open-source-adventure/wiki
 # **Projetos separados por segmento:**
 https://github.com/winterjeferson/open-source-adventure/projects
 
-# **Participe também do nosso Discord:**
+# **Participe também do grupo no Discord:**
 https://discord.gg/y8WyWmVSfv
