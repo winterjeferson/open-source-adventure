@@ -24,7 +24,7 @@ class Player {
         window.data.loadPlayer();
     }
 
-    catch() {
+    catch () {
         console.log('catch');
     }
 
@@ -32,19 +32,7 @@ class Player {
         console.log('hit');
     }
 
-    moveUp() {
-        console.log('moveUp');
-    }
-
-    moveDown() {
-        console.log('moveDown');
-    }
-
-    moveLeft() {
-        console.log('moveLeft');
-    }
-
-    moveRight() {
-        console.log('moveRight');
+    move(side) {
+        console.log(side);
     }
 }

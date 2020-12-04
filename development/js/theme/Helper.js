@@ -17,4 +17,10 @@ class Helper {
             xhr.send(obj.parameter);
         });
     }
+
+    remove(target) {
+        if (target !== null) {
+            target.parentNode.removeChild(target);
+        }
+    }
 }
