@@ -32,16 +32,16 @@ body {
 
 textarea {
   overflow: auto;
-  vertical-align: top;
-  resize: vertical; }
+  resize: vertical;
+  vertical-align: top; }
 
 table,
 table td {
   border-collapse: collapse; }
 
 img {
-  max-width: 100%;
-  align-self: start; }
+  align-self: start;
+  max-width: 100%; }
 
 * {
   font-family: sans-serif;
@@ -56,22 +56,28 @@ img {
   width: 100%; }
 
 .game {
-  height: 100%;
-  background-color: #d9dcdf;
   display: flex;
-  max-height: 720px;
-  max-width: 1280px;
+  height: 100%;
+  max-height: 768px;
+  max-width: 1366px;
   position: relative;
   width: 100%; }
 
-.map {
-  background-color: #2dcc70;
+.map-wrapper {
   height: 100%;
   left: 0;
+  overflow: hidden;
   position: absolute;
   top: 0;
   width: 100%;
   z-index: 1; }
+
+.map {
+  display: flex;
+  flex-wrap: wrap;
+  left: 0;
+  position: absolute;
+  top: 0; }
 
 .interface {
   display: flex;
@@ -97,3 +103,12 @@ img {
     bottom: 0;
     flex-direction: row;
     right: 0; }
+
+.tile {
+  display: inline-flex;
+  height: 50px;
+  width: 50px; }
+  .tile--0 {
+    background-color: #1f8d4e; }
+  .tile--1 {
+    background-color: #2dcc70; }
