@@ -4,7 +4,7 @@
 * Disponibilizar o **Back end** em formatos diferentes, facilitando a integração.
 
 # **Confira o jogo em sua última versão:**
-https://winterjeferson.github.io/open-source-adventure/production/
+https://winterjeferson.github.io/open-source-adventure/homologation/
 
 # **Wiki:**
 https://github.com/winterjeferson/open-source-adventure/wiki
