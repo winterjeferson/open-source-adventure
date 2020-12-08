@@ -1,5 +1,5 @@
 <div class="game">
-    <div class="interface">
+    <section class="interface">
         <div class="interface__bar">
             {% set arr = [
                     ['life'],
@@ -36,9 +36,11 @@
             </button>
             {% endfor %}
         </div>
-    </div>
-    <div class="map-wrapper">
+    </section>
+    <section class="player tile" id="player">
+    </section>
+    <section class="map-wrapper">
         <div id="map" class="map">
         </div>
-    </div>
+    </section>
 </div>

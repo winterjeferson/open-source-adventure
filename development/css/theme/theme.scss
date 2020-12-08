@@ -28,7 +28,15 @@
     position: absolute;
     top: 0;
     width: 100%;
-    z-index: 1;
+    z-index: z-index("map");
+}
+
+.map {
+    display: flex;
+    flex-wrap: wrap;
+    left: 0;
+    position: absolute;
+    top: 0;
 }
 
 .map {
@@ -46,7 +54,7 @@
     position: absolute;
     top: 0;
     width: 100%;
-    z-index: 2;
+    z-index: z-index("interface");
 
     &__bar,
     &__directional,
