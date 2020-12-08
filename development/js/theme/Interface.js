@@ -25,19 +25,19 @@ class Interface {
 
     buildDirection() {
         this.elDirectionalUp.onclick = () => {
-            player.moveUp();
+            player.move('up');
         };
 
         this.elDirectionalDown.onclick = () => {
-            player.moveDown();
+            player.move('down');
         };
 
         this.elDirectionalLeft.onclick = () => {
-            player.moveLeft();
+            player.move('left');
         };
 
         this.elDirectionalRight.onclick = () => {
-            player.moveRight();
+            player.move('right');
         };
     }
 

@@ -1,0 +1,5 @@
+.player {
+    background-color: $color-red;
+    position: absolute;
+    z-index: z-index("player");
+}

@@ -23,4 +23,41 @@ class Helper {
             target.parentNode.removeChild(target);
         }
     }
+
+    getTranslateValue(target) {
+        const style = window.getComputedStyle(target);
+        const matrix = style['transform'];
+
+        if (matrix === 'none') {
+            return {
+                x: 0,
+                y: 0,
+                z: 0
+            }
+        }
+
+        const matrixType = matrix.includes('3d') ? '3d' : '2d'
+        const matrixValues = matrix.match(/matrix.*\((.+)\)/)[1].split(', ')
+
+        // 2d matrices have 6 values
+        // Last 2 values are X and Y.
+        // 2d matrices does not have Z value.
+        if (matrixType === '2d') {
+            return {
+                x: Number(matrixValues[4]),
+                y: Number(matrixValues[5]),
+                z: 0
+            }
+        }
+
+        // 3d matrices have 16 values
+        // The 13th, 14th, and 15th values are X, Y, and Z
+        if (matrixType === '3d') {
+            return {
+                x: Number(matrixValues[12]),
+                y: Number(matrixValues[13]),
+                z: Number(matrixValues[14])
+            }
+        }
+    }
 }
