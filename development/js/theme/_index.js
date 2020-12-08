@@ -1,3 +1,4 @@
+window.animation = new Animation();
 window.helper = new Helper();
 window.data = new Data('json');
 window.backpack = new Backpack();

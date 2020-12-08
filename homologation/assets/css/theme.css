@@ -86,7 +86,7 @@ img {
   position: absolute;
   top: 0;
   width: 100%;
-  z-index: 2; }
+  z-index: 3; }
   .interface__bar, .interface__directional, .interface__action {
     display: flex;
     padding: 10px;
@@ -112,3 +112,8 @@ img {
     background-color: #1f8d4e; }
   .tile--1 {
     background-color: #2dcc70; }
+
+.player {
+  background-color: #e14b4a;
+  position: absolute;
+  z-index: 2; }

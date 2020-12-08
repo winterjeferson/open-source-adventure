@@ -1,3 +1,34 @@
+class Animation {
+    move(args) {
+        return new Promise((resolve, reject) => {
+            const currentValue = window.helper.getTranslateValue(args.target);
+            const currentVertical = Math.floor(currentValue.y);
+            const currentHorizontal = Math.floor(currentValue.x);
+            const newVertical = args.vertical === false ? currentVertical : Math.floor(args.vertical);
+            const newHorizontal = args.horizontal === false ? currentHorizontal : Math.floor(args.horizontal);
+            const speed = typeof args.speed !== 'undefined' ? args.speed : window.player.speed;
+            const easing = typeof args.easing !== 'undefined' ? args.easing : 'linear';
+
+            const animation = args.target.animate([{
+                    transform: `translate(${currentHorizontal}px, ${currentVertical}px)`
+                },
+                {
+                    transform: `translate(${newHorizontal}px, ${newVertical}px)`
+                }
+            ], {
+                duration: speed,
+                iterations: 1,
+                easing: easing,
+                fill: 'both'
+            });
+
+            animation.onfinish = function (event) {
+                resolve(event);
+            }
+        });
+
+    }
+}
 class Backpack {
     open() {
         console.log('backpack open');
@@ -62,6 +93,43 @@ class Helper {
             target.parentNode.removeChild(target);
         }
     }
+
+    getTranslateValue(target) {
+        const style = window.getComputedStyle(target);
+        const matrix = style['transform'];
+
+        if (matrix === 'none') {
+            return {
+                x: 0,
+                y: 0,
+                z: 0
+            }
+        }
+
+        const matrixType = matrix.includes('3d') ? '3d' : '2d'
+        const matrixValues = matrix.match(/matrix.*\((.+)\)/)[1].split(', ')
+
+        // 2d matrices have 6 values
+        // Last 2 values are X and Y.
+        // 2d matrices does not have Z value.
+        if (matrixType === '2d') {
+            return {
+                x: Number(matrixValues[4]),
+                y: Number(matrixValues[5]),
+                z: 0
+            }
+        }
+
+        // 3d matrices have 16 values
+        // The 13th, 14th, and 15th values are X, Y, and Z
+        if (matrixType === '3d') {
+            return {
+                x: Number(matrixValues[12]),
+                y: Number(matrixValues[13]),
+                z: Number(matrixValues[14])
+            }
+        }
+    }
 }
 class Interface {
     build() {
@@ -90,19 +158,19 @@ class Interface {
 
     buildDirection() {
         this.elDirectionalUp.onclick = () => {
-            player.moveUp();
+            player.move('up');
         };
 
         this.elDirectionalDown.onclick = () => {
-            player.moveDown();
+            player.move('down');
         };
 
         this.elDirectionalLeft.onclick = () => {
-            player.moveLeft();
+            player.move('left');
         };
 
         this.elDirectionalRight.onclick = () => {
-            player.moveRight();
+            player.move('right');
         };
     }
 
@@ -257,11 +325,21 @@ class Map {
 }
 class Player {
     constructor() {
-        // https://github.com/bgrins/javascript-astar
+        this.currentHorizontal = 0;
+        this.currentVertical = 0;
+        this.tileCurrent = 0;
+        this.tileNext = 0;
+        this.speed = 300;
+        this.isMoving = false;
     }
 
     build() {
+        this.update();
         this.load();
+    }
+
+    update() {
+        this.elPlayer = document.querySelector('#player');
     }
 
     buildPlayer(data) {
@@ -290,12 +368,77 @@ class Player {
     }
 
     move(side) {
-        console.log(side);
+        const self = this;
+        const tile = window.map.tileSize;
+        const tileColumn = window.map.json.column;
+        let vertical = false;
+        let horizontal = false;
+        let tileNext;
+        let animate;
+
+        if (this.isMoving) {
+            return;
+        }
+
+        switch (side) {
+            case 'up':
+                tileNext = this.tileCurrent - tileColumn;
+                vertical = this.currentVertical - tile;
+                break;
+            case 'down':
+                tileNext = this.tileCurrent + tileColumn;
+                vertical = this.currentVertical + tile;
+                break;
+            case 'left':
+                tileNext = this.tileCurrent - 1;
+                horizontal = this.currentHorizontal - tile;
+                break;
+            case 'right':
+                tileNext = this.tileCurrent + 1;
+                horizontal = this.currentHorizontal + tile;
+                break;
+        }
+
+        this.isMoving = true;
+
+        animate = window.animation.move({
+            'target': self.elPlayer,
+            vertical,
+            horizontal
+        });
+
+        animate.then(() => this.updatePosition({
+            tileNext,
+            side
+        }));
+    }
+
+    updatePosition(data) {
+        const tile = window.map.tileSize;
+
+        this.isMoving = false;
+        this.tileCurrent = data.tileNext;
+
+        switch (data.side) {
+            case 'up':
+                this.currentVertical -= tile;
+                break;
+            case 'down':
+                this.currentVertical += tile;
+                break;
+            case 'left':
+                this.currentHorizontal -= tile;
+                break;
+            case 'right':
+                this.currentHorizontal += tile;
+                break;
+        }
     }
 }
 class Theme {
 
 }
+window.animation = new Animation();
 window.helper = new Helper();
 window.data = new Data('json');
 window.backpack = new Backpack();
