@@ -34,3 +34,5 @@ class Keyboard {
         }
     }
 }
+
+window.keyboard = new Keyboard();

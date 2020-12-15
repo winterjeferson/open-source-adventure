@@ -1,15 +1,15 @@
 class Animation {
-    move(args) {
-        return new Promise((resolve, reject) => {
-            const currentValue = window.helper.getTranslateValue(args.target);
+    move(obj) {
+        return new Promise((resolve) => {
+            const currentValue = window.helper.getTranslateValue(obj.target);
             const currentVertical = Math.floor(currentValue.y);
             const currentHorizontal = Math.floor(currentValue.x);
-            const newVertical = args.vertical === false ? currentVertical : Math.floor(args.vertical);
-            const newHorizontal = args.horizontal === false ? currentHorizontal : Math.floor(args.horizontal);
-            const speed = typeof args.speed !== 'undefined' ? args.speed : window.player.speed;
-            const easing = typeof args.easing !== 'undefined' ? args.easing : 'linear';
+            const newVertical = obj.vertical === false ? currentVertical : Math.floor(obj.vertical);
+            const newHorizontal = obj.horizontal === false ? currentHorizontal : Math.floor(obj.horizontal);
+            const speed = typeof obj.speed !== 'undefined' ? obj.speed : window.player.speed;
+            const easing = typeof obj.easing !== 'undefined' ? obj.easing : 'linear';
 
-            const animation = args.target.animate([{
+            const animation = obj.target.animate([{
                     transform: `translate(${currentHorizontal}px, ${currentVertical}px)`
                 },
                 {
@@ -24,8 +24,10 @@ class Animation {
 
             animation.onfinish = function (event) {
                 resolve(event);
-            }
+            };
         });
 
     }
 }
+
+window.animation = new Animation();
