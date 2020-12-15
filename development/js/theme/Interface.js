@@ -7,37 +7,37 @@ class Interface {
 
     buildAction() {
         this.elActionBackpack.onclick = () => {
-            backpack.open();
+            window.backpack.open();
         };
 
         this.elActionCraft.onclick = () => {
-            craft.open();
+            window.craft.open();
         };
 
         this.elActionCatch.onclick = () => {
-            player.catch();
+            window.player.catch();
         };
 
         this.elActionHit.onclick = () => {
-            player.hit();
+            window.player.hit();
         };
     }
 
     buildDirection() {
         this.elDirectionalUp.onclick = () => {
-            player.move('up');
+            window.camera.move('up');
         };
 
         this.elDirectionalDown.onclick = () => {
-            player.move('down');
+            window.camera.move('down');
         };
 
         this.elDirectionalLeft.onclick = () => {
-            player.move('left');
+            window.camera.move('left');
         };
 
         this.elDirectionalRight.onclick = () => {
-            player.move('right');
+            window.camera.move('right');
         };
     }
 

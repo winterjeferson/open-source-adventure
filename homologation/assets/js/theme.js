@@ -38,6 +38,63 @@ class Backpack {
 }
 
 window.backpack = new Backpack();
+class Camera {
+    move(side) {
+        const capitalize = side.charAt(0).toUpperCase() + side.slice(1);
+
+        window.player.move(side);
+
+        this[`move${capitalize}`]({
+            'target': window.map.elMap
+        });
+    }
+
+    moveDown(obj) {
+        let vertical = -window.map.tileSize;
+        let horizontal = false;
+
+        window.animation.move({
+            'target': obj.target,
+            vertical,
+            horizontal
+        });
+    }
+
+    moveLeft(obj) {
+        let vertical = false;
+        let horizontal = window.map.tileSize;
+
+        window.animation.move({
+            'target': obj.target,
+            vertical,
+            horizontal
+        });
+    }
+
+    moveUp(obj) {
+        let vertical = window.map.tileSize;
+        let horizontal = false;
+
+        window.animation.move({
+            'target': obj.target,
+            vertical,
+            horizontal
+        });
+    }
+
+    moveRight(obj) {
+        let vertical = false;
+        let horizontal = -window.map.tileSize;
+
+        window.animation.move({
+            'target': obj.target,
+            vertical,
+            horizontal
+        });
+    }
+}
+
+window.camera = new Camera();
 class Craft {
     open() {
         console.log('craft open');
@@ -152,37 +209,37 @@ class Interface {
 
     buildAction() {
         this.elActionBackpack.onclick = () => {
-            backpack.open();
+            window.backpack.open();
         };
 
         this.elActionCraft.onclick = () => {
-            craft.open();
+            window.craft.open();
         };
 
         this.elActionCatch.onclick = () => {
-            player.catch();
+            window.player.catch();
         };
 
         this.elActionHit.onclick = () => {
-            player.hit();
+            window.player.hit();
         };
     }
 
     buildDirection() {
         this.elDirectionalUp.onclick = () => {
-            player.move('up');
+            window.camera.move('up');
         };
 
         this.elDirectionalDown.onclick = () => {
-            player.move('down');
+            window.camera.move('down');
         };
 
         this.elDirectionalLeft.onclick = () => {
-            player.move('left');
+            window.camera.move('left');
         };
 
         this.elDirectionalRight.onclick = () => {
-            player.move('right');
+            window.camera.move('right');
         };
     }
 
@@ -230,26 +287,22 @@ class Keyboard {
             case 'Up':
             case 'ArrowUp':
             case 'w':
-                window.player.move('up');
-                window.map.move('up');
+                window.camera.move('up');
                 break;
             case 'Left':
             case 'ArrowLeft':
             case 'a':
-                window.player.move('left');
-                window.map.move('left');
+                window.camera.move('left');
                 break;
             case 'Down':
             case 'ArrowDown':
             case 's':
-                window.player.move('down');
-                window.map.move('down');
+                window.camera.move('down');
                 break;
             case 'Right':
             case 'ArrowRight':
             case 'd':
-                window.player.move('right');
-                window.map.move('right');
+                window.camera.move('right');
                 break;
         }
     }
@@ -262,7 +315,7 @@ class Map {
         this.json = {};
         this.arr = [];
         this.tileSize = 50;
-        this.unity = 'px';
+        this.limit = {};
     }
 
     build() {
@@ -273,6 +326,7 @@ class Map {
     buildMap(data) {
         this.json = JSON.parse(data);
 
+        this.updateLimit();
         this.convertArray();
         this.buildHtml();
     }
@@ -280,8 +334,8 @@ class Map {
     buildHtml() {
         const template = this.buildHtmlRow();
 
-        this.elMap.style.width = `${this.tileSize * this.json.column}${this.unity}`;
-        this.elMap.style.height = `${this.tileSize * this.json.row}${this.unity}`;
+        this.elMap.style.width = `${this.tileSize * this.json.column}px`;
+        this.elMap.style.height = `${this.tileSize * this.json.row}px`;
         this.elMap.innerHTML = '';
         this.elMap.insertAdjacentHTML('afterbegin', template);
     }
@@ -323,8 +377,13 @@ class Map {
         this.elMap = document.querySelector('#map');
     }
 
-    move(side) {
-        console.log(side);
+    updateLimit() {
+        this.limit = {
+            'up': 0,
+            'down': this.tileSize * this.json.column,
+            'left': 0,
+            'right': this.tileSize * this.json.row,
+        };
     }
 }
 

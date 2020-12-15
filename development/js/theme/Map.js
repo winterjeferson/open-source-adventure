@@ -4,7 +4,7 @@ class Map {
         this.json = {};
         this.arr = [];
         this.tileSize = 50;
-        this.unity = 'px';
+        this.limit = {};
     }
 
     build() {
@@ -15,6 +15,7 @@ class Map {
     buildMap(data) {
         this.json = JSON.parse(data);
 
+        this.updateLimit();
         this.convertArray();
         this.buildHtml();
     }
@@ -22,8 +23,8 @@ class Map {
     buildHtml() {
         const template = this.buildHtmlRow();
 
-        this.elMap.style.width = `${this.tileSize * this.json.column}${this.unity}`;
-        this.elMap.style.height = `${this.tileSize * this.json.row}${this.unity}`;
+        this.elMap.style.width = `${this.tileSize * this.json.column}px`;
+        this.elMap.style.height = `${this.tileSize * this.json.row}px`;
         this.elMap.innerHTML = '';
         this.elMap.insertAdjacentHTML('afterbegin', template);
     }
@@ -65,8 +66,13 @@ class Map {
         this.elMap = document.querySelector('#map');
     }
 
-    move(side) {
-        console.log(side);
+    updateLimit() {
+        this.limit = {
+            'up': 0,
+            'down': this.tileSize * this.json.column,
+            'left': 0,
+            'right': this.tileSize * this.json.row,
+        };
     }
 }
 
