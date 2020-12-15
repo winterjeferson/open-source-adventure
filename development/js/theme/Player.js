@@ -13,10 +13,6 @@ class Player {
         this.load();
     }
 
-    update() {
-        this.elPlayer = document.querySelector('#player');
-    }
-
     buildPlayer(data) {
         const json = JSON.parse(data);
 
@@ -30,12 +26,12 @@ class Player {
         window.interface.updateBar();
     }
 
-    load() {
-        window.data.loadPlayer();
-    }
-
     catch () {
         console.log('catch');
+    }
+
+    load() {
+        window.data.loadPlayer();
     }
 
     hit() {
@@ -86,6 +82,10 @@ class Player {
             tileNext,
             side
         }));
+    }
+
+    update() {
+        this.elPlayer = document.querySelector('#player');
     }
 
     updatePosition(data) {

@@ -18,12 +18,6 @@ class Helper {
         });
     }
 
-    remove(target) {
-        if (target !== null) {
-            target.parentNode.removeChild(target);
-        }
-    }
-
     getTranslateValue(target) {
         const style = window.getComputedStyle(target);
         const matrix = style['transform'];
@@ -58,6 +52,12 @@ class Helper {
                 y: Number(matrixValues[13]),
                 z: Number(matrixValues[14])
             };
+        }
+    }
+
+    remove(target) {
+        if (target !== null) {
+            target.parentNode.removeChild(target);
         }
     }
 }
