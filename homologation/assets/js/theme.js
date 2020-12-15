@@ -108,11 +108,6 @@ class Data {
         this.apiUrl = `./api/${this.api}/`;
     }
 
-    loadData() {
-        this.loadMap(window.map.current);
-        this.loadPlayer();
-    }
-
     loadMap(map) {
         const parameter = {
             kind: 'GET',
@@ -120,7 +115,12 @@ class Data {
         };
         let data = window.helper.ajax(parameter);
 
-        data.then((result) => window.map.buildMap(result));
+        data.then((result) =>
+                window.map.buildMap(result)
+            )
+            .then(() =>
+                this.loadPlayer()
+            );
     }
 
     loadPlayer() {
@@ -540,5 +540,5 @@ document.addEventListener('DOMContentLoaded', () => {
     window.interface.build();
     window.keyboard.build();
     window.map.update();
-    window.data.loadData();
+    window.data.loadMap(window.map.current);
 });
