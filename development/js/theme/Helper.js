@@ -18,6 +18,17 @@ class Helper {
         });
     }
 
+    getOffset(target) {
+        const rect = target.getBoundingClientRect();
+
+        return {
+            top: rect.top,
+            right: rect.right,
+            bottom: rect.bottom,
+            left: rect.left
+        };
+    }
+
     getTranslateValue(target) {
         const style = window.getComputedStyle(target);
         const matrix = style['transform'];

@@ -45,7 +45,7 @@ class Camera {
         window.player.move(side);
 
         this[`move${capitalize}`]({
-            'target': window.map.elMap
+            'target': window.theme.elMap
         });
     }
 
@@ -108,6 +108,11 @@ class Data {
         this.apiUrl = `./api/${this.api}/`;
     }
 
+    loadData() {
+        this.loadMap(window.map.current);
+        this.loadPlayer();
+    }
+
     loadMap(map) {
         const parameter = {
             kind: 'GET',
@@ -153,6 +158,17 @@ class Helper {
             xhr.onerror = () => reject(xhr.statusText);
             xhr.send(obj.parameter);
         });
+    }
+
+    getOffset(target) {
+        const rect = target.getBoundingClientRect();
+
+        return {
+            top: rect.top,
+            right: rect.right,
+            bottom: rect.bottom,
+            left: rect.left
+        };
     }
 
     getTranslateValue(target) {
@@ -314,14 +330,11 @@ class Map {
         this.current = 0;
         this.json = {};
         this.arr = [];
+        this.arrWalkFalse = [0];
         this.tileSize = 50;
         this.limit = {};
         this.tileId = 0;
-    }
-
-    build() {
-        this.update();
-        window.data.loadMap(this.current);
+        this.prefixTile = 'tile_';
     }
 
     buildMap(data) {
@@ -335,10 +348,10 @@ class Map {
     buildHtml() {
         const template = this.buildHtmlRow();
 
-        this.elMap.style.width = `${this.tileSize * this.json.column}px`;
-        this.elMap.style.height = `${this.tileSize * this.json.row}px`;
-        this.elMap.innerHTML = '';
-        this.elMap.insertAdjacentHTML('afterbegin', template);
+        window.theme.elMap.style.width = `${this.tileSize * this.json.column}px`;
+        window.theme.elMap.style.height = `${this.tileSize * this.json.row}px`;
+        window.theme.elMap.innerHTML = '';
+        window.theme.elMap.insertAdjacentHTML('afterbegin', template);
     }
 
     buildHtmlRow() {
@@ -358,7 +371,7 @@ class Map {
             let tile = this.arr[i][j];
             let trim = tile.trim();
 
-            template += `<div class="tile tile--${trim}" id="tile_${this.tileId}"></div>`;
+            template += `<div class="tile tile--${trim}" id="${this.prefixTile}${this.tileId}"></div>`;
             this.tileId++;
         }
 
@@ -375,9 +388,27 @@ class Map {
         }
     }
 
+    position(obj) {
+        const tile = this.prefixTile + obj.position;
+        const elTarget = document.querySelector(`#${obj.target}`);
+        const elTile = document.querySelector(`#${tile}`);
+        const elTilePosition = window.helper.getOffset(elTile);
+        const elGamePosition = window.helper.getOffset(window.theme.elGame);
+        const positionReset = {
+            top: elTilePosition.top - elGamePosition.top,
+            left: elTilePosition.left - elGamePosition.left,
+        };
+
+        window.animation.move({
+            'target': elTarget,
+            'vertical': positionReset.top,
+            'horizontal': positionReset.left,
+            'speed': 0,
+        });
+    }
+
     update() {
         this.tileId = 0;
-        this.elMap = document.querySelector('#map');
     }
 
     updateLimit() {
@@ -401,11 +432,6 @@ class Player {
         this.isMoving = false;
     }
 
-    build() {
-        this.update();
-        this.load();
-    }
-
     buildPlayer(data) {
         const json = JSON.parse(data);
 
@@ -417,14 +443,14 @@ class Player {
         this.thirstCurrent = json.thirstCurrent;
 
         window.interface.updateBar();
+        window.map.position({
+            'target': 'player',
+            'position': window.map.json.position.player.initial,
+        });
     }
 
     catch () {
         console.log('catch');
-    }
-
-    load() {
-        window.data.loadPlayer();
     }
 
     hit() {
@@ -432,7 +458,6 @@ class Player {
     }
 
     move(side) {
-        const self = this;
         const tile = window.map.tileSize;
         const tileColumn = window.map.json.column;
         let vertical = false;
@@ -466,7 +491,7 @@ class Player {
         this.isMoving = true;
 
         animate = window.animation.move({
-            'target': self.elPlayer,
+            'target': window.theme.elPlayer,
             vertical,
             horizontal
         });
@@ -475,10 +500,6 @@ class Player {
             tileNext,
             side
         }));
-    }
-
-    update() {
-        this.elPlayer = document.querySelector('#player');
     }
 
     updatePosition(data) {
@@ -506,13 +527,18 @@ class Player {
 
 window.player = new Player();
 class Theme {
-
+    update() {
+        this.elGame = document.querySelector('#game');
+        this.elMap = document.querySelector('#map');
+        this.elPlayer = document.querySelector('#player');
+    }
 }
 
 window.theme = new Theme();
 document.addEventListener('DOMContentLoaded', () => {
+    window.theme.update();
     window.interface.build();
     window.keyboard.build();
-    window.map.build();
-    window.player.build();
+    window.map.update();
+    window.data.loadData();
 });

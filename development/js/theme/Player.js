@@ -8,11 +8,6 @@ class Player {
         this.isMoving = false;
     }
 
-    build() {
-        this.update();
-        this.load();
-    }
-
     buildPlayer(data) {
         const json = JSON.parse(data);
 
@@ -24,14 +19,14 @@ class Player {
         this.thirstCurrent = json.thirstCurrent;
 
         window.interface.updateBar();
+        window.map.position({
+            'target': 'player',
+            'position': window.map.json.position.player.initial,
+        });
     }
 
     catch () {
         console.log('catch');
-    }
-
-    load() {
-        window.data.loadPlayer();
     }
 
     hit() {
@@ -39,7 +34,6 @@ class Player {
     }
 
     move(side) {
-        const self = this;
         const tile = window.map.tileSize;
         const tileColumn = window.map.json.column;
         let vertical = false;
@@ -73,7 +67,7 @@ class Player {
         this.isMoving = true;
 
         animate = window.animation.move({
-            'target': self.elPlayer,
+            'target': window.theme.elPlayer,
             vertical,
             horizontal
         });
@@ -82,10 +76,6 @@ class Player {
             tileNext,
             side
         }));
-    }
-
-    update() {
-        this.elPlayer = document.querySelector('#player');
     }
 
     updatePosition(data) {

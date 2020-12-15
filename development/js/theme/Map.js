@@ -3,14 +3,11 @@ class Map {
         this.current = 0;
         this.json = {};
         this.arr = [];
+        this.arrWalkFalse = [0];
         this.tileSize = 50;
         this.limit = {};
         this.tileId = 0;
-    }
-
-    build() {
-        this.update();
-        window.data.loadMap(this.current);
+        this.prefixTile = 'tile_';
     }
 
     buildMap(data) {
@@ -24,10 +21,10 @@ class Map {
     buildHtml() {
         const template = this.buildHtmlRow();
 
-        this.elMap.style.width = `${this.tileSize * this.json.column}px`;
-        this.elMap.style.height = `${this.tileSize * this.json.row}px`;
-        this.elMap.innerHTML = '';
-        this.elMap.insertAdjacentHTML('afterbegin', template);
+        window.theme.elMap.style.width = `${this.tileSize * this.json.column}px`;
+        window.theme.elMap.style.height = `${this.tileSize * this.json.row}px`;
+        window.theme.elMap.innerHTML = '';
+        window.theme.elMap.insertAdjacentHTML('afterbegin', template);
     }
 
     buildHtmlRow() {
@@ -47,7 +44,7 @@ class Map {
             let tile = this.arr[i][j];
             let trim = tile.trim();
 
-            template += `<div class="tile tile--${trim}" id="tile_${this.tileId}"></div>`;
+            template += `<div class="tile tile--${trim}" id="${this.prefixTile}${this.tileId}"></div>`;
             this.tileId++;
         }
 
@@ -64,9 +61,27 @@ class Map {
         }
     }
 
+    position(obj) {
+        const tile = this.prefixTile + obj.position;
+        const elTarget = document.querySelector(`#${obj.target}`);
+        const elTile = document.querySelector(`#${tile}`);
+        const elTilePosition = window.helper.getOffset(elTile);
+        const elGamePosition = window.helper.getOffset(window.theme.elGame);
+        const positionReset = {
+            top: elTilePosition.top - elGamePosition.top,
+            left: elTilePosition.left - elGamePosition.left,
+        };
+
+        window.animation.move({
+            'target': elTarget,
+            'vertical': positionReset.top,
+            'horizontal': positionReset.left,
+            'speed': 0,
+        });
+    }
+
     update() {
         this.tileId = 0;
-        this.elMap = document.querySelector('#map');
     }
 
     updateLimit() {

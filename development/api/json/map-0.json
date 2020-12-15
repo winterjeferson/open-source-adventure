@@ -2,7 +2,7 @@
     "row": 20,
     "column": 40,
     "position": {
-        "character": {
+        "player": {
             "initial": 342,
             "door0": 0,
             "door1": 0,

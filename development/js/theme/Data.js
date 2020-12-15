@@ -4,6 +4,11 @@ class Data {
         this.apiUrl = `./api/${this.api}/`;
     }
 
+    loadData() {
+        this.loadMap(window.map.current);
+        this.loadPlayer();
+    }
+
     loadMap(map) {
         const parameter = {
             kind: 'GET',
