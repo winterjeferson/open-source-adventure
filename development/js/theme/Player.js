@@ -1,10 +1,6 @@
 class Player {
     constructor() {
-        this.currentHorizontal = 0;
-        this.currentVertical = 0;
-        this.tileCurrent = 0;
-        this.tileNext = 0;
-        this.speed = 300;
+        this.speed = 0;
         this.isMoving = false;
     }
 
@@ -17,6 +13,8 @@ class Player {
         this.hungerCurrent = json.hungerCurrent;
         this.thirst = json.thirst;
         this.thirstCurrent = json.thirstCurrent;
+        this.tileCurrent = window.map.json.position.player.initial;
+        this.speed = json.speed;
 
         window.interface.updateBar();
         window.map.position({
@@ -34,37 +32,17 @@ class Player {
     }
 
     move(side) {
-        const tile = window.map.tileSize;
-        const tileColumn = window.map.json.column;
-        let vertical = false;
-        let horizontal = false;
-        let tileNext;
+        const coordinates = this.moveCoordinates(side);
+        const vertical = coordinates.vertical;
+        const horizontal = coordinates.horizontal;
+        const tileNext = coordinates.tileNext;
         let animate;
 
         if (this.isMoving) {
             return;
+        } else {
+            this.isMoving = true;
         }
-
-        switch (side) {
-            case 'up':
-                tileNext = this.tileCurrent - tileColumn;
-                vertical = this.currentVertical - tile;
-                break;
-            case 'down':
-                tileNext = this.tileCurrent + tileColumn;
-                vertical = this.currentVertical + tile;
-                break;
-            case 'left':
-                tileNext = this.tileCurrent - 1;
-                horizontal = this.currentHorizontal - tile;
-                break;
-            case 'right':
-                tileNext = this.tileCurrent + 1;
-                horizontal = this.currentHorizontal + tile;
-                break;
-        }
-
-        this.isMoving = true;
 
         animate = window.animation.move({
             'target': window.theme.elPlayer,
@@ -76,6 +54,40 @@ class Player {
             tileNext,
             side
         }));
+    }
+
+    moveCoordinates(side) {
+        const tile = window.map.tileSize;
+        const tileColumn = window.map.json.column;
+        const playerPosition = window.helper.getTranslateValue(window.theme.elPlayer);
+        let vertical = false;
+        let horizontal = false;
+        let tileNext;
+
+        switch (side) {
+            case 'up':
+                tileNext = this.tileCurrent - tileColumn;
+                vertical = playerPosition.y - tile;
+                break;
+            case 'down':
+                tileNext = this.tileCurrent + tileColumn;
+                vertical = playerPosition.y + tile;
+                break;
+            case 'left':
+                tileNext = this.tileCurrent - 1;
+                horizontal = playerPosition.x - tile;
+                break;
+            case 'right':
+                tileNext = this.tileCurrent + 1;
+                horizontal = playerPosition.x + tile;
+                break;
+        }
+
+        return {
+            vertical,
+            horizontal,
+            tileNext
+        };
     }
 
     updatePosition(data) {
