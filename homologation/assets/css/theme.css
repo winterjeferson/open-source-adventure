@@ -124,3 +124,6 @@ img {
   background-color: #e14b4a;
   position: absolute;
   z-index: 2; }
+
+* {
+  opacity: .7; }
