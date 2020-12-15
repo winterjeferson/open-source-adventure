@@ -1,15 +1,15 @@
 class Animation {
-    move(args) {
-        return new Promise((resolve, reject) => {
-            const currentValue = window.helper.getTranslateValue(args.target);
+    move(obj) {
+        return new Promise((resolve) => {
+            const currentValue = window.helper.getTranslateValue(obj.target);
             const currentVertical = Math.floor(currentValue.y);
             const currentHorizontal = Math.floor(currentValue.x);
-            const newVertical = args.vertical === false ? currentVertical : Math.floor(args.vertical);
-            const newHorizontal = args.horizontal === false ? currentHorizontal : Math.floor(args.horizontal);
-            const speed = typeof args.speed !== 'undefined' ? args.speed : window.player.speed;
-            const easing = typeof args.easing !== 'undefined' ? args.easing : 'linear';
+            const newVertical = obj.vertical === false ? currentVertical : Math.floor(obj.vertical);
+            const newHorizontal = obj.horizontal === false ? currentHorizontal : Math.floor(obj.horizontal);
+            const speed = typeof obj.speed !== 'undefined' ? obj.speed : window.player.speed;
+            const easing = typeof obj.easing !== 'undefined' ? obj.easing : 'linear';
 
-            const animation = args.target.animate([{
+            const animation = obj.target.animate([{
                     transform: `translate(${currentHorizontal}px, ${currentVertical}px)`
                 },
                 {
@@ -24,21 +24,27 @@ class Animation {
 
             animation.onfinish = function (event) {
                 resolve(event);
-            }
+            };
         });
 
     }
 }
+
+window.animation = new Animation();
 class Backpack {
     open() {
         console.log('backpack open');
     }
 }
+
+window.backpack = new Backpack();
 class Craft {
     open() {
         console.log('craft open');
     }
 }
+
+window.craft = new Craft();
 class Data {
     constructor(api) {
         this.api = api;
@@ -65,9 +71,13 @@ class Data {
         data.then((result) => window.player.buildPlayer(result));
     }
 }
+
+window.data = new Data('json');
 class Enemy {
 
 }
+
+window.enemy = new Enemy();
 class Helper {
     ajax(obj) {
         return new Promise((resolve, reject) => {
@@ -103,11 +113,11 @@ class Helper {
                 x: 0,
                 y: 0,
                 z: 0
-            }
+            };
         }
 
-        const matrixType = matrix.includes('3d') ? '3d' : '2d'
-        const matrixValues = matrix.match(/matrix.*\((.+)\)/)[1].split(', ')
+        const matrixType = matrix.includes('3d') ? '3d' : '2d';
+        const matrixValues = matrix.match(/matrix.*\((.+)\)/)[1].split(', ');
 
         // 2d matrices have 6 values
         // Last 2 values are X and Y.
@@ -117,7 +127,7 @@ class Helper {
                 x: Number(matrixValues[4]),
                 y: Number(matrixValues[5]),
                 z: 0
-            }
+            };
         }
 
         // 3d matrices have 16 values
@@ -127,10 +137,12 @@ class Helper {
                 x: Number(matrixValues[12]),
                 y: Number(matrixValues[13]),
                 z: Number(matrixValues[14])
-            }
+            };
         }
     }
 }
+
+window.helper = new Helper();
 class Interface {
     build() {
         this.update();
@@ -199,9 +211,13 @@ class Interface {
         this.elBarThirst.setAttribute('max', player.thirst);
     }
 }
+
+window.interface = new Interface();
 class Item {
-    
+
 }
+
+window.item = new Item();
 class Keyboard {
     build() {
         document.addEventListener('keydown', (event) => {
@@ -238,20 +254,8 @@ class Keyboard {
         }
     }
 }
-class Management {
-    verifyLoad() {
-        document.addEventListener('DOMContentLoaded', () => {
-            this.build();
-        });
-    }
 
-    build() {
-        window.interface.build();
-        window.keyboard.build();
-        window.map.build();
-        window.player.build();
-    }
-}
+window.keyboard = new Keyboard();
 class Map {
     constructor() {
         this.current = 0;
@@ -323,6 +327,8 @@ class Map {
         console.log(side);
     }
 }
+
+window.map = new Map();
 class Player {
     constructor() {
         this.currentHorizontal = 0;
@@ -435,21 +441,16 @@ class Player {
         }
     }
 }
+
+window.player = new Player();
 class Theme {
 
 }
-window.animation = new Animation();
-window.helper = new Helper();
-window.data = new Data('json');
-window.backpack = new Backpack();
-window.craft = new Craft();
-window.enemy = new Enemy();
-window.interface = new Interface();
-window.item = new Item();
-window.keyboard = new Keyboard();
-window.management = new Management();
-window.map = new Map();
-window.player = new Player();
-window.theme = new Theme();
 
-management.verifyLoad();
+window.theme = new Theme();
+document.addEventListener('DOMContentLoaded', () => {
+    window.interface.build();
+    window.keyboard.build();
+    window.map.build();
+    window.player.build();
+});

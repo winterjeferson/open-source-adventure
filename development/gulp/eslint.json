@@ -1,0 +1,24 @@
+{
+    "rules": {
+        "quotes": [1, "single"],
+        "semi": [1, "always"],
+        "eqeqeq": [1, "always"],
+        "no-alert": 1,
+        "no-eval": 1,
+        "no-var": 1,
+        "no-redeclare": 1,
+        "no-self-compare": 1,
+        "no-unused-vars": [1, {
+            "vars": "all",
+            "args": "after-used",
+            "ignoreRestSiblings": false
+        }]
+    },
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    }
+}

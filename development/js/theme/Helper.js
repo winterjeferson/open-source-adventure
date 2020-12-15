@@ -33,11 +33,11 @@ class Helper {
                 x: 0,
                 y: 0,
                 z: 0
-            }
+            };
         }
 
-        const matrixType = matrix.includes('3d') ? '3d' : '2d'
-        const matrixValues = matrix.match(/matrix.*\((.+)\)/)[1].split(', ')
+        const matrixType = matrix.includes('3d') ? '3d' : '2d';
+        const matrixValues = matrix.match(/matrix.*\((.+)\)/)[1].split(', ');
 
         // 2d matrices have 6 values
         // Last 2 values are X and Y.
@@ -47,7 +47,7 @@ class Helper {
                 x: Number(matrixValues[4]),
                 y: Number(matrixValues[5]),
                 z: 0
-            }
+            };
         }
 
         // 3d matrices have 16 values
@@ -57,7 +57,9 @@ class Helper {
                 x: Number(matrixValues[12]),
                 y: Number(matrixValues[13]),
                 z: Number(matrixValues[14])
-            }
+            };
         }
     }
 }
+
+window.helper = new Helper();
