@@ -69,3 +69,5 @@ class Map {
         console.log(side);
     }
 }
+
+window.map = new Map();

@@ -110,3 +110,5 @@ class Player {
         }
     }
 }
+
+window.player = new Player();
