@@ -316,6 +316,7 @@ class Map {
         this.arr = [];
         this.tileSize = 50;
         this.limit = {};
+        this.tileId = 0;
     }
 
     build() {
@@ -357,7 +358,8 @@ class Map {
             let tile = this.arr[i][j];
             let trim = tile.trim();
 
-            template += `<div class="tile tile--${trim}"></div>`;
+            template += `<div class="tile tile--${trim}" id="tile_${this.tileId}"></div>`;
+            this.tileId++;
         }
 
         return template;
@@ -374,6 +376,7 @@ class Map {
     }
 
     update() {
+        this.tileId = 0;
         this.elMap = document.querySelector('#map');
     }
 
