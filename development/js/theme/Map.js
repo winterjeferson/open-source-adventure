@@ -5,6 +5,7 @@ class Map {
         this.arr = [];
         this.arrWalkFalse = [0];
         this.tileSize = 50;
+        this.tileSizeHalf = this.tileSize / 2;
         this.limit = {};
         this.tileId = 0;
         this.prefixTile = 'tile_';
@@ -12,6 +13,8 @@ class Map {
 
     buildMap(data) {
         this.json = JSON.parse(data);
+        this.width = this.tileSize * this.json.column;
+        this.height = this.tileSize * this.json.row;
 
         this.updateLimit();
         this.convertArray();
@@ -21,8 +24,8 @@ class Map {
     buildHtml() {
         const template = this.buildHtmlRow();
 
-        window.interface.elMap.style.width = `${this.tileSize * this.json.column}px`;
-        window.interface.elMap.style.height = `${this.tileSize * this.json.row}px`;
+        window.interface.elMap.style.width = `${this.width}px`;
+        window.interface.elMap.style.height = `${this.height}px`;
         window.interface.elMap.innerHTML = '';
         window.interface.elMap.insertAdjacentHTML('afterbegin', template);
     }

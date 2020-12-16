@@ -21,6 +21,7 @@ class Player {
             'target': 'player',
             'position': window.map.json.position.player.initial,
         });
+        window.camera.center();
     }
 
     catch () {

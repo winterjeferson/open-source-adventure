@@ -18,6 +18,10 @@ class Helper {
         });
     }
 
+    capitalize(target) {
+        return target.charAt(0).toUpperCase() + target.slice(1);
+    }
+
     getOffset(target) {
         const rect = target.getBoundingClientRect();
 

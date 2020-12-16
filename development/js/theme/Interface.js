@@ -1,6 +1,7 @@
 class Interface {
     build() {
         this.update();
+        this.resize();
         this.buildAction();
         this.buildDirection();
     }
@@ -68,6 +69,11 @@ class Interface {
         this.elBarHunger.setAttribute('max', player.hunger);
         this.elBarThirst.setAttribute('value', player.thirstCurrent);
         this.elBarThirst.setAttribute('max', player.thirst);
+    }
+
+    resize() {
+        this.elGameWidth = this.elGame.offsetWidth;
+        this.elGameHeight = this.elGame.offsetHeight;
     }
 }
 

@@ -39,8 +39,45 @@ class Backpack {
 
 window.backpack = new Backpack();
 class Camera {
+    center() {
+        this.update();
+
+        window.animation.move({
+            'target': window.interface.elMap,
+            'vertical': this.centerVertical(),
+            'horizontal': this.centerHorizontal(),
+            'speed': window.player.speed
+        });
+    }
+
+    centerVertical() {
+        const positionPlayer = window.helper.getTranslateValue(window.interface.elPlayer);
+        const position = Number(-positionPlayer.y + (window.interface.elGameHeight / 2) - window.map.tileSizeHalf);
+
+        return this.centerLimit(position, this.limitBottom);
+    }
+
+    centerHorizontal() {
+        const positionPlayer = window.helper.getTranslateValue(window.interface.elPlayer);
+        const position = Number(-positionPlayer.x + (window.interface.elGameWidth / 2) - window.map.tileSizeHalf);
+
+        return this.centerLimit(position, this.limitRight);
+    }
+
+    centerLimit(position, limit) {
+        if (position < limit) {
+            return limit;
+        }
+
+        if (position > 0) {
+            return 0;
+        }
+
+        return position;
+    }
+
     move(side) {
-        const capitalize = side.charAt(0).toUpperCase() + side.slice(1);
+        const capitalize = window.helper.capitalize(side);
 
         window.player.move(side);
 
@@ -91,6 +128,11 @@ class Camera {
             vertical,
             horizontal
         });
+    }
+
+    update() {
+        this.limitBottom = Number(-(window.map.height - window.interface.elGameHeight));
+        this.limitRight = Number(-(window.map.width - window.interface.elGameWidth));
     }
 }
 
@@ -160,6 +202,10 @@ class Helper {
         });
     }
 
+    capitalize(target) {
+        return target.charAt(0).toUpperCase() + target.slice(1);
+    }
+
     getOffset(target) {
         const rect = target.getBoundingClientRect();
 
@@ -219,6 +265,7 @@ window.helper = new Helper();
 class Interface {
     build() {
         this.update();
+        this.resize();
         this.buildAction();
         this.buildDirection();
     }
@@ -287,6 +334,11 @@ class Interface {
         this.elBarThirst.setAttribute('value', player.thirstCurrent);
         this.elBarThirst.setAttribute('max', player.thirst);
     }
+
+    resize() {
+        this.elGameWidth = this.elGame.offsetWidth;
+        this.elGameHeight = this.elGame.offsetHeight;
+    }
 }
 
 window.interface = new Interface();
@@ -336,6 +388,7 @@ class Map {
         this.arr = [];
         this.arrWalkFalse = [0];
         this.tileSize = 50;
+        this.tileSizeHalf = this.tileSize / 2;
         this.limit = {};
         this.tileId = 0;
         this.prefixTile = 'tile_';
@@ -343,6 +396,8 @@ class Map {
 
     buildMap(data) {
         this.json = JSON.parse(data);
+        this.width = this.tileSize * this.json.column;
+        this.height = this.tileSize * this.json.row;
 
         this.updateLimit();
         this.convertArray();
@@ -352,8 +407,8 @@ class Map {
     buildHtml() {
         const template = this.buildHtmlRow();
 
-        window.interface.elMap.style.width = `${this.tileSize * this.json.column}px`;
-        window.interface.elMap.style.height = `${this.tileSize * this.json.row}px`;
+        window.interface.elMap.style.width = `${this.width}px`;
+        window.interface.elMap.style.height = `${this.height}px`;
         window.interface.elMap.innerHTML = '';
         window.interface.elMap.insertAdjacentHTML('afterbegin', template);
     }
@@ -449,6 +504,7 @@ class Player {
             'target': 'player',
             'position': window.map.json.position.player.initial,
         });
+        window.camera.center();
     }
 
     catch () {
@@ -547,4 +603,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.keyboard.build();
     window.map.update();
     window.data.loadMap(window.map.current);
+});
+
+window.addEventListener('resize', () => {
+    window.interface.resize();
+    window.camera.center();
 });
