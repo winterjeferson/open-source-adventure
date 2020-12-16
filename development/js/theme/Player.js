@@ -45,7 +45,7 @@ class Player {
         }
 
         animate = window.animation.move({
-            'target': window.theme.elPlayer,
+            'target': window.interface.elPlayer,
             vertical,
             horizontal
         });
@@ -59,7 +59,7 @@ class Player {
     moveCoordinates(side) {
         const tile = window.map.tileSize;
         const tileColumn = window.map.json.column;
-        const playerPosition = window.helper.getTranslateValue(window.theme.elPlayer);
+        const playerPosition = window.helper.getTranslateValue(window.interface.elPlayer);
         let vertical = false;
         let horizontal = false;
         let tileNext;

@@ -42,6 +42,10 @@ class Interface {
     }
 
     update() {
+        this.elGame = document.querySelector('#game');
+        this.elMap = document.querySelector('#map');
+        this.elPlayer = document.querySelector('#player');
+
         this.elBarLife = document.querySelector('[data-id="bar-life"]');
         this.elBarHunger = document.querySelector('[data-id="bar-hunger"]');
         this.elBarThirst = document.querySelector('[data-id="bar-thirst"]');

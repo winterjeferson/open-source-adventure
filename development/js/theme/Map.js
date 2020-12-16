@@ -21,10 +21,10 @@ class Map {
     buildHtml() {
         const template = this.buildHtmlRow();
 
-        window.theme.elMap.style.width = `${this.tileSize * this.json.column}px`;
-        window.theme.elMap.style.height = `${this.tileSize * this.json.row}px`;
-        window.theme.elMap.innerHTML = '';
-        window.theme.elMap.insertAdjacentHTML('afterbegin', template);
+        window.interface.elMap.style.width = `${this.tileSize * this.json.column}px`;
+        window.interface.elMap.style.height = `${this.tileSize * this.json.row}px`;
+        window.interface.elMap.innerHTML = '';
+        window.interface.elMap.insertAdjacentHTML('afterbegin', template);
     }
 
     buildHtmlRow() {
@@ -66,7 +66,7 @@ class Map {
         const elTarget = document.querySelector(`#${obj.target}`);
         const elTile = document.querySelector(`#${tile}`);
         const elTilePosition = window.helper.getOffset(elTile);
-        const elGamePosition = window.helper.getOffset(window.theme.elGame);
+        const elGamePosition = window.helper.getOffset(window.interface.elGame);
         const positionReset = {
             top: elTilePosition.top - elGamePosition.top,
             left: elTilePosition.left - elGamePosition.left,

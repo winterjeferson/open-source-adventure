@@ -5,7 +5,7 @@ class Camera {
         window.player.move(side);
 
         this[`move${capitalize}`]({
-            'target': window.theme.elMap
+            'target': window.interface.elMap
         });
     }
 

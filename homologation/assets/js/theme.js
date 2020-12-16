@@ -45,7 +45,7 @@ class Camera {
         window.player.move(side);
 
         this[`move${capitalize}`]({
-            'target': window.theme.elMap
+            'target': window.interface.elMap
         });
     }
 
@@ -260,6 +260,10 @@ class Interface {
     }
 
     update() {
+        this.elGame = document.querySelector('#game');
+        this.elMap = document.querySelector('#map');
+        this.elPlayer = document.querySelector('#player');
+
         this.elBarLife = document.querySelector('[data-id="bar-life"]');
         this.elBarHunger = document.querySelector('[data-id="bar-hunger"]');
         this.elBarThirst = document.querySelector('[data-id="bar-thirst"]');
@@ -348,10 +352,10 @@ class Map {
     buildHtml() {
         const template = this.buildHtmlRow();
 
-        window.theme.elMap.style.width = `${this.tileSize * this.json.column}px`;
-        window.theme.elMap.style.height = `${this.tileSize * this.json.row}px`;
-        window.theme.elMap.innerHTML = '';
-        window.theme.elMap.insertAdjacentHTML('afterbegin', template);
+        window.interface.elMap.style.width = `${this.tileSize * this.json.column}px`;
+        window.interface.elMap.style.height = `${this.tileSize * this.json.row}px`;
+        window.interface.elMap.innerHTML = '';
+        window.interface.elMap.insertAdjacentHTML('afterbegin', template);
     }
 
     buildHtmlRow() {
@@ -393,7 +397,7 @@ class Map {
         const elTarget = document.querySelector(`#${obj.target}`);
         const elTile = document.querySelector(`#${tile}`);
         const elTilePosition = window.helper.getOffset(elTile);
-        const elGamePosition = window.helper.getOffset(window.theme.elGame);
+        const elGamePosition = window.helper.getOffset(window.interface.elGame);
         const positionReset = {
             top: elTilePosition.top - elGamePosition.top,
             left: elTilePosition.left - elGamePosition.left,
@@ -469,7 +473,7 @@ class Player {
         }
 
         animate = window.animation.move({
-            'target': window.theme.elPlayer,
+            'target': window.interface.elPlayer,
             vertical,
             horizontal
         });
@@ -483,7 +487,7 @@ class Player {
     moveCoordinates(side) {
         const tile = window.map.tileSize;
         const tileColumn = window.map.json.column;
-        const playerPosition = window.helper.getTranslateValue(window.theme.elPlayer);
+        const playerPosition = window.helper.getTranslateValue(window.interface.elPlayer);
         let vertical = false;
         let horizontal = false;
         let tileNext;
@@ -538,17 +542,7 @@ class Player {
 }
 
 window.player = new Player();
-class Theme {
-    update() {
-        this.elGame = document.querySelector('#game');
-        this.elMap = document.querySelector('#map');
-        this.elPlayer = document.querySelector('#player');
-    }
-}
-
-window.theme = new Theme();
 document.addEventListener('DOMContentLoaded', () => {
-    window.theme.update();
     window.interface.build();
     window.keyboard.build();
     window.map.update();
