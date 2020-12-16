@@ -43,10 +43,10 @@ class Camera {
         this.update();
 
         window.animation.move({
-            'target': window.interface.elMap,
+            'target': window.interface.elCamera,
             'vertical': this.centerVertical(),
             'horizontal': this.centerHorizontal(),
-            'speed': window.player.speed
+            'speed': 0
         });
     }
 
@@ -78,8 +78,16 @@ class Camera {
 
     move(side) {
         const capitalize = window.helper.capitalize(side);
+        const isLimit = false;
 
         window.player.move(side);
+
+        if (isLimit) {
+            this.distance = window.map.tileSize;
+            return;
+        } else {
+            this.distance = window.map.tileSizeHalf;
+        }
 
         this[`move${capitalize}`]({
             'target': window.interface.elMap
@@ -87,7 +95,7 @@ class Camera {
     }
 
     moveDown(obj) {
-        let vertical = -window.map.tileSize;
+        let vertical = -this.distance;
         let horizontal = false;
 
         window.animation.move({
@@ -99,7 +107,7 @@ class Camera {
 
     moveLeft(obj) {
         let vertical = false;
-        let horizontal = window.map.tileSize;
+        let horizontal = this.distance;
 
         window.animation.move({
             'target': obj.target,
@@ -109,7 +117,7 @@ class Camera {
     }
 
     moveUp(obj) {
-        let vertical = window.map.tileSize;
+        let vertical = this.distance;
         let horizontal = false;
 
         window.animation.move({
@@ -121,7 +129,7 @@ class Camera {
 
     moveRight(obj) {
         let vertical = false;
-        let horizontal = -window.map.tileSize;
+        let horizontal = -this.distance;
 
         window.animation.move({
             'target': obj.target,
@@ -152,7 +160,6 @@ class Data {
 
     loadMap(map) {
         const parameter = {
-            kind: 'GET',
             controller: `${this.apiUrl}map-${map}.${this.api}`,
         };
         let data = window.helper.ajax(parameter);
@@ -167,7 +174,6 @@ class Data {
 
     loadPlayer() {
         const parameter = {
-            kind: 'GET',
             controller: `${this.apiUrl}player.${this.api}`,
         };
         let data = window.helper.ajax(parameter);
@@ -232,9 +238,6 @@ class Helper {
         const matrixType = matrix.includes('3d') ? '3d' : '2d';
         const matrixValues = matrix.match(/matrix.*\((.+)\)/)[1].split(', ');
 
-        // 2d matrices have 6 values
-        // Last 2 values are X and Y.
-        // 2d matrices does not have Z value.
         if (matrixType === '2d') {
             return {
                 x: Number(matrixValues[4]),
@@ -243,8 +246,6 @@ class Helper {
             };
         }
 
-        // 3d matrices have 16 values
-        // The 13th, 14th, and 15th values are X, Y, and Z
         if (matrixType === '3d') {
             return {
                 x: Number(matrixValues[12]),
@@ -307,6 +308,7 @@ class Interface {
     }
 
     update() {
+        this.elCamera = document.querySelector('#camera');
         this.elGame = document.querySelector('#game');
         this.elMap = document.querySelector('#map');
         this.elPlayer = document.querySelector('#player');
@@ -389,7 +391,7 @@ class Map {
         this.arrWalkFalse = [0];
         this.tileSize = 50;
         this.tileSizeHalf = this.tileSize / 2;
-        this.limit = {};
+        // this.limit = {};
         this.tileId = 0;
         this.prefixTile = 'tile_';
     }
@@ -399,7 +401,7 @@ class Map {
         this.width = this.tileSize * this.json.column;
         this.height = this.tileSize * this.json.row;
 
-        this.updateLimit();
+        // this.updateLimit();
         this.convertArray();
         this.buildHtml();
     }
@@ -449,7 +451,7 @@ class Map {
 
     position(obj) {
         const tile = this.prefixTile + obj.position;
-        const elTarget = document.querySelector(`#${obj.target}`);
+        const elTarget = obj.target;
         const elTile = document.querySelector(`#${tile}`);
         const elTilePosition = window.helper.getOffset(elTile);
         const elGamePosition = window.helper.getOffset(window.interface.elGame);
@@ -470,14 +472,14 @@ class Map {
         this.tileId = 0;
     }
 
-    updateLimit() {
-        this.limit = {
-            'up': 0,
-            'down': this.tileSize * this.json.column,
-            'left': 0,
-            'right': this.tileSize * this.json.row,
-        };
-    }
+    // updateLimit() {
+    //     this.limit = {
+    //         'up': 0,
+    //         'down': this.tileSize * this.json.column,
+    //         'left': 0,
+    //         'right': this.tileSize * this.json.row,
+    //     };
+    // }
 }
 
 window.map = new Map();
@@ -501,7 +503,7 @@ class Player {
 
         window.interface.updateBar();
         window.map.position({
-            'target': 'player',
+            'target': window.interface.elPlayer,
             'position': window.map.json.position.player.initial,
         });
         window.camera.center();
@@ -541,7 +543,7 @@ class Player {
     }
 
     moveCoordinates(side) {
-        const tile = window.map.tileSize;
+        const tile = window.camera.distance;
         const tileColumn = window.map.json.column;
         const playerPosition = window.helper.getTranslateValue(window.interface.elPlayer);
         let vertical = false;

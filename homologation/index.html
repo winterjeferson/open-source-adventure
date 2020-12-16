@@ -15,8 +15,9 @@
 </head>
 
 <body>
-    <main class="game-wrapper">
-        <div class="game" id="game">
+    <main class="background">
+        <div class="game-wrapper">
+            <div class="game" id="game">
     <section class="interface">
         <div class="interface__bar">
             
@@ -69,13 +70,12 @@
             
         </div>
     </section>
-    <section class="player tile" id="player">
-    </section>
-    <section class="map-wrapper">
-        <div id="map" class="map">
-        </div>
-    </section>
+    <div id="camera" class="camera">
+        <section id="player" class="player tile"></section>
+        <section id="map" class="map"></section>
+    </div>
 </div>
+        </div>
     </main>
 </body>
 

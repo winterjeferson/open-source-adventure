@@ -3,10 +3,10 @@ class Camera {
         this.update();
 
         window.animation.move({
-            'target': window.interface.elMap,
+            'target': window.interface.elCamera,
             'vertical': this.centerVertical(),
             'horizontal': this.centerHorizontal(),
-            'speed': window.player.speed
+            'speed': 0
         });
     }
 
@@ -38,8 +38,16 @@ class Camera {
 
     move(side) {
         const capitalize = window.helper.capitalize(side);
+        const isLimit = false;
 
         window.player.move(side);
+
+        if (isLimit) {
+            this.distance = window.map.tileSize;
+            return;
+        } else {
+            this.distance = window.map.tileSizeHalf;
+        }
 
         this[`move${capitalize}`]({
             'target': window.interface.elMap
@@ -47,7 +55,7 @@ class Camera {
     }
 
     moveDown(obj) {
-        let vertical = -window.map.tileSize;
+        let vertical = -this.distance;
         let horizontal = false;
 
         window.animation.move({
@@ -59,7 +67,7 @@ class Camera {
 
     moveLeft(obj) {
         let vertical = false;
-        let horizontal = window.map.tileSize;
+        let horizontal = this.distance;
 
         window.animation.move({
             'target': obj.target,
@@ -69,7 +77,7 @@ class Camera {
     }
 
     moveUp(obj) {
-        let vertical = window.map.tileSize;
+        let vertical = this.distance;
         let horizontal = false;
 
         window.animation.move({
@@ -81,7 +89,7 @@ class Camera {
 
     moveRight(obj) {
         let vertical = false;
-        let horizontal = -window.map.tileSize;
+        let horizontal = -this.distance;
 
         window.animation.move({
             'target': obj.target,

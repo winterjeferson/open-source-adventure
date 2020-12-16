@@ -6,7 +6,7 @@ class Map {
         this.arrWalkFalse = [0];
         this.tileSize = 50;
         this.tileSizeHalf = this.tileSize / 2;
-        this.limit = {};
+        // this.limit = {};
         this.tileId = 0;
         this.prefixTile = 'tile_';
     }
@@ -16,7 +16,7 @@ class Map {
         this.width = this.tileSize * this.json.column;
         this.height = this.tileSize * this.json.row;
 
-        this.updateLimit();
+        // this.updateLimit();
         this.convertArray();
         this.buildHtml();
     }
@@ -66,7 +66,7 @@ class Map {
 
     position(obj) {
         const tile = this.prefixTile + obj.position;
-        const elTarget = document.querySelector(`#${obj.target}`);
+        const elTarget = obj.target;
         const elTile = document.querySelector(`#${tile}`);
         const elTilePosition = window.helper.getOffset(elTile);
         const elGamePosition = window.helper.getOffset(window.interface.elGame);
@@ -87,14 +87,14 @@ class Map {
         this.tileId = 0;
     }
 
-    updateLimit() {
-        this.limit = {
-            'up': 0,
-            'down': this.tileSize * this.json.column,
-            'left': 0,
-            'right': this.tileSize * this.json.row,
-        };
-    }
+    // updateLimit() {
+    //     this.limit = {
+    //         'up': 0,
+    //         'down': this.tileSize * this.json.column,
+    //         'left': 0,
+    //         'right': this.tileSize * this.json.row,
+    //     };
+    // }
 }
 
 window.map = new Map();

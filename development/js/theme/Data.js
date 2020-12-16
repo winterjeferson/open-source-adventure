@@ -6,7 +6,6 @@ class Data {
 
     loadMap(map) {
         const parameter = {
-            kind: 'GET',
             controller: `${this.apiUrl}map-${map}.${this.api}`,
         };
         let data = window.helper.ajax(parameter);
@@ -21,7 +20,6 @@ class Data {
 
     loadPlayer() {
         const parameter = {
-            kind: 'GET',
             controller: `${this.apiUrl}player.${this.api}`,
         };
         let data = window.helper.ajax(parameter);

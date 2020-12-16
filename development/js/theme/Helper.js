@@ -48,9 +48,6 @@ class Helper {
         const matrixType = matrix.includes('3d') ? '3d' : '2d';
         const matrixValues = matrix.match(/matrix.*\((.+)\)/)[1].split(', ');
 
-        // 2d matrices have 6 values
-        // Last 2 values are X and Y.
-        // 2d matrices does not have Z value.
         if (matrixType === '2d') {
             return {
                 x: Number(matrixValues[4]),
@@ -59,8 +56,6 @@ class Helper {
             };
         }
 
-        // 3d matrices have 16 values
-        // The 13th, 14th, and 15th values are X, Y, and Z
         if (matrixType === '3d') {
             return {
                 x: Number(matrixValues[12]),

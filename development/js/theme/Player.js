@@ -18,7 +18,7 @@ class Player {
 
         window.interface.updateBar();
         window.map.position({
-            'target': 'player',
+            'target': window.interface.elPlayer,
             'position': window.map.json.position.player.initial,
         });
         window.camera.center();
@@ -58,7 +58,7 @@ class Player {
     }
 
     moveCoordinates(side) {
-        const tile = window.map.tileSize;
+        const tile = window.camera.distance;
         const tileColumn = window.map.json.column;
         const playerPosition = window.helper.getTranslateValue(window.interface.elPlayer);
         let vertical = false;

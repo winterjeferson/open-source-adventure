@@ -43,6 +43,7 @@ class Interface {
     }
 
     update() {
+        this.elCamera = document.querySelector('#camera');
         this.elGame = document.querySelector('#game');
         this.elMap = document.querySelector('#map');
         this.elPlayer = document.querySelector('#player');
