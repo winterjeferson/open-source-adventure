@@ -1,24 +1,24 @@
 class Camera {
     center() {
+        const positionPlayer = window.helper.getTranslateValue(window.interface.elPlayer);
+
         this.update();
 
         window.animation.move({
             'target': window.interface.elCamera,
-            'vertical': this.centerVertical(),
-            'horizontal': this.centerHorizontal(),
+            'vertical': this.centerVertical(positionPlayer),
+            'horizontal': this.centerHorizontal(positionPlayer),
             'speed': 0
         });
     }
 
-    centerVertical() {
-        const positionPlayer = window.helper.getTranslateValue(window.interface.elPlayer);
+    centerVertical(positionPlayer) {
         const position = Number(-positionPlayer.y + (window.interface.elGameHeight / 2) - window.map.tileSizeHalf);
 
         return this.centerLimit(position, this.limitBottom);
     }
 
-    centerHorizontal() {
-        const positionPlayer = window.helper.getTranslateValue(window.interface.elPlayer);
+    centerHorizontal(positionPlayer) {
         const position = Number(-positionPlayer.x + (window.interface.elGameWidth / 2) - window.map.tileSizeHalf);
 
         return this.centerLimit(position, this.limitRight);
@@ -47,34 +47,101 @@ class Camera {
     }
 
     move(side) {
+        const isWalk = window.player.verifyWalk(side);
+
+        if (!isWalk) {
+            return;
+        }
+
+        this.defineDistance();
+
+        if (window.player.isMoving) {
+            return;
+        }
+
+        window.player.move(side);
+        this.moveMap(side);
+    }
+
+    moveMap(side) {
+        const limit = window.map.limit[side];
+        const capitalize = window.helper.capitalize(side);
+        const currentPosition = window.helper.getTranslateValue(window.interface.elMap);
+        const isLimit = this[`verifyLimit${capitalize}`]({
+            limit,
+            currentPosition
+        });
+
+        if (!isLimit) {
+            return;
+        }
+
+        this.moveMapAnimate({
+            side,
+            currentPosition
+        });
+    }
+
+    moveMapAnimate(args) {
+        const horizontal = args.currentPosition.x;
+        const vertical = args.currentPosition.y;
         let obj = {
             'target': window.interface.elMap
         };
 
-        this.defineDistance();
-
-        switch (side) {
+        switch (args.side) {
             case 'down':
-                obj.vertical = -this.distance;
+                obj.vertical = Math.round(vertical - this.distance);
                 break;
             case 'left':
-                obj.horizontal = this.distance;
+                obj.horizontal = Math.round(horizontal + this.distance);
                 break;
             case 'up':
-                obj.vertical = this.distance;
+                obj.vertical = Math.round(vertical + this.distance);
                 break;
             case 'right':
-                obj.horizontal = -this.distance;
+                obj.horizontal = Math.round(horizontal - this.distance);
                 break;
         }
 
-        window.player.move(side);
         window.animation.move(obj);
     }
 
     update() {
         this.limitBottom = Number(-(window.map.height - window.interface.elGameHeight));
         this.limitRight = Number(-(window.map.width - window.interface.elGameWidth));
+    }
+
+    verifyLimitDown(obj) {
+        if (obj.limit >= obj.currentPosition.y) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    verifyLimitLeft(obj) {
+        if (obj.limit >= obj.currentPosition.x) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    verifyLimitRight(obj) {
+        if (obj.limit >= obj.currentPosition.x) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    verifyLimitUp(obj) {
+        if (obj.limit >= obj.currentPosition.y) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 

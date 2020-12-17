@@ -32,6 +32,17 @@ class Player {
         console.log('hit');
     }
 
+    verifyWalk(side) {
+        const coordinates = this.moveCoordinates(side);
+        let obj = {
+            'target': window.interface.elPlayer
+        };
+        const tileNext = typeof coordinates.tileNext !== 'undefined' ? obj.tileNext = coordinates.tileNext : undefined;
+        const isWalk = window.map.verifyWalk(tileNext);
+
+        return isWalk;
+    }
+
     move(side) {
         const coordinates = this.moveCoordinates(side);
         let animate;
@@ -62,7 +73,6 @@ class Player {
     }
 
     moveCoordinates(side) {
-        const tile = window.camera.distance;
         const tileColumn = window.map.json.column;
         const playerPosition = window.helper.getTranslateValue(window.interface.elPlayer);
         let obj = {};
@@ -70,19 +80,19 @@ class Player {
         switch (side) {
             case 'up':
                 obj.tileNext = this.tileCurrent - tileColumn;
-                obj.vertical = playerPosition.y - tile;
+                obj.vertical = playerPosition.y - window.camera.distance;
                 break;
             case 'down':
                 obj.tileNext = this.tileCurrent + tileColumn;
-                obj.vertical = playerPosition.y + tile;
+                obj.vertical = playerPosition.y + window.camera.distance;
                 break;
             case 'left':
                 obj.tileNext = this.tileCurrent - 1;
-                obj.horizontal = playerPosition.x - tile;
+                obj.horizontal = playerPosition.x - window.camera.distance;
                 break;
             case 'right':
                 obj.tileNext = this.tileCurrent + 1;
-                obj.horizontal = playerPosition.x + tile;
+                obj.horizontal = playerPosition.x + window.camera.distance;
                 break;
         }
 
@@ -90,23 +100,21 @@ class Player {
     }
 
     updatePosition(data) {
-        const tile = window.map.tileSize;
-
         this.isMoving = false;
         this.tileCurrent = data.tileNext;
 
         switch (data.side) {
             case 'up':
-                this.currentVertical -= tile;
+                this.currentVertical -= window.map.tileSize;
                 break;
             case 'down':
-                this.currentVertical += tile;
+                this.currentVertical += window.map.tileSize;
                 break;
             case 'left':
-                this.currentHorizontal -= tile;
+                this.currentHorizontal -= window.map.tileSize;
                 break;
             case 'right':
-                this.currentHorizontal += tile;
+                this.currentHorizontal += window.map.tileSize;
                 break;
         }
     }

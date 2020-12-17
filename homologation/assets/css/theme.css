@@ -64,12 +64,12 @@ img {
   width: 100%; }
 
 .game-wrapper {
-  border: 1px solid #e14b4a;
+  box-shadow: inset 0px 0px 0px 1px #1100ff;
   overflow: hidden;
   position: relative; }
 
 .game {
-  border: 1px solid #333333;
+  box-shadow: inset 0px 0px 0px 1px #dd1717;
   left: 0;
   position: absolute;
   top: 0; }

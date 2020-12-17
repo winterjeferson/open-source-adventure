@@ -22,13 +22,13 @@
 }
 
 .game-wrapper {
-    border: 1px solid $color-red;
+    box-shadow: inset 0px 0px 0px 1px rgb(17, 0, 255);
     overflow: hidden;
     position: relative;
 }
 
 .game {
-    border: 1px solid $color-black;
+    box-shadow: inset 0px 0px 0px 1px rgb(221, 23, 23);
     left: 0;
     position: absolute;
     top: 0;

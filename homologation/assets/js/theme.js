@@ -40,25 +40,25 @@ class Backpack {
 window.backpack = new Backpack();
 class Camera {
     center() {
+        const positionPlayer = window.helper.getTranslateValue(window.interface.elPlayer);
+
         this.update();
 
         window.animation.move({
             'target': window.interface.elCamera,
-            'vertical': this.centerVertical(),
-            'horizontal': this.centerHorizontal(),
+            'vertical': this.centerVertical(positionPlayer),
+            'horizontal': this.centerHorizontal(positionPlayer),
             'speed': 0
         });
     }
 
-    centerVertical() {
-        const positionPlayer = window.helper.getTranslateValue(window.interface.elPlayer);
+    centerVertical(positionPlayer) {
         const position = Number(-positionPlayer.y + (window.interface.elGameHeight / 2) - window.map.tileSizeHalf);
 
         return this.centerLimit(position, this.limitBottom);
     }
 
-    centerHorizontal() {
-        const positionPlayer = window.helper.getTranslateValue(window.interface.elPlayer);
+    centerHorizontal(positionPlayer) {
         const position = Number(-positionPlayer.x + (window.interface.elGameWidth / 2) - window.map.tileSizeHalf);
 
         return this.centerLimit(position, this.limitRight);
@@ -87,34 +87,101 @@ class Camera {
     }
 
     move(side) {
+        const isWalk = window.player.verifyWalk(side);
+
+        if (!isWalk) {
+            return;
+        }
+
+        this.defineDistance();
+
+        if (window.player.isMoving) {
+            return;
+        }
+
+        window.player.move(side);
+        this.moveMap(side);
+    }
+
+    moveMap(side) {
+        const limit = window.map.limit[side];
+        const capitalize = window.helper.capitalize(side);
+        const currentPosition = window.helper.getTranslateValue(window.interface.elMap);
+        const isLimit = this[`verifyLimit${capitalize}`]({
+            limit,
+            currentPosition
+        });
+
+        if (!isLimit) {
+            return;
+        }
+
+        this.moveMapAnimate({
+            side,
+            currentPosition
+        });
+    }
+
+    moveMapAnimate(args) {
+        const horizontal = args.currentPosition.x;
+        const vertical = args.currentPosition.y;
         let obj = {
             'target': window.interface.elMap
         };
 
-        this.defineDistance();
-
-        switch (side) {
+        switch (args.side) {
             case 'down':
-                obj.vertical = -this.distance;
+                obj.vertical = Math.round(vertical - this.distance);
                 break;
             case 'left':
-                obj.horizontal = this.distance;
+                obj.horizontal = Math.round(horizontal + this.distance);
                 break;
             case 'up':
-                obj.vertical = this.distance;
+                obj.vertical = Math.round(vertical + this.distance);
                 break;
             case 'right':
-                obj.horizontal = -this.distance;
+                obj.horizontal = Math.round(horizontal - this.distance);
                 break;
         }
 
-        window.player.move(side);
         window.animation.move(obj);
     }
 
     update() {
         this.limitBottom = Number(-(window.map.height - window.interface.elGameHeight));
         this.limitRight = Number(-(window.map.width - window.interface.elGameWidth));
+    }
+
+    verifyLimitDown(obj) {
+        if (obj.limit >= obj.currentPosition.y) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    verifyLimitLeft(obj) {
+        if (obj.limit >= obj.currentPosition.x) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    verifyLimitRight(obj) {
+        if (obj.limit >= obj.currentPosition.x) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    verifyLimitUp(obj) {
+        if (obj.limit >= obj.currentPosition.y) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 
@@ -365,9 +432,9 @@ class Map {
         this.arrWalkFalse = [0];
         this.tileSize = 50;
         this.tileSizeHalf = this.tileSize / 2;
-        // this.limit = {};
+        this.limit = {};
         this.tileId = 0;
-        this.prefixTile = 'tile_';
+        this.tileIdPrefix = 'tile_';
     }
 
     buildMap(data) {
@@ -375,7 +442,7 @@ class Map {
         this.width = this.tileSize * this.json.column;
         this.height = this.tileSize * this.json.row;
 
-        // this.updateLimit();
+        this.updateLimit();
         this.convertArray();
         this.buildHtml();
     }
@@ -406,7 +473,7 @@ class Map {
             let tile = this.arr[i][j];
             let trim = tile.trim();
 
-            template += `<div class="tile tile--${trim}" data-tile="${trim}" id="${this.prefixTile}${this.tileId}"></div>`;
+            template += `<div class="tile tile--${trim}" data-tile="${trim}" id="${this.tileIdPrefix}${this.tileId}"></div>`;
             this.tileId++;
         }
 
@@ -424,7 +491,7 @@ class Map {
     }
 
     position(obj) {
-        const tile = this.prefixTile + obj.position;
+        const tile = this.tileIdPrefix + obj.position;
         const elTarget = obj.target;
         const elTile = document.querySelector(`#${tile}`);
         const elTilePosition = window.helper.getOffset(elTile);
@@ -436,24 +503,36 @@ class Map {
 
         window.animation.move({
             'target': elTarget,
-            'vertical': positionReset.top,
-            'horizontal': positionReset.left,
+            'vertical': Math.round(positionReset.top),
+            'horizontal': Math.round(positionReset.left),
             'speed': 0,
         });
+    }
+
+    verifyWalk(tile) {
+        const target = document.querySelector(`#${this.tileIdPrefix}${tile}`);
+        const attribute = Number(target.getAttribute('data-tile'));
+        const isInArray = this.arrWalkFalse.includes(attribute);
+
+        if (isInArray) {
+            return false;
+        }
+
+        return true;
     }
 
     update() {
         this.tileId = 0;
     }
 
-    // updateLimit() {
-    //     this.limit = {
-    //         'up': 0,
-    //         'down': this.tileSize * this.json.column,
-    //         'left': 0,
-    //         'right': this.tileSize * this.json.row,
-    //     };
-    // }
+    updateLimit() {
+        this.limit = {
+            'up': 0,
+            'down': this.tileSize * this.json.row - window.interface.elGameHeight,
+            'left': 0,
+            'right': this.tileSize * this.json.column - window.interface.elGameWidth,
+        };
+    }
 }
 
 window.map = new Map();
@@ -491,6 +570,17 @@ class Player {
         console.log('hit');
     }
 
+    verifyWalk(side) {
+        const coordinates = this.moveCoordinates(side);
+        let obj = {
+            'target': window.interface.elPlayer
+        };
+        const tileNext = typeof coordinates.tileNext !== 'undefined' ? obj.tileNext = coordinates.tileNext : undefined;
+        const isWalk = window.map.verifyWalk(tileNext);
+
+        return isWalk;
+    }
+
     move(side) {
         const coordinates = this.moveCoordinates(side);
         let animate;
@@ -521,7 +611,6 @@ class Player {
     }
 
     moveCoordinates(side) {
-        const tile = window.camera.distance;
         const tileColumn = window.map.json.column;
         const playerPosition = window.helper.getTranslateValue(window.interface.elPlayer);
         let obj = {};
@@ -529,19 +618,19 @@ class Player {
         switch (side) {
             case 'up':
                 obj.tileNext = this.tileCurrent - tileColumn;
-                obj.vertical = playerPosition.y - tile;
+                obj.vertical = playerPosition.y - window.camera.distance;
                 break;
             case 'down':
                 obj.tileNext = this.tileCurrent + tileColumn;
-                obj.vertical = playerPosition.y + tile;
+                obj.vertical = playerPosition.y + window.camera.distance;
                 break;
             case 'left':
                 obj.tileNext = this.tileCurrent - 1;
-                obj.horizontal = playerPosition.x - tile;
+                obj.horizontal = playerPosition.x - window.camera.distance;
                 break;
             case 'right':
                 obj.tileNext = this.tileCurrent + 1;
-                obj.horizontal = playerPosition.x + tile;
+                obj.horizontal = playerPosition.x + window.camera.distance;
                 break;
         }
 
@@ -549,23 +638,21 @@ class Player {
     }
 
     updatePosition(data) {
-        const tile = window.map.tileSize;
-
         this.isMoving = false;
         this.tileCurrent = data.tileNext;
 
         switch (data.side) {
             case 'up':
-                this.currentVertical -= tile;
+                this.currentVertical -= window.map.tileSize;
                 break;
             case 'down':
-                this.currentVertical += tile;
+                this.currentVertical += window.map.tileSize;
                 break;
             case 'left':
-                this.currentHorizontal -= tile;
+                this.currentHorizontal -= window.map.tileSize;
                 break;
             case 'right':
-                this.currentHorizontal += tile;
+                this.currentHorizontal += window.map.tileSize;
                 break;
         }
     }

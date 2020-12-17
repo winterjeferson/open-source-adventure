@@ -6,9 +6,9 @@ class Map {
         this.arrWalkFalse = [0];
         this.tileSize = 50;
         this.tileSizeHalf = this.tileSize / 2;
-        // this.limit = {};
+        this.limit = {};
         this.tileId = 0;
-        this.prefixTile = 'tile_';
+        this.tileIdPrefix = 'tile_';
     }
 
     buildMap(data) {
@@ -16,7 +16,7 @@ class Map {
         this.width = this.tileSize * this.json.column;
         this.height = this.tileSize * this.json.row;
 
-        // this.updateLimit();
+        this.updateLimit();
         this.convertArray();
         this.buildHtml();
     }
@@ -47,7 +47,7 @@ class Map {
             let tile = this.arr[i][j];
             let trim = tile.trim();
 
-            template += `<div class="tile tile--${trim}" data-tile="${trim}" id="${this.prefixTile}${this.tileId}"></div>`;
+            template += `<div class="tile tile--${trim}" data-tile="${trim}" id="${this.tileIdPrefix}${this.tileId}"></div>`;
             this.tileId++;
         }
 
@@ -65,7 +65,7 @@ class Map {
     }
 
     position(obj) {
-        const tile = this.prefixTile + obj.position;
+        const tile = this.tileIdPrefix + obj.position;
         const elTarget = obj.target;
         const elTile = document.querySelector(`#${tile}`);
         const elTilePosition = window.helper.getOffset(elTile);
@@ -77,24 +77,36 @@ class Map {
 
         window.animation.move({
             'target': elTarget,
-            'vertical': positionReset.top,
-            'horizontal': positionReset.left,
+            'vertical': Math.round(positionReset.top),
+            'horizontal': Math.round(positionReset.left),
             'speed': 0,
         });
+    }
+
+    verifyWalk(tile) {
+        const target = document.querySelector(`#${this.tileIdPrefix}${tile}`);
+        const attribute = Number(target.getAttribute('data-tile'));
+        const isInArray = this.arrWalkFalse.includes(attribute);
+
+        if (isInArray) {
+            return false;
+        }
+
+        return true;
     }
 
     update() {
         this.tileId = 0;
     }
 
-    // updateLimit() {
-    //     this.limit = {
-    //         'up': 0,
-    //         'down': this.tileSize * this.json.column,
-    //         'left': 0,
-    //         'right': this.tileSize * this.json.row,
-    //     };
-    // }
+    updateLimit() {
+        this.limit = {
+            'up': 0,
+            'down': this.tileSize * this.json.row - window.interface.elGameHeight,
+            'left': 0,
+            'right': this.tileSize * this.json.column - window.interface.elGameWidth,
+        };
+    }
 }
 
 window.map = new Map();
