@@ -113,7 +113,10 @@ class Camera {
     }
 
     verifyLimitDown(obj) {
-        if (obj.limit >= obj.currentPosition.y) {
+        const limit = obj.limit;
+        const limitMap = Math.abs(obj.currentPosition.y);
+
+        if (limit >= limitMap) {
             return true;
         } else {
             return false;
@@ -121,7 +124,10 @@ class Camera {
     }
 
     verifyLimitLeft(obj) {
-        if (obj.limit >= obj.currentPosition.x) {
+        const limit = obj.limit;
+        const limitMap = obj.currentPosition.x;
+
+        if (limit >= limitMap) {
             return true;
         } else {
             return false;
@@ -129,7 +135,10 @@ class Camera {
     }
 
     verifyLimitRight(obj) {
-        if (obj.limit >= obj.currentPosition.x) {
+        const limit = obj.limit;
+        const limitMap = Math.abs(obj.currentPosition.x);
+
+        if (limit >= limitMap) {
             return true;
         } else {
             return false;
@@ -137,7 +146,10 @@ class Camera {
     }
 
     verifyLimitUp(obj) {
-        if (obj.limit >= obj.currentPosition.y) {
+        const limit = obj.limit;
+        const limitMap = obj.currentPosition.y;
+
+        if (limit >= limitMap) {
             return true;
         } else {
             return false;
