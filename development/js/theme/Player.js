@@ -34,10 +34,19 @@ class Player {
 
     move(side) {
         const coordinates = this.moveCoordinates(side);
-        const vertical = coordinates.vertical;
-        const horizontal = coordinates.horizontal;
-        const tileNext = coordinates.tileNext;
         let animate;
+        let obj = {
+            'target': window.interface.elPlayer
+        };
+        const tileNext = typeof coordinates.tileNext !== 'undefined' ? obj.tileNext = coordinates.tileNext : undefined;
+
+        if (typeof coordinates.vertical !== 'undefined') {
+            obj.vertical = coordinates.vertical;
+        }
+
+        if (typeof coordinates.horizontal !== 'undefined') {
+            obj.horizontal = coordinates.horizontal;
+        }
 
         if (this.isMoving) {
             return;
@@ -45,12 +54,7 @@ class Player {
             this.isMoving = true;
         }
 
-        animate = window.animation.move({
-            'target': window.interface.elPlayer,
-            vertical,
-            horizontal
-        });
-
+        animate = window.animation.move(obj);
         animate.then(() => this.updatePosition({
             tileNext,
             side
@@ -61,34 +65,28 @@ class Player {
         const tile = window.camera.distance;
         const tileColumn = window.map.json.column;
         const playerPosition = window.helper.getTranslateValue(window.interface.elPlayer);
-        let vertical = false;
-        let horizontal = false;
-        let tileNext;
+        let obj = {};
 
         switch (side) {
             case 'up':
-                tileNext = this.tileCurrent - tileColumn;
-                vertical = playerPosition.y - tile;
+                obj.tileNext = this.tileCurrent - tileColumn;
+                obj.vertical = playerPosition.y - tile;
                 break;
             case 'down':
-                tileNext = this.tileCurrent + tileColumn;
-                vertical = playerPosition.y + tile;
+                obj.tileNext = this.tileCurrent + tileColumn;
+                obj.vertical = playerPosition.y + tile;
                 break;
             case 'left':
-                tileNext = this.tileCurrent - 1;
-                horizontal = playerPosition.x - tile;
+                obj.tileNext = this.tileCurrent - 1;
+                obj.horizontal = playerPosition.x - tile;
                 break;
             case 'right':
-                tileNext = this.tileCurrent + 1;
-                horizontal = playerPosition.x + tile;
+                obj.tileNext = this.tileCurrent + 1;
+                obj.horizontal = playerPosition.x + tile;
                 break;
         }
 
-        return {
-            vertical,
-            horizontal,
-            tileNext
-        };
+        return obj;
     }
 
     updatePosition(data) {

@@ -4,10 +4,10 @@ class Animation {
             const currentValue = window.helper.getTranslateValue(obj.target);
             const currentVertical = Math.floor(currentValue.y);
             const currentHorizontal = Math.floor(currentValue.x);
-            const newVertical = obj.vertical === false ? currentVertical : Math.floor(obj.vertical);
-            const newHorizontal = obj.horizontal === false ? currentHorizontal : Math.floor(obj.horizontal);
-            const speed = typeof obj.speed !== 'undefined' ? obj.speed : window.player.speed;
-            const easing = typeof obj.easing !== 'undefined' ? obj.easing : 'linear';
+            const newVertical = typeof obj.vertical === 'undefined' ? currentVertical : Math.floor(obj.vertical);
+            const newHorizontal = typeof obj.horizontal === 'undefined' ? currentHorizontal : Math.floor(obj.horizontal);
+            const speed = typeof obj.speed === 'undefined' ? window.player.speed : obj.speed;
+            const easing = typeof obj.easing === 'undefined' ? 'linear' : obj.easing;
 
             const animation = obj.target.animate([{
                     transform: `translate(${currentHorizontal}px, ${currentVertical}px)`
@@ -76,66 +76,40 @@ class Camera {
         return position;
     }
 
-    move(side) {
-        const capitalize = window.helper.capitalize(side);
+    defineDistance() {
         const isLimit = false;
-
-        window.player.move(side);
 
         if (isLimit) {
             this.distance = window.map.tileSize;
-            return;
         } else {
             this.distance = window.map.tileSizeHalf;
         }
+    }
 
-        this[`move${capitalize}`]({
+    move(side) {
+        let obj = {
             'target': window.interface.elMap
-        });
-    }
+        };
 
-    moveDown(obj) {
-        let vertical = -this.distance;
-        let horizontal = false;
+        this.defineDistance();
 
-        window.animation.move({
-            'target': obj.target,
-            vertical,
-            horizontal
-        });
-    }
+        switch (side) {
+            case 'down':
+                obj.vertical = -this.distance;
+                break;
+            case 'left':
+                obj.horizontal = this.distance;
+                break;
+            case 'up':
+                obj.vertical = this.distance;
+                break;
+            case 'right':
+                obj.horizontal = -this.distance;
+                break;
+        }
 
-    moveLeft(obj) {
-        let vertical = false;
-        let horizontal = this.distance;
-
-        window.animation.move({
-            'target': obj.target,
-            vertical,
-            horizontal
-        });
-    }
-
-    moveUp(obj) {
-        let vertical = this.distance;
-        let horizontal = false;
-
-        window.animation.move({
-            'target': obj.target,
-            vertical,
-            horizontal
-        });
-    }
-
-    moveRight(obj) {
-        let vertical = false;
-        let horizontal = -this.distance;
-
-        window.animation.move({
-            'target': obj.target,
-            vertical,
-            horizontal
-        });
+        window.player.move(side);
+        window.animation.move(obj);
     }
 
     update() {
@@ -519,10 +493,19 @@ class Player {
 
     move(side) {
         const coordinates = this.moveCoordinates(side);
-        const vertical = coordinates.vertical;
-        const horizontal = coordinates.horizontal;
-        const tileNext = coordinates.tileNext;
         let animate;
+        let obj = {
+            'target': window.interface.elPlayer
+        };
+        const tileNext = typeof coordinates.tileNext !== 'undefined' ? obj.tileNext = coordinates.tileNext : undefined;
+
+        if (typeof coordinates.vertical !== 'undefined') {
+            obj.vertical = coordinates.vertical;
+        }
+
+        if (typeof coordinates.horizontal !== 'undefined') {
+            obj.horizontal = coordinates.horizontal;
+        }
 
         if (this.isMoving) {
             return;
@@ -530,12 +513,7 @@ class Player {
             this.isMoving = true;
         }
 
-        animate = window.animation.move({
-            'target': window.interface.elPlayer,
-            vertical,
-            horizontal
-        });
-
+        animate = window.animation.move(obj);
         animate.then(() => this.updatePosition({
             tileNext,
             side
@@ -546,34 +524,28 @@ class Player {
         const tile = window.camera.distance;
         const tileColumn = window.map.json.column;
         const playerPosition = window.helper.getTranslateValue(window.interface.elPlayer);
-        let vertical = false;
-        let horizontal = false;
-        let tileNext;
+        let obj = {};
 
         switch (side) {
             case 'up':
-                tileNext = this.tileCurrent - tileColumn;
-                vertical = playerPosition.y - tile;
+                obj.tileNext = this.tileCurrent - tileColumn;
+                obj.vertical = playerPosition.y - tile;
                 break;
             case 'down':
-                tileNext = this.tileCurrent + tileColumn;
-                vertical = playerPosition.y + tile;
+                obj.tileNext = this.tileCurrent + tileColumn;
+                obj.vertical = playerPosition.y + tile;
                 break;
             case 'left':
-                tileNext = this.tileCurrent - 1;
-                horizontal = playerPosition.x - tile;
+                obj.tileNext = this.tileCurrent - 1;
+                obj.horizontal = playerPosition.x - tile;
                 break;
             case 'right':
-                tileNext = this.tileCurrent + 1;
-                horizontal = playerPosition.x + tile;
+                obj.tileNext = this.tileCurrent + 1;
+                obj.horizontal = playerPosition.x + tile;
                 break;
         }
 
-        return {
-            vertical,
-            horizontal,
-            tileNext
-        };
+        return obj;
     }
 
     updatePosition(data) {

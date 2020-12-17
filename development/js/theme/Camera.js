@@ -36,66 +36,40 @@ class Camera {
         return position;
     }
 
-    move(side) {
-        const capitalize = window.helper.capitalize(side);
+    defineDistance() {
         const isLimit = false;
-
-        window.player.move(side);
 
         if (isLimit) {
             this.distance = window.map.tileSize;
-            return;
         } else {
             this.distance = window.map.tileSizeHalf;
         }
+    }
 
-        this[`move${capitalize}`]({
+    move(side) {
+        let obj = {
             'target': window.interface.elMap
-        });
-    }
+        };
 
-    moveDown(obj) {
-        let vertical = -this.distance;
-        let horizontal = false;
+        this.defineDistance();
 
-        window.animation.move({
-            'target': obj.target,
-            vertical,
-            horizontal
-        });
-    }
+        switch (side) {
+            case 'down':
+                obj.vertical = -this.distance;
+                break;
+            case 'left':
+                obj.horizontal = this.distance;
+                break;
+            case 'up':
+                obj.vertical = this.distance;
+                break;
+            case 'right':
+                obj.horizontal = -this.distance;
+                break;
+        }
 
-    moveLeft(obj) {
-        let vertical = false;
-        let horizontal = this.distance;
-
-        window.animation.move({
-            'target': obj.target,
-            vertical,
-            horizontal
-        });
-    }
-
-    moveUp(obj) {
-        let vertical = this.distance;
-        let horizontal = false;
-
-        window.animation.move({
-            'target': obj.target,
-            vertical,
-            horizontal
-        });
-    }
-
-    moveRight(obj) {
-        let vertical = false;
-        let horizontal = -this.distance;
-
-        window.animation.move({
-            'target': obj.target,
-            vertical,
-            horizontal
-        });
+        window.player.move(side);
+        window.animation.move(obj);
     }
 
     update() {
