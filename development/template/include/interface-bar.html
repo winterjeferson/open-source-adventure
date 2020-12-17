@@ -1,0 +1,8 @@
+{% set arr = [
+    ['life'],
+    ['hunger'],
+    ['thirst']
+] %}
+{% for item in arr %}
+<progress value="0" max="0" data-id="bar-{{item}}"></progress>
+{% endfor %}

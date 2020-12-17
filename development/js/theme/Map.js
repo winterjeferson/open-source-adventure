@@ -47,7 +47,7 @@ class Map {
             let tile = this.arr[i][j];
             let trim = tile.trim();
 
-            template += `<div class="tile tile--${trim}" id="${this.prefixTile}${this.tileId}"></div>`;
+            template += `<div class="tile tile--${trim}" data-tile="${trim}" id="${this.prefixTile}${this.tileId}"></div>`;
             this.tileId++;
         }
 

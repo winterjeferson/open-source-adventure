@@ -17,7 +17,23 @@
 <body>
     <main class="background">
         <div class="game-wrapper">
-            {% include "include/game.html" %}
+            <div class="game" id="game">
+                <section class="interface">
+                    <div class="interface__bar">
+                        {% include "include/interface-bar.html" %}
+                    </div>
+                    <div class="interface__action">
+                        {% include "include/interface-action.html" %}
+                    </div>
+                    <div class="interface__directional">
+                        {% include "include/interface-directional.html" %}
+                    </div>
+                </section>
+                <div id="camera" class="camera">
+                    <section id="player" class="player tile"></section>
+                    <section id="map" class="map"></section>
+                </div>
+            </div>
         </div>
     </main>
 </body>
