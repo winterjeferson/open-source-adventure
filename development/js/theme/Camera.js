@@ -36,15 +36,15 @@ class Camera {
         return position;
     }
 
-    defineDistance() {
-        const isLimit = false;
+    // defineDistance() {
+    //     // const isLimit = false;
 
-        if (isLimit) {
-            this.distance = window.map.tileSize;
-        } else {
-            this.distance = window.map.tileSizeHalf;
-        }
-    }
+    //     // if (isLimit) {
+    //     this.distance = window.map.tileSize;
+    //     // } else {
+    //     //     this.distance = window.map.tileSizeHalf;
+    //     // }
+    // }
 
     move(side) {
         const isWalk = window.player.verifyWalk(side);
@@ -53,8 +53,6 @@ class Camera {
             return;
         }
 
-        this.defineDistance();
-
         window.player.move(side);
         this.moveMap(side);
     }
@@ -62,13 +60,13 @@ class Camera {
     moveMap(side) {
         const limit = this.limit[side];
         const capitalize = window.helper.capitalize(side);
-        const currentPosition = window.helper.getTranslateValue(window.interface.elMap);
+        const currentPosition = window.helper.getTranslateValue(window.interface.elCamera);
         const isLimit = this[`verifyLimit${capitalize}`]({
             limit,
             currentPosition
         });
 
-        if (!isLimit) {
+        if (isLimit) {
             return;
         }
 
@@ -82,7 +80,7 @@ class Camera {
         const horizontal = args.currentPosition.x;
         const vertical = args.currentPosition.y;
         let obj = {
-            'target': window.interface.elMap
+            'target': window.interface.elCamera
         };
 
         switch (args.side) {
@@ -104,6 +102,7 @@ class Camera {
     }
 
     update() {
+        this.distance = window.map.tileSize;
         this.limit = {
             'centerVertical': Number(-(window.map.height - window.interface.elGameHeight)),
             'centerHorizontal': Number(-(window.map.width - window.interface.elGameWidth)),
@@ -117,25 +116,25 @@ class Camera {
     verifyLimitDown(obj) {
         const limit = Math.abs(obj.currentPosition.y);
 
-        return obj.limit >= limit ? true : false;
+        return obj.limit < limit ? true : false;
     }
 
     verifyLimitLeft(obj) {
         const limit = obj.currentPosition.x;
 
-        return obj.limit >= limit ? true : false;
+        return obj.limit > limit ? false : true;
     }
 
     verifyLimitRight(obj) {
         const limit = Math.abs(obj.currentPosition.x);
 
-        return obj.limit >= limit ? true : false;
+        return obj.limit < limit ? true : false;
     }
 
     verifyLimitUp(obj) {
         const limit = obj.currentPosition.y;
 
-        return obj.limit >= limit ? true : false;
+        return obj.limit < limit ? true : false;
     }
 }
 
