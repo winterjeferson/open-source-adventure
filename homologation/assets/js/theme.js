@@ -76,28 +76,18 @@ class Camera {
         return position;
     }
 
-    // defineDistance() {
-    //     // const isLimit = false;
-
-    //     // if (isLimit) {
-    //     this.distance = window.map.tileSize;
-    //     // } else {
-    //     //     this.distance = window.map.tileSizeHalf;
-    //     // }
-    // }
-
     move(side) {
-        const isWalk = window.player.verifyWalk(side);
+        const isWalkFalse = window.player.verifyWalk(side);
 
-        if (!isWalk || window.player.isMoving) {
+        if (isWalkFalse || window.player.isMoving) {
             return;
         }
 
         window.player.move(side);
-        this.moveMap(side);
+        this.moveCamera(side);
     }
 
-    moveMap(side) {
+    moveCamera(side) {
         const limit = this.limit[side];
         const capitalize = window.helper.capitalize(side);
         const currentPosition = window.helper.getTranslateValue(window.interface.elCamera);
@@ -110,13 +100,13 @@ class Camera {
             return;
         }
 
-        this.moveMapAnimate({
+        this.moveCameraAnimate({
             side,
             currentPosition
         });
     }
 
-    moveMapAnimate(args) {
+    moveCameraAnimate(args) {
         const horizontal = args.currentPosition.x;
         const vertical = args.currentPosition.y;
         let obj = {
@@ -423,6 +413,7 @@ class Map {
         this.json = {};
         this.arr = [];
         this.arrWalkFalse = [0];
+        this.arrDoor = [2];
         this.tileSize = 50;
         this.tileSizeHalf = this.tileSize / 2;
         this.tileId = 0;
@@ -501,16 +492,30 @@ class Map {
         });
     }
 
+    verifyDoor(tile) {
+        return this.verifyTile({
+            tile,
+            'arr': 'arrDoor'
+        });
+    }
+
     verifyWalk(tile) {
-        const target = document.querySelector(`#${this.tileIdPrefix}${tile}`);
+        return this.verifyTile({
+            tile,
+            'arr': 'arrWalkFalse'
+        });
+    }
+
+    verifyTile(obj) {
+        const target = document.querySelector(`#${this.tileIdPrefix}${obj.tile}`);
         const attribute = Number(target.getAttribute('data-tile'));
-        const isInArray = this.arrWalkFalse.includes(attribute);
+        const isInArray = this[obj.arr].includes(attribute);
 
         if (isInArray) {
+            return true;
+        } else {
             return false;
         }
-
-        return true;
     }
 
     update() {
@@ -587,10 +592,23 @@ class Player {
         }
 
         animate = window.animation.move(obj);
-        animate.then(() => this.updatePosition({
+        animate.then(() => this.moveSuccess({
             tileNext,
             side
         }));
+    }
+
+    moveSuccess(obj) {
+        const isDoor = window.map.verifyDoor(obj.tileNext);
+
+        if (isDoor) {
+            console.log('window.player.moveSuccess: isDoor');
+        }
+
+        this.updatePosition({
+            'tileNext': obj.tileNext,
+            'side': obj
+        });
     }
 
     moveCoordinates(side) {

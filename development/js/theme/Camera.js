@@ -36,28 +36,18 @@ class Camera {
         return position;
     }
 
-    // defineDistance() {
-    //     // const isLimit = false;
-
-    //     // if (isLimit) {
-    //     this.distance = window.map.tileSize;
-    //     // } else {
-    //     //     this.distance = window.map.tileSizeHalf;
-    //     // }
-    // }
-
     move(side) {
-        const isWalk = window.player.verifyWalk(side);
+        const isWalkFalse = window.player.verifyWalk(side);
 
-        if (!isWalk || window.player.isMoving) {
+        if (isWalkFalse || window.player.isMoving) {
             return;
         }
 
         window.player.move(side);
-        this.moveMap(side);
+        this.moveCamera(side);
     }
 
-    moveMap(side) {
+    moveCamera(side) {
         const limit = this.limit[side];
         const capitalize = window.helper.capitalize(side);
         const currentPosition = window.helper.getTranslateValue(window.interface.elCamera);
@@ -70,13 +60,13 @@ class Camera {
             return;
         }
 
-        this.moveMapAnimate({
+        this.moveCameraAnimate({
             side,
             currentPosition
         });
     }
 
-    moveMapAnimate(args) {
+    moveCameraAnimate(args) {
         const horizontal = args.currentPosition.x;
         const vertical = args.currentPosition.y;
         let obj = {

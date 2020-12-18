@@ -66,10 +66,23 @@ class Player {
         }
 
         animate = window.animation.move(obj);
-        animate.then(() => this.updatePosition({
+        animate.then(() => this.moveSuccess({
             tileNext,
             side
         }));
+    }
+
+    moveSuccess(obj) {
+        const isDoor = window.map.verifyDoor(obj.tileNext);
+
+        if (isDoor) {
+            console.log('window.player.moveSuccess: isDoor');
+        }
+
+        this.updatePosition({
+            'tileNext': obj.tileNext,
+            'side': obj
+        });
     }
 
     moveCoordinates(side) {

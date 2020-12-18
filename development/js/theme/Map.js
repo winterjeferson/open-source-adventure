@@ -4,6 +4,7 @@ class Map {
         this.json = {};
         this.arr = [];
         this.arrWalkFalse = [0];
+        this.arrDoor = [2];
         this.tileSize = 50;
         this.tileSizeHalf = this.tileSize / 2;
         this.tileId = 0;
@@ -82,16 +83,30 @@ class Map {
         });
     }
 
+    verifyDoor(tile) {
+        return this.verifyTile({
+            tile,
+            'arr': 'arrDoor'
+        });
+    }
+
     verifyWalk(tile) {
-        const target = document.querySelector(`#${this.tileIdPrefix}${tile}`);
+        return this.verifyTile({
+            tile,
+            'arr': 'arrWalkFalse'
+        });
+    }
+
+    verifyTile(obj) {
+        const target = document.querySelector(`#${this.tileIdPrefix}${obj.tile}`);
         const attribute = Number(target.getAttribute('data-tile'));
-        const isInArray = this.arrWalkFalse.includes(attribute);
+        const isInArray = this[obj.arr].includes(attribute);
 
         if (isInArray) {
+            return true;
+        } else {
             return false;
         }
-
-        return true;
     }
 
     update() {
