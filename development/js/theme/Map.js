@@ -6,7 +6,6 @@ class Map {
         this.arrWalkFalse = [0];
         this.tileSize = 50;
         this.tileSizeHalf = this.tileSize / 2;
-        this.limit = {};
         this.tileId = 0;
         this.tileIdPrefix = 'tile_';
     }
@@ -16,7 +15,7 @@ class Map {
         this.width = this.tileSize * this.json.column;
         this.height = this.tileSize * this.json.row;
 
-        this.updateLimit();
+        window.camera.update();
         this.convertArray();
         this.buildHtml();
     }
@@ -97,15 +96,6 @@ class Map {
 
     update() {
         this.tileId = 0;
-    }
-
-    updateLimit() {
-        this.limit = {
-            'up': 0,
-            'down': this.tileSize * this.json.row - window.interface.elGameHeight,
-            'left': 0,
-            'right': this.tileSize * this.json.column - window.interface.elGameWidth,
-        };
     }
 }
 

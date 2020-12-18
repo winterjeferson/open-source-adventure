@@ -15,13 +15,13 @@ class Camera {
     centerVertical(positionPlayer) {
         const position = Number(-positionPlayer.y + (window.interface.elGameHeight / 2) - window.map.tileSizeHalf);
 
-        return this.centerLimit(position, this.limitBottom);
+        return this.centerLimit(position, this.limit.centerVertical);
     }
 
     centerHorizontal(positionPlayer) {
         const position = Number(-positionPlayer.x + (window.interface.elGameWidth / 2) - window.map.tileSizeHalf);
 
-        return this.centerLimit(position, this.limitRight);
+        return this.centerLimit(position, this.limit.centerHorizontal);
     }
 
     centerLimit(position, limit) {
@@ -64,7 +64,7 @@ class Camera {
     }
 
     moveMap(side) {
-        const limit = window.map.limit[side];
+        const limit = this.limit[side];
         const capitalize = window.helper.capitalize(side);
         const currentPosition = window.helper.getTranslateValue(window.interface.elMap);
         const isLimit = this[`verifyLimit${capitalize}`]({
@@ -108,8 +108,14 @@ class Camera {
     }
 
     update() {
-        this.limitBottom = Number(-(window.map.height - window.interface.elGameHeight));
-        this.limitRight = Number(-(window.map.width - window.interface.elGameWidth));
+        this.limit = {
+            'centerVertical': Number(-(window.map.height - window.interface.elGameHeight)),
+            'centerHorizontal': Number(-(window.map.width - window.interface.elGameWidth)),
+            'up': 0,
+            'down': window.map.tileSize * window.map.json.row - window.interface.elGameHeight,
+            'left': 0,
+            'right': window.map.tileSize * window.map.json.column - window.interface.elGameWidth,
+        };
     }
 
     verifyLimitDown(obj) {
