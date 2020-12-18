@@ -12,16 +12,16 @@ class Camera {
         });
     }
 
-    centerVertical(positionPlayer) {
-        const position = Number(-positionPlayer.y + (window.interface.elGameHeight / 2) - window.map.tileSizeHalf);
-
-        return this.centerLimit(position, this.limit.centerVertical);
-    }
-
     centerHorizontal(positionPlayer) {
         const position = Number(-positionPlayer.x + (window.interface.elGameWidth / 2) - window.map.tileSizeHalf);
 
         return this.centerLimit(position, this.limit.centerHorizontal);
+    }
+
+    centerVertical(positionPlayer) {
+        const position = Number(-positionPlayer.y + (window.interface.elGameHeight / 2) - window.map.tileSizeHalf);
+
+        return this.centerLimit(position, this.limit.centerVertical);
     }
 
     centerLimit(position, limit) {
@@ -49,15 +49,11 @@ class Camera {
     move(side) {
         const isWalk = window.player.verifyWalk(side);
 
-        if (!isWalk) {
+        if (!isWalk || window.player.isMoving) {
             return;
         }
 
         this.defineDistance();
-
-        if (window.player.isMoving) {
-            return;
-        }
 
         window.player.move(side);
         this.moveMap(side);
@@ -119,47 +115,27 @@ class Camera {
     }
 
     verifyLimitDown(obj) {
-        const limit = obj.limit;
-        const limitMap = Math.abs(obj.currentPosition.y);
+        const limit = Math.abs(obj.currentPosition.y);
 
-        if (limit >= limitMap) {
-            return true;
-        } else {
-            return false;
-        }
+        return obj.limit >= limit ? true : false;
     }
 
     verifyLimitLeft(obj) {
-        const limit = obj.limit;
-        const limitMap = obj.currentPosition.x;
+        const limit = obj.currentPosition.x;
 
-        if (limit >= limitMap) {
-            return true;
-        } else {
-            return false;
-        }
+        return obj.limit >= limit ? true : false;
     }
 
     verifyLimitRight(obj) {
-        const limit = obj.limit;
-        const limitMap = Math.abs(obj.currentPosition.x);
+        const limit = Math.abs(obj.currentPosition.x);
 
-        if (limit >= limitMap) {
-            return true;
-        } else {
-            return false;
-        }
+        return obj.limit >= limit ? true : false;
     }
 
     verifyLimitUp(obj) {
-        const limit = obj.limit;
-        const limitMap = obj.currentPosition.y;
+        const limit = obj.currentPosition.y;
 
-        if (limit >= limitMap) {
-            return true;
-        } else {
-            return false;
-        }
+        return obj.limit >= limit ? true : false;
     }
 }
 
