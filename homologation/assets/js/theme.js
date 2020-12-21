@@ -109,22 +109,47 @@ class Camera {
     moveCameraAnimate(args) {
         const horizontal = args.currentPosition.x;
         const vertical = args.currentPosition.y;
+        let value;
         let obj = {
             'target': window.interface.elCamera
         };
 
         switch (args.side) {
             case 'down':
-                obj.vertical = Math.round(vertical - this.distance);
+                value = Math.round(vertical - this.distance);
+
+                if (Math.abs(window.camera.limit.down) - (Math.abs(vertical)) < this.distance) {
+                    value = window.camera.limit.down;
+                }
+
+                obj.vertical = value;
                 break;
             case 'left':
-                obj.horizontal = Math.round(horizontal + this.distance);
+                value = Math.round(horizontal + this.distance);
+
+                if (Math.abs(horizontal) < this.distance) {
+                    value = window.camera.limit.left;
+                }
+
+                obj.horizontal = value;
                 break;
             case 'up':
-                obj.vertical = Math.round(vertical + this.distance);
+                value = Math.round(vertical + this.distance);
+
+                if (Math.abs(value) <= this.distance) {
+                    value = this.limit.up;
+                }
+
+                obj.vertical = value;
                 break;
             case 'right':
-                obj.horizontal = Math.round(horizontal - this.distance);
+                value = Math.round(horizontal - this.distance);
+
+                if ((window.interface.elGameWidth / 2) - this.distance - (Math.abs(horizontal)) < this.distance) {
+                    value = window.camera.limit.right * -1;
+                }
+
+                obj.horizontal = value;
                 break;
         }
 
@@ -137,16 +162,16 @@ class Camera {
             'centerVertical': Number(-(window.map.height - window.interface.elGameHeight)),
             'centerHorizontal': Number(-(window.map.width - window.interface.elGameWidth)),
             'up': 0,
-            'down': window.map.tileSize * window.map.json.row - window.interface.elGameHeight,
+            'down': Math.abs(window.map.tileSize * window.map.json.row - window.interface.elGameHeight) * -1,
             'left': 0,
             'right': window.map.tileSize * window.map.json.column - window.interface.elGameWidth,
         };
     }
 
     verifyLimitDown(obj) {
-        const limit = Math.abs(obj.currentPosition.y);
+        const limit = obj.currentPosition.y;
 
-        return obj.limit < limit ? true : false;
+        return obj.limit > limit ? true : false;
     }
 
     verifyLimitLeft(obj) {
