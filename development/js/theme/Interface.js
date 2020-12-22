@@ -15,8 +15,8 @@ class Interface {
             window.craft.open();
         };
 
-        this.elActionCatch.onclick = () => {
-            window.player.catch();
+        this.elActionPick.onclick = () => {
+            window.player.pick();
         };
 
         this.elActionHit.onclick = () => {
@@ -54,7 +54,7 @@ class Interface {
 
         this.elActionBackpack = document.querySelector('[data-id="action-backpack"]');
         this.elActionCraft = document.querySelector('[data-id="action-craft"]');
-        this.elActionCatch = document.querySelector('[data-id="action-catch"]');
+        this.elActionPick = document.querySelector('[data-id="action-pick"]');
         this.elActionHit = document.querySelector('[data-id="action-hit"]');
 
         this.elDirectionalUp = document.querySelector('[data-id="directional-up"]');

@@ -19,6 +19,10 @@ class Map {
         window.camera.update();
         this.convertArray();
         this.buildHtml();
+
+        if (!window.player.isInitial) {
+            window.player.position();
+        }
     }
 
     buildHtml() {
@@ -64,15 +68,35 @@ class Map {
         }
     }
 
+    change() {
+        const playerTile = window.player.tileCurrent;
+        const json = window.map.json.position;
+        let nextMap;
+        let nextTile;
+
+        for (let key in json) {
+            if (json.hasOwnProperty(key)) {
+                if (json[key].tile === playerTile) {
+                    nextMap = json[key].sendToMap;
+                    nextTile = json[key].sendToTile;
+                }
+            }
+        }
+
+        this.update();
+        window.player.tileCurrent = nextTile;
+        window.data.loadMap(nextMap);
+    }
+
     position(obj) {
         const tile = this.tileIdPrefix + obj.position;
         const elTarget = obj.target;
         const elTile = document.querySelector(`#${tile}`);
         const elTilePosition = window.helper.getOffset(elTile);
-        const elGamePosition = window.helper.getOffset(window.interface.elGame);
+        const elCameraPosition = window.helper.getOffset(window.interface.elCamera);
         const positionReset = {
-            top: elTilePosition.top - elGamePosition.top,
-            left: elTilePosition.left - elGamePosition.left,
+            top: elTilePosition.top - elCameraPosition.top,
+            left: elTilePosition.left - elCameraPosition.left,
         };
 
         window.animation.move({

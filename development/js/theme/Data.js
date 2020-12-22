@@ -19,6 +19,13 @@ class Data {
     }
 
     loadPlayer() {
+        if (window.player.isInitial) {
+            window.player.isInitial = false;
+            this.loadPlayerInitial();
+        }
+    }
+
+    loadPlayerInitial() {
         const parameter = {
             controller: `${this.apiUrl}player.${this.api}`,
         };

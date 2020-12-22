@@ -2,12 +2,11 @@
     "row": 20,
     "column": 40,
     "position": {
-        "player": {
-            "initial": 248,
-            "door0": 0,
-            "door1": 0,
-            "door2": 0,
-            "door3": 0
+        "player": 453,
+        "door0": {
+            "tile": 19,
+            "sendToMap": 0,
+            "sendToTile": 739
         }
     },
     "map": {

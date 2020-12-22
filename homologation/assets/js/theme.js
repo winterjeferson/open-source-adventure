@@ -222,6 +222,13 @@ class Data {
     }
 
     loadPlayer() {
+        if (window.player.isInitial) {
+            window.player.isInitial = false;
+            this.loadPlayerInitial();
+        }
+    }
+
+    loadPlayerInitial() {
         const parameter = {
             controller: `${this.apiUrl}player.${this.api}`,
         };
@@ -329,8 +336,8 @@ class Interface {
             window.craft.open();
         };
 
-        this.elActionCatch.onclick = () => {
-            window.player.catch();
+        this.elActionPick.onclick = () => {
+            window.player.pick();
         };
 
         this.elActionHit.onclick = () => {
@@ -368,7 +375,7 @@ class Interface {
 
         this.elActionBackpack = document.querySelector('[data-id="action-backpack"]');
         this.elActionCraft = document.querySelector('[data-id="action-craft"]');
-        this.elActionCatch = document.querySelector('[data-id="action-catch"]');
+        this.elActionPick = document.querySelector('[data-id="action-pick"]');
         this.elActionHit = document.querySelector('[data-id="action-hit"]');
 
         this.elDirectionalUp = document.querySelector('[data-id="directional-up"]');
@@ -453,6 +460,10 @@ class Map {
         window.camera.update();
         this.convertArray();
         this.buildHtml();
+
+        if (!window.player.isInitial) {
+            window.player.position();
+        }
     }
 
     buildHtml() {
@@ -498,15 +509,35 @@ class Map {
         }
     }
 
+    change() {
+        const playerTile = window.player.tileCurrent;
+        const json = window.map.json.position;
+        let nextMap;
+        let nextTile;
+
+        for (let key in json) {
+            if (json.hasOwnProperty(key)) {
+                if (json[key].tile === playerTile) {
+                    nextMap = json[key].sendToMap;
+                    nextTile = json[key].sendToTile;
+                }
+            }
+        }
+
+        this.update();
+        window.player.tileCurrent = nextTile;
+        window.data.loadMap(nextMap);
+    }
+
     position(obj) {
         const tile = this.tileIdPrefix + obj.position;
         const elTarget = obj.target;
         const elTile = document.querySelector(`#${tile}`);
         const elTilePosition = window.helper.getOffset(elTile);
-        const elGamePosition = window.helper.getOffset(window.interface.elGame);
+        const elCameraPosition = window.helper.getOffset(window.interface.elCamera);
         const positionReset = {
-            top: elTilePosition.top - elGamePosition.top,
-            left: elTilePosition.left - elGamePosition.left,
+            top: elTilePosition.top - elCameraPosition.top,
+            left: elTilePosition.left - elCameraPosition.left,
         };
 
         window.animation.move({
@@ -553,6 +584,7 @@ class Player {
     constructor() {
         this.speed = 0;
         this.isMoving = false;
+        this.isInitial = true;
     }
 
     buildPlayer(data) {
@@ -564,23 +596,27 @@ class Player {
         this.hungerCurrent = json.hungerCurrent;
         this.thirst = json.thirst;
         this.thirstCurrent = json.thirstCurrent;
-        this.tileCurrent = window.map.json.position.player.initial;
+        this.tileCurrent = window.map.json.position.player;
         this.speed = json.speed;
 
         window.interface.updateBar();
-        window.map.position({
-            'target': window.interface.elPlayer,
-            'position': window.map.json.position.player.initial,
-        });
-        window.camera.center();
-    }
-
-    catch () {
-        console.log('catch');
+        this.position();
     }
 
     hit() {
         console.log('hit');
+    }
+
+    position() {
+        window.map.position({
+            'target': window.interface.elPlayer,
+            'position': this.tileCurrent,
+        });
+        window.camera.center();
+    }
+
+    pick() {
+        console.log('pick');
     }
 
     verifyWalk(side) {
@@ -626,14 +662,14 @@ class Player {
     moveSuccess(obj) {
         const isDoor = window.map.verifyDoor(obj.tileNext);
 
-        if (isDoor) {
-            console.log('window.player.moveSuccess: isDoor');
-        }
-
         this.updatePosition({
             'tileNext': obj.tileNext,
             'side': obj
         });
+
+        if (isDoor) {
+            window.map.change();
+        }
     }
 
     moveCoordinates(side) {

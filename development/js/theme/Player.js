@@ -2,6 +2,7 @@ class Player {
     constructor() {
         this.speed = 0;
         this.isMoving = false;
+        this.isInitial = true;
     }
 
     buildPlayer(data) {
@@ -13,23 +14,27 @@ class Player {
         this.hungerCurrent = json.hungerCurrent;
         this.thirst = json.thirst;
         this.thirstCurrent = json.thirstCurrent;
-        this.tileCurrent = window.map.json.position.player.initial;
+        this.tileCurrent = window.map.json.position.player;
         this.speed = json.speed;
 
         window.interface.updateBar();
-        window.map.position({
-            'target': window.interface.elPlayer,
-            'position': window.map.json.position.player.initial,
-        });
-        window.camera.center();
-    }
-
-    catch () {
-        console.log('catch');
+        this.position();
     }
 
     hit() {
         console.log('hit');
+    }
+
+    position() {
+        window.map.position({
+            'target': window.interface.elPlayer,
+            'position': this.tileCurrent,
+        });
+        window.camera.center();
+    }
+
+    pick() {
+        console.log('pick');
     }
 
     verifyWalk(side) {
@@ -75,14 +80,14 @@ class Player {
     moveSuccess(obj) {
         const isDoor = window.map.verifyDoor(obj.tileNext);
 
-        if (isDoor) {
-            console.log('window.player.moveSuccess: isDoor');
-        }
-
         this.updatePosition({
             'tileNext': obj.tileNext,
             'side': obj
         });
+
+        if (isDoor) {
+            window.map.change();
+        }
     }
 
     moveCoordinates(side) {
