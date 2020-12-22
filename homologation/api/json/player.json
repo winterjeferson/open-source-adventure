@@ -1,5 +1,5 @@
 {
-    "speed": 0,
+    "speed": 300,
     "life": 100,
     "lifeCurrent": 70,
     "hunger": 100,
