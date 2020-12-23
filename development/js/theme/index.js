@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+    window.loadingMain.update();
+    window.map.update();
     window.interface.build();
     window.keyboard.build();
-    window.map.update();
-    window.data.loadMap(window.map.current);
+    window.game.initialize();
 });
 
 window.addEventListener('resize', () => {

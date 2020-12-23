@@ -225,6 +225,8 @@ class Data {
         if (window.player.isInitial) {
             window.player.isInitial = false;
             this.loadPlayerInitial();
+        } else {
+            window.loadingMain.hide();
         }
     }
 
@@ -244,6 +246,13 @@ class Enemy {
 }
 
 window.enemy = new Enemy();
+class Game {
+    initialize() {
+        window.data.loadMap(window.map.current);
+    }
+}
+
+window.game = new Game();
 class Helper {
     ajax(obj) {
         return new Promise((resolve, reject) => {
@@ -439,6 +448,29 @@ class Keyboard {
 }
 
 window.keyboard = new Keyboard();
+class LoadingMain {
+    constructor() {
+        this.cssHide = 'hide';
+        this.cssAnimation = 'animate';
+    }
+
+    update() {
+        this.elWrapper = document.querySelector('.loading-main');
+        this.elLoading = this.elWrapper.querySelector('.loading');
+    }
+
+    hide() {
+        this.elWrapper.classList.add(this.cssHide);
+        this.elLoading.classList.remove(this.cssAnimation);
+    }
+
+    show() {
+        this.elWrapper.classList.remove(this.cssHide);
+        this.elLoading.classList.add(this.cssAnimation);
+    }
+}
+
+window.loadingMain = new LoadingMain();
 class Map {
     constructor() {
         this.current = 0;
@@ -515,6 +547,8 @@ class Map {
         let nextMap;
         let nextTile;
 
+        window.loadingMain.show();
+
         for (let key in json) {
             if (json.hasOwnProperty(key)) {
                 if (json[key].tile === playerTile) {
@@ -588,6 +622,13 @@ class Player {
     }
 
     buildPlayer(data) {
+        this.buildVariable(data);
+        window.interface.updateBar();
+        this.position();
+        window.loadingMain.hide();
+    }
+
+    buildVariable(data) {
         const json = JSON.parse(data);
 
         this.life = json.life;
@@ -598,36 +639,10 @@ class Player {
         this.thirstCurrent = json.thirstCurrent;
         this.tileCurrent = window.map.json.position.player;
         this.speed = json.speed;
-
-        window.interface.updateBar();
-        this.position();
     }
 
     hit() {
         console.log('hit');
-    }
-
-    position() {
-        window.map.position({
-            'target': window.interface.elPlayer,
-            'position': this.tileCurrent,
-        });
-        window.camera.center();
-    }
-
-    pick() {
-        console.log('pick');
-    }
-
-    verifyWalk(side) {
-        const coordinates = this.moveCoordinates(side);
-        let obj = {
-            'target': window.interface.elPlayer
-        };
-        const tileNext = typeof coordinates.tileNext !== 'undefined' ? obj.tileNext = coordinates.tileNext : undefined;
-        const isWalk = window.map.verifyWalk(tileNext);
-
-        return isWalk;
     }
 
     move(side) {
@@ -699,6 +714,18 @@ class Player {
         return obj;
     }
 
+    position() {
+        window.map.position({
+            'target': window.interface.elPlayer,
+            'position': this.tileCurrent,
+        });
+        window.camera.center();
+    }
+
+    pick() {
+        console.log('pick');
+    }
+
     updatePosition(data) {
         this.isMoving = false;
         this.tileCurrent = data.tileNext;
@@ -718,14 +745,26 @@ class Player {
                 break;
         }
     }
+
+    verifyWalk(side) {
+        const coordinates = this.moveCoordinates(side);
+        let obj = {
+            'target': window.interface.elPlayer
+        };
+        const tileNext = typeof coordinates.tileNext !== 'undefined' ? obj.tileNext = coordinates.tileNext : undefined;
+        const isWalk = window.map.verifyWalk(tileNext);
+
+        return isWalk;
+    }
 }
 
 window.player = new Player();
 document.addEventListener('DOMContentLoaded', () => {
+    window.loadingMain.update();
+    window.map.update();
     window.interface.build();
     window.keyboard.build();
-    window.map.update();
-    window.data.loadMap(window.map.current);
+    window.game.initialize();
 });
 
 window.addEventListener('resize', () => {

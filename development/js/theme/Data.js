@@ -22,6 +22,8 @@ class Data {
         if (window.player.isInitial) {
             window.player.isInitial = false;
             this.loadPlayerInitial();
+        } else {
+            window.loadingMain.hide();
         }
     }
 

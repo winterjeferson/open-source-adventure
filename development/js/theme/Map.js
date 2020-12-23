@@ -74,6 +74,8 @@ class Map {
         let nextMap;
         let nextTile;
 
+        window.loadingMain.show();
+
         for (let key in json) {
             if (json.hasOwnProperty(key)) {
                 if (json[key].tile === playerTile) {

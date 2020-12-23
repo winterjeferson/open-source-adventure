@@ -6,6 +6,13 @@ class Player {
     }
 
     buildPlayer(data) {
+        this.buildVariable(data);
+        window.interface.updateBar();
+        this.position();
+        window.loadingMain.hide();
+    }
+
+    buildVariable(data) {
         const json = JSON.parse(data);
 
         this.life = json.life;
@@ -16,36 +23,10 @@ class Player {
         this.thirstCurrent = json.thirstCurrent;
         this.tileCurrent = window.map.json.position.player;
         this.speed = json.speed;
-
-        window.interface.updateBar();
-        this.position();
     }
 
     hit() {
         console.log('hit');
-    }
-
-    position() {
-        window.map.position({
-            'target': window.interface.elPlayer,
-            'position': this.tileCurrent,
-        });
-        window.camera.center();
-    }
-
-    pick() {
-        console.log('pick');
-    }
-
-    verifyWalk(side) {
-        const coordinates = this.moveCoordinates(side);
-        let obj = {
-            'target': window.interface.elPlayer
-        };
-        const tileNext = typeof coordinates.tileNext !== 'undefined' ? obj.tileNext = coordinates.tileNext : undefined;
-        const isWalk = window.map.verifyWalk(tileNext);
-
-        return isWalk;
     }
 
     move(side) {
@@ -117,6 +98,18 @@ class Player {
         return obj;
     }
 
+    position() {
+        window.map.position({
+            'target': window.interface.elPlayer,
+            'position': this.tileCurrent,
+        });
+        window.camera.center();
+    }
+
+    pick() {
+        console.log('pick');
+    }
+
     updatePosition(data) {
         this.isMoving = false;
         this.tileCurrent = data.tileNext;
@@ -135,6 +128,17 @@ class Player {
                 this.currentHorizontal += window.map.tileSize;
                 break;
         }
+    }
+
+    verifyWalk(side) {
+        const coordinates = this.moveCoordinates(side);
+        let obj = {
+            'target': window.interface.elPlayer
+        };
+        const tileNext = typeof coordinates.tileNext !== 'undefined' ? obj.tileNext = coordinates.tileNext : undefined;
+        const isWalk = window.map.verifyWalk(tileNext);
+
+        return isWalk;
     }
 }
 
