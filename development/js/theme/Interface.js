@@ -1,54 +1,60 @@
 class Interface {
     build() {
         this.update();
+        this.resize();
         this.buildAction();
         this.buildDirection();
     }
 
     buildAction() {
         this.elActionBackpack.onclick = () => {
-            backpack.open();
+            window.backpack.open();
         };
 
         this.elActionCraft.onclick = () => {
-            craft.open();
+            window.craft.open();
         };
 
-        this.elActionCatch.onclick = () => {
-            player.catch();
+        this.elActionPick.onclick = () => {
+            window.player.pick();
         };
 
         this.elActionHit.onclick = () => {
-            player.hit();
+            window.player.hit();
         };
     }
 
     buildDirection() {
         this.elDirectionalUp.onclick = () => {
-            player.move('up');
+            window.camera.move('up');
         };
 
         this.elDirectionalDown.onclick = () => {
-            player.move('down');
+            window.camera.move('down');
         };
 
         this.elDirectionalLeft.onclick = () => {
-            player.move('left');
+            window.camera.move('left');
         };
 
         this.elDirectionalRight.onclick = () => {
-            player.move('right');
+            window.camera.move('right');
         };
     }
 
     update() {
+        this.elCamera = document.querySelector('#camera');
+        this.elGame = document.querySelector('#game');
+        this.elMap = document.querySelector('#map');
+        this.elPlayer = document.querySelector('#player');
+
         this.elBarLife = document.querySelector('[data-id="bar-life"]');
         this.elBarHunger = document.querySelector('[data-id="bar-hunger"]');
         this.elBarThirst = document.querySelector('[data-id="bar-thirst"]');
 
         this.elActionBackpack = document.querySelector('[data-id="action-backpack"]');
         this.elActionCraft = document.querySelector('[data-id="action-craft"]');
-        this.elActionCatch = document.querySelector('[data-id="action-catch"]');
+        this.elActionPick = document.querySelector('[data-id="action-pick"]');
         this.elActionHit = document.querySelector('[data-id="action-hit"]');
 
         this.elDirectionalUp = document.querySelector('[data-id="directional-up"]');
@@ -64,6 +70,11 @@ class Interface {
         this.elBarHunger.setAttribute('max', player.hunger);
         this.elBarThirst.setAttribute('value', player.thirstCurrent);
         this.elBarThirst.setAttribute('max', player.thirst);
+    }
+
+    resize() {
+        this.elGameWidth = this.elGame.offsetWidth;
+        this.elGameHeight = this.elGame.offsetHeight;
     }
 }
 

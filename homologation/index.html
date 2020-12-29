@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -8,74 +8,77 @@
     <meta name="description" content="Open Source Adventure Game" />
     <meta name="author" content="Open Source Adventure" />
     <meta name="keywords" content="game, open source, github, html, css, javascript" />
-    <title>Game</title>
+    <title>Open Source Adventure</title>
 
     <link href="./assets/css/theme.css" rel="stylesheet">
     <script src='./assets/js/theme.js'></script>
 </head>
 
 <body>
-    <main class="game-wrapper">
-        <div class="game">
-    <section class="interface">
-        <div class="interface__bar">
-            
-            
-            <progress value="0" max="0" data-id="bar-life"></progress>
-            
-            <progress value="0" max="0" data-id="bar-hunger"></progress>
-            
-            <progress value="0" max="0" data-id="bar-thirst"></progress>
-            
-        </div>
-        <div class="interface__action">
-            
-            
-            <button type="button" class="button" data-id="action-backpack">
-                backpack
-            </button>
-            
-            <button type="button" class="button" data-id="action-craft">
-                craft
-            </button>
-            
-            <button type="button" class="button" data-id="action-catch">
-                catch
-            </button>
-            
-            <button type="button" class="button" data-id="action-hit">
-                hit
-            </button>
-            
-        </div>
-        <div class="interface__directional">
-            
-            
-            <button type="button" class="button" data-id="directional-up">
-                up
-            </button>
-            
-            <button type="button" class="button" data-id="directional-left">
-                left
-            </button>
-            
-            <button type="button" class="button" data-id="directional-right">
-                right
-            </button>
-            
-            <button type="button" class="button" data-id="directional-down">
-                down
-            </button>
-            
-        </div>
-    </section>
-    <section class="player tile" id="player">
-    </section>
-    <section class="map-wrapper">
-        <div id="map" class="map">
-        </div>
-    </section>
+    <div class="loading-main">
+    <div class="loading animate"></div>
 </div>
+    <main class="background">
+        <div class="game-wrapper">
+            <div class="game" id="game">
+                <section class="interface">
+                    <div class="interface__bar">
+                        
+
+<progress value="0" max="0" data-id="bar-life"></progress>
+
+<progress value="0" max="0" data-id="bar-hunger"></progress>
+
+<progress value="0" max="0" data-id="bar-thirst"></progress>
+
+                    </div>
+                    <div class="interface__action">
+                        
+
+<button type="button" class="button" data-id="action-backpack">
+    backpack
+</button>
+
+<button type="button" class="button" data-id="action-craft">
+    craft
+</button>
+
+<button type="button" class="button" data-id="action-pick">
+    pick
+</button>
+
+<button type="button" class="button" data-id="action-hit">
+    hit
+</button>
+
+                    </div>
+                    <div class="interface__directional">
+                        
+
+<button type="button" class="button" data-id="directional-up">
+    up
+</button>
+
+<button type="button" class="button" data-id="directional-left">
+    left
+</button>
+
+<button type="button" class="button" data-id="directional-right">
+    right
+</button>
+
+<button type="button" class="button" data-id="directional-down">
+    down
+</button>
+
+                    </div>
+                </section>
+                <div id="camera" class="camera">
+                    <section id="player" class="player tile"></section>
+                    <section id="map" class="map"></section>
+                </div>
+            </div>
+        </div>
     </main>
 </body>
 

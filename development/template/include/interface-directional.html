@@ -1,0 +1,11 @@
+{% set arr = [
+    ['up'],
+    ['left'],
+    ['right'],
+    ['down']
+] %}
+{% for item in arr %}
+<button type="button" class="button" data-id="directional-{{item}}">
+    {{item}}
+</button>
+{% endfor %}
