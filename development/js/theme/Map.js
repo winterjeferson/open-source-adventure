@@ -88,6 +88,7 @@ class Map {
         this.update();
         window.player.tileCurrent = nextTile;
         window.data.loadMap(nextMap);
+        window.enemy.build();
     }
 
     position(obj) {

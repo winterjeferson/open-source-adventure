@@ -195,11 +195,6 @@ class Craft {
 
 window.craft = new Craft();
 class Data {
-    constructor(api) {
-        this.api = api;
-        this.apiUrl = `./api/${this.api}/`;
-    }
-
     loadMap(map) {
         const parameter = {
             controller: `${this.apiUrl}map-${map}.${this.api}`,
@@ -231,11 +226,18 @@ class Data {
 
         data.then((result) => window.player.buildPlayer(result));
     }
+
+    update(api) {
+        this.api = api;
+        this.apiUrl = `./api/${this.api}/`;
+    }
 }
 
-window.data = new Data('json');
+window.data = new Data();
 class Enemy {
-
+    build() {
+        console.log('build enemy');
+    }
 }
 
 window.enemy = new Enemy();
@@ -557,6 +559,7 @@ class Map {
         this.update();
         window.player.tileCurrent = nextTile;
         window.data.loadMap(nextMap);
+        window.enemy.build();
     }
 
     position(obj) {
@@ -804,6 +807,7 @@ class Player {
 
 window.player = new Player();
 document.addEventListener('DOMContentLoaded', () => {
+    window.data.update('json');
     window.loadingMain.update();
     window.modal.build();
     window.map.update();

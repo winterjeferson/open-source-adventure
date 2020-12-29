@@ -1,9 +1,4 @@
 class Data {
-    constructor(api) {
-        this.api = api;
-        this.apiUrl = `./api/${this.api}/`;
-    }
-
     loadMap(map) {
         const parameter = {
             controller: `${this.apiUrl}map-${map}.${this.api}`,
@@ -35,6 +30,11 @@ class Data {
 
         data.then((result) => window.player.buildPlayer(result));
     }
+
+    update(api) {
+        this.api = api;
+        this.apiUrl = `./api/${this.api}/`;
+    }
 }
 
-window.data = new Data('json');
+window.data = new Data();

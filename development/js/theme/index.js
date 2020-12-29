@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    window.data.update('json');
     window.loadingMain.update();
     window.modal.build();
     window.map.update();
