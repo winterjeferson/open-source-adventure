@@ -3,48 +3,64 @@
     font-size: $font-size-regular;
 }
 
-.game-wrapper {
+.background {
     align-items: center;
-    background-color: $color-grey-light-3;
+    background-color: $color-grey-light-1;
     display: flex;
     height: 100%;
     justify-content: center;
     width: 100%;
 }
 
+.game-wrapper,
 .game {
     display: flex;
     height: 100%;
     max-height: $break-point-tablet;
     max-width: $break-point-notebook;
-    position: relative;
     width: 100%;
 }
 
-.map-wrapper {
-    height: 100%;
-    left: 0;
+.game-wrapper {
+    box-shadow: inset 0px 0px 0px 1px rgb(17, 0, 255);
     overflow: hidden;
+    position: relative;
+}
+
+.game {
+    box-shadow: inset 0px 0px 0px 1px rgb(221, 23, 23);
+    left: 0;
     position: absolute;
     top: 0;
-    width: 100%;
+}
+
+.hide {
+    font-size: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+    visibility: hidden;
+    width: 0;
+
+    * {
+        font-size: 0;
+        height: 0;
+        margin: 0;
+        padding: 0;
+        pointer-events: none;
+        visibility: hidden;
+        width: 0;
+    }
+}
+
+.map {
+    display: flex;
+    flex-wrap: wrap;
+    left: 0;
+    position: absolute;
+    top: 0;
     z-index: z-index("map");
-}
-
-.map {
-    display: flex;
-    flex-wrap: wrap;
-    left: 0;
-    position: absolute;
-    top: 0;
-}
-
-.map {
-    display: flex;
-    flex-wrap: wrap;
-    left: 0;
-    position: absolute;
-    top: 0;
 }
 
 .interface {
@@ -82,3 +98,87 @@
         right: 0;
     }
 }
+
+.loading-main {
+    align-items: center;
+    background-color: $color-black;
+    display: flex;
+    flex: 0 1 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 100%;
+    justify-content: center;
+    left: 0;
+    opacity: 1;
+    overflow: hidden;
+    position: fixed;
+    text-align: center;
+    top: 0;
+    width: 100%;
+    z-index: z-index("loading-main");
+
+    .loading {
+        border-radius: 50%;
+        color: $color-grey;
+        display: inline-block;
+        font-size: $big;
+        height: $big;
+        margin: $big;
+        position: relative;
+        text-indent: -9999em;
+        transform: translateZ(0);
+        width: $big;
+
+        &.animate {
+            animation: loading-1 1.3s infinite linear;
+        }
+    }
+}
+
+@keyframes loading-1 {
+
+    0%,
+    100% {
+        box-shadow: 0 -1.5em 0 0.1em, 1em -1em 0 0em, 1.5em 0 0 -0.5em, 1em 1em 0 -0.5em, 0 1.5em 0 -0.5em,
+            -1em 1em 0 -0.5em, -1.5em 0 0 -0.5em, -1em -1em 0 0;
+    }
+
+    12.5% {
+        box-shadow: 0 -1.5em 0 0, 1em -1em 0 0.1em, 1.5em 0 0 0, 1em 1em 0 -0.5em, 0 1.5em 0 -0.5em, -1em 1em 0 -0.5em,
+            -1.5em 0 0 -0.5em, -1em -1em 0 -0.5em;
+    }
+
+    25% {
+        box-shadow: 0 -1.5em 0 -0.5em, 1em -1em 0 0, 1.5em 0 0 0.1em, 1em 1em 0 0, 0 1.5em 0 -0.5em, -1em 1em 0 -0.5em,
+            -1.5em 0 0 -0.5em, -1em -1em 0 -0.5em;
+    }
+
+    37.5% {
+        box-shadow: 0 -1.5em 0 -0.5em, 1em -1em 0 -0.5em, 1.5em 0em 0 0, 1em 1em 0 0.1em, 0 1.5em 0 0em, -1em 1em 0 -0.5em,
+            -1.5em 0em 0 -0.5em, -1em -1em 0 -0.5em;
+    }
+
+    50% {
+        box-shadow: 0 -1.5em 0 -0.5em, 1em -1em 0 -0.5em, 1.5em 0 0 -0.5em, 1em 1em 0 0em, 0 1.5em 0 0.1em, -1em 1em 0 0,
+            -1.5em 0em 0 -0.5em, -1em -1em 0 -0.5em;
+    }
+
+    62.5% {
+        box-shadow: 0 -1.5em 0 -0.5em, 1em -1em 0 -0.5em, 1.5em 0 0 -0.5em, 1em 1em 0 -0.5em, 0 1.5em 0 0,
+            -1em 1em 0 0.1em, -1.5em 0 0 0, -1em -1em 0 -0.5em;
+    }
+
+    75% {
+        box-shadow: 0em -1.5em 0 -0.5em, 1em -1em 0 -0.5em, 1.5em 0em 0 -0.5em, 1em 1em 0 -0.5em, 0 1.5em 0 -0.5em,
+            -1em 1em 0 0, -1.5em 0em 0 0.1em, -1em -1em 0 0;
+    }
+
+    87.5% {
+        box-shadow: 0em -1.5em 0 0, 1em -1em 0 -0.5em, 1.5em 0 0 -0.5em, 1em 1em 0 -0.5em, 0 1.5em 0 -0.5em, -1em 1em 0 0,
+            -1.5em 0em 0 0, -1em -1em 0 0.1em;
+    }
+}
+
+// * {
+//     opacity: .75;
+// }

@@ -10,26 +10,22 @@ class Keyboard {
             case 'Up':
             case 'ArrowUp':
             case 'w':
-                window.player.move('up');
-                window.map.move('up');
+                window.camera.move('up');
                 break;
             case 'Left':
             case 'ArrowLeft':
             case 'a':
-                window.player.move('left');
-                window.map.move('left');
+                window.camera.move('left');
                 break;
             case 'Down':
             case 'ArrowDown':
             case 's':
-                window.player.move('down');
-                window.map.move('down');
+                window.camera.move('down');
                 break;
             case 'Right':
             case 'ArrowRight':
             case 'd':
-                window.player.move('right');
-                window.map.move('right');
+                window.camera.move('right');
                 break;
         }
     }

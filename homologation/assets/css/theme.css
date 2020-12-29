@@ -47,37 +47,57 @@ img {
   font-family: sans-serif;
   font-size: 16px; }
 
-.game-wrapper {
+.background {
   align-items: center;
-  background-color: #e7e9ea;
+  background-color: #ccd0d3;
   display: flex;
   height: 100%;
   justify-content: center;
   width: 100%; }
 
+.game-wrapper,
 .game {
   display: flex;
   height: 100%;
   max-height: 768px;
   max-width: 1366px;
-  position: relative;
   width: 100%; }
 
-.map-wrapper {
-  height: 100%;
-  left: 0;
+.game-wrapper {
+  box-shadow: inset 0px 0px 0px 1px #1100ff;
   overflow: hidden;
+  position: relative; }
+
+.game {
+  box-shadow: inset 0px 0px 0px 1px #dd1717;
+  left: 0;
   position: absolute;
-  top: 0;
-  width: 100%;
-  z-index: 1; }
+  top: 0; }
+
+.hide {
+  font-size: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+  visibility: hidden;
+  width: 0; }
+  .hide * {
+    font-size: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+    visibility: hidden;
+    width: 0; }
 
 .map {
   display: flex;
   flex-wrap: wrap;
   left: 0;
   position: absolute;
-  top: 0; }
+  top: 0;
+  z-index: 1; }
 
 .map {
   display: flex;
@@ -111,6 +131,56 @@ img {
     flex-direction: row;
     right: 0; }
 
+.loading-main {
+  align-items: center;
+  background-color: #333333;
+  display: flex;
+  flex: 0 1 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  opacity: 1;
+  overflow: hidden;
+  position: fixed;
+  text-align: center;
+  top: 0;
+  width: 100%;
+  z-index: 4; }
+  .loading-main .loading {
+    border-radius: 50%;
+    color: #bec3c7;
+    display: inline-block;
+    font-size: 20px;
+    height: 20px;
+    margin: 20px;
+    position: relative;
+    text-indent: -9999em;
+    transform: translateZ(0);
+    width: 20px; }
+    .loading-main .loading.animate {
+      animation: loading-1 1.3s infinite linear; }
+
+@keyframes loading-1 {
+  0%,
+  100% {
+    box-shadow: 0 -1.5em 0 0.1em, 1em -1em 0 0em, 1.5em 0 0 -0.5em, 1em 1em 0 -0.5em, 0 1.5em 0 -0.5em, -1em 1em 0 -0.5em, -1.5em 0 0 -0.5em, -1em -1em 0 0; }
+  12.5% {
+    box-shadow: 0 -1.5em 0 0, 1em -1em 0 0.1em, 1.5em 0 0 0, 1em 1em 0 -0.5em, 0 1.5em 0 -0.5em, -1em 1em 0 -0.5em, -1.5em 0 0 -0.5em, -1em -1em 0 -0.5em; }
+  25% {
+    box-shadow: 0 -1.5em 0 -0.5em, 1em -1em 0 0, 1.5em 0 0 0.1em, 1em 1em 0 0, 0 1.5em 0 -0.5em, -1em 1em 0 -0.5em, -1.5em 0 0 -0.5em, -1em -1em 0 -0.5em; }
+  37.5% {
+    box-shadow: 0 -1.5em 0 -0.5em, 1em -1em 0 -0.5em, 1.5em 0em 0 0, 1em 1em 0 0.1em, 0 1.5em 0 0em, -1em 1em 0 -0.5em, -1.5em 0em 0 -0.5em, -1em -1em 0 -0.5em; }
+  50% {
+    box-shadow: 0 -1.5em 0 -0.5em, 1em -1em 0 -0.5em, 1.5em 0 0 -0.5em, 1em 1em 0 0em, 0 1.5em 0 0.1em, -1em 1em 0 0, -1.5em 0em 0 -0.5em, -1em -1em 0 -0.5em; }
+  62.5% {
+    box-shadow: 0 -1.5em 0 -0.5em, 1em -1em 0 -0.5em, 1.5em 0 0 -0.5em, 1em 1em 0 -0.5em, 0 1.5em 0 0, -1em 1em 0 0.1em, -1.5em 0 0 0, -1em -1em 0 -0.5em; }
+  75% {
+    box-shadow: 0em -1.5em 0 -0.5em, 1em -1em 0 -0.5em, 1.5em 0em 0 -0.5em, 1em 1em 0 -0.5em, 0 1.5em 0 -0.5em, -1em 1em 0 0, -1.5em 0em 0 0.1em, -1em -1em 0 0; }
+  87.5% {
+    box-shadow: 0em -1.5em 0 0, 1em -1em 0 -0.5em, 1.5em 0 0 -0.5em, 1em 1em 0 -0.5em, 0 1.5em 0 -0.5em, -1em 1em 0 0, -1.5em 0em 0 0, -1em -1em 0 0.1em; } }
+
 .tile {
   display: inline-flex;
   height: 50px;
@@ -119,8 +189,12 @@ img {
     background-color: #1f8d4e; }
   .tile--1 {
     background-color: #2dcc70; }
+  .tile--2 {
+    background-color: #68de99; }
 
 .player {
   background-color: #e14b4a;
+  left: 0;
   position: absolute;
+  top: 0;
   z-index: 2; }
