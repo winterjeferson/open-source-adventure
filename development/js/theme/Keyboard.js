@@ -27,6 +27,9 @@ class Keyboard {
             case 'd':
                 window.camera.move('right');
                 break;
+            case 'Escape':
+                window.modal.close();
+                break;
         }
     }
 }

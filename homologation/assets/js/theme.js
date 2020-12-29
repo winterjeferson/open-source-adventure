@@ -31,11 +31,7 @@ class Animation {
 }
 
 window.animation = new Animation();
-class Backpack {
-    open() {
-        console.log('backpack open');
-    }
-}
+class Backpack {}
 
 window.backpack = new Backpack();
 class Camera {
@@ -195,9 +191,6 @@ class Camera {
 
 window.camera = new Camera();
 class Craft {
-    open() {
-        console.log('craft open');
-    }
 }
 
 window.craft = new Craft();
@@ -338,11 +331,11 @@ class Interface {
 
     buildAction() {
         this.elActionBackpack.onclick = () => {
-            window.backpack.open();
+            window.modal.open('backpack');
         };
 
         this.elActionCraft.onclick = () => {
-            window.craft.open();
+            window.modal.open('craft');
         };
 
         this.elActionPick.onclick = () => {
@@ -442,6 +435,9 @@ class Keyboard {
             case 'ArrowRight':
             case 'd':
                 window.camera.move('right');
+                break;
+            case 'Escape':
+                window.modal.close();
                 break;
         }
     }
@@ -614,6 +610,54 @@ class Map {
 }
 
 window.map = new Map();
+class Modal {
+    constructor() {
+        this.cssModal = 'modal';
+        this.cssClose = `${this.cssModal}--close`;
+        this.cssHide = 'hide';
+    }
+
+    build() {
+        this.update();
+        this.buildAction();
+    }
+
+    buildAction() {
+        this.elCloseButton.onclick = () => {
+            this.close();
+        };
+    }
+
+    close() {
+        this.hidePage();
+        this.elModal.classList.add(this.cssClose);
+    }
+
+    open(target) {
+        const el = document.querySelector(`#page_${target}`);
+
+        this.hidePage();
+        this.elModal.classList.remove(this.cssClose);
+        el.classList.remove(this.cssHide);
+    }
+
+    hidePage() {
+        Array.prototype.forEach.call(this.elPage, (item) => {
+            if (!item.classList.contains(this.cssHide)) {
+                item.classList.add(this.cssHide);
+            }
+        });
+    }
+
+    update() {
+        this.elModal = document.querySelector(`.${this.cssModal}`);
+        this.elContent = document.querySelector(`.${this.cssModal}__content`);
+        this.elPage = this.elContent.querySelectorAll('.page');
+        this.elCloseButton = document.querySelector('#modal_close');
+    }
+}
+
+window.modal = new Modal();
 class Player {
     constructor() {
         this.speed = 0;
@@ -761,6 +805,7 @@ class Player {
 window.player = new Player();
 document.addEventListener('DOMContentLoaded', () => {
     window.loadingMain.update();
+    window.modal.build();
     window.map.update();
     window.interface.build();
     window.keyboard.build();
