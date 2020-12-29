@@ -8,11 +8,11 @@ class Interface {
 
     buildAction() {
         this.elActionBackpack.onclick = () => {
-            window.backpack.open();
+            window.modal.open('backpack');
         };
 
         this.elActionCraft.onclick = () => {
-            window.craft.open();
+            window.modal.open('craft');
         };
 
         this.elActionPick.onclick = () => {

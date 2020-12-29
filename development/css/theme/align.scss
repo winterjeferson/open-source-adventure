@@ -1,0 +1,33 @@
+.column {
+    flex-direction: column;
+    height: 100%;
+}
+
+.row {
+    flex: 0 1 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.column,
+.row {
+    display: flex;
+}
+
+.center {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.left {
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+}
+
+.right {
+    align-items: flex-end;
+    justify-content: flex-end;
+    text-align: right;
+}
