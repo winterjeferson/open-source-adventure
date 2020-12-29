@@ -3,3 +3,5 @@ class Craft {
         console.log('craft open');
     }
 }
+
+window.craft = new Craft();

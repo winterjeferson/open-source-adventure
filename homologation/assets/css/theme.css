@@ -79,6 +79,13 @@ img {
   position: absolute;
   top: 0; }
 
+.map {
+  display: flex;
+  flex-wrap: wrap;
+  left: 0;
+  position: absolute;
+  top: 0; }
+
 .interface {
   display: flex;
   height: 100%;

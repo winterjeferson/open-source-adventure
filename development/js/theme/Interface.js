@@ -66,3 +66,5 @@ class Interface {
         this.elBarThirst.setAttribute('max', player.thirst);
     }
 }
+
+window.interface = new Interface();

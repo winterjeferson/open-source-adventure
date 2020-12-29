@@ -24,3 +24,5 @@ class Data {
         data.then((result) => window.player.buildPlayer(result));
     }
 }
+
+window.data = new Data('json');

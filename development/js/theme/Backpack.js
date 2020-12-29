@@ -3,3 +3,5 @@ class Backpack {
         console.log('backpack open');
     }
 }
+
+window.backpack = new Backpack();
