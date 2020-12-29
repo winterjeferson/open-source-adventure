@@ -1,7 +1,3 @@
-class Backpack {
-    open() {
-        console.log('backpack open');
-    }
-}
+class Backpack {}
 
 window.backpack = new Backpack();
