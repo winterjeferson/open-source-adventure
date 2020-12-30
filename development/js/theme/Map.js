@@ -1,6 +1,6 @@
 class Map {
     constructor() {
-        this.current = 0;
+        this.current = 1;
         this.json = {};
         this.arr = [];
         this.arrWalkFalse = [0];
@@ -19,6 +19,7 @@ class Map {
         window.camera.update();
         this.convertArray();
         this.buildHtml();
+        window.enemy.build();
 
         if (!window.player.isInitial) {
             window.player.position();

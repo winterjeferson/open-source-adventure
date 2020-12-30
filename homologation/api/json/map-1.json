@@ -10,7 +10,7 @@
         }
     },
     "enemy": {
-        "quantity": 20,
+        "quantity": 5,
         "kind": [0, 1]
     },
     "item": {

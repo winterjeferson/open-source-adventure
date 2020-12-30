@@ -1,0 +1,8 @@
+.enemy {
+    background-color: $color-blue;
+    border-radius: 50%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    z-index: z-index("enemy");
+}
