@@ -1,0 +1,16 @@
+.item {
+    border-radius: 50%;
+    font-size: $regular;
+    left: 0;
+    position: absolute;
+    top: 0;
+    z-index: z-index("resource");
+
+    &--0 {
+        background-color: $color-yellow;
+    }
+
+    &--1 {
+        background-color: $color-yellow-dark-2;
+    }
+}

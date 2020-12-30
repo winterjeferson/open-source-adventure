@@ -18,7 +18,7 @@
         "quantity": 20,
         "kind": [0, 1]
     },
-    "item": {
+    "resource": {
         "quantity": 10,
         "kind": [0, 1]
     },

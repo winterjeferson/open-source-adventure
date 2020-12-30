@@ -23,6 +23,7 @@ class Map {
         this.convertArray();
         this.buildHtml();
         window.enemy.build();
+        window.resource.build();
 
         if (!window.player.isInitial) {
             window.player.position();
