@@ -1,0 +1,16 @@
+.enemy {
+    border-radius: 50%;
+    font-size: $regular;
+    left: 0;
+    position: absolute;
+    top: 0;
+    z-index: z-index("enemy");
+
+    &--0 {
+        background-color: $color-blue;
+    }
+
+    &--1 {
+        background-color: $color-blue-dark-2;
+    }
+}
