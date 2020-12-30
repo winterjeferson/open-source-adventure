@@ -1,7 +1,16 @@
 class Data {
+    constructor() {
+        this.folderDefault = './api/';
+    }
+
+    buildJavascript() {
+        this.extension = 'json';
+        this.apiUrl = `${this.folderDefault}js/`;
+    }
+
     loadMap(map) {
         const parameter = {
-            controller: `${this.apiUrl}map-${map}.${this.api}`,
+            controller: `${this.apiUrl}map-${map}.${this.extension}`,
         };
         let data = window.helper.ajax(parameter);
 
@@ -10,6 +19,7 @@ class Data {
                 window.map.buildMap(result);
             })
             .then(() => {
+                this.save();
                 this.loadPlayer();
             })
             .then(() => {
@@ -28,7 +38,7 @@ class Data {
 
     loadPlayerInitial() {
         const parameter = {
-            controller: `${this.apiUrl}player.${this.api}`,
+            controller: `${this.apiUrl}player.${this.extension}`,
         };
         let data = window.helper.ajax(parameter);
 
@@ -37,9 +47,15 @@ class Data {
         });
     }
 
+    save() {
+        console.log('save');
+    }
+
     update(api) {
-        this.api = api;
-        this.apiUrl = `./api/${this.api}/`;
+        const capitalize = window.helper.capitalize(api);
+        const method = `build${capitalize}`;
+
+        this[method]();
     }
 }
 

@@ -11,14 +11,14 @@ const configuration = require('./configuration.js');
 gulp.task('initialize', gulp.series(
     'buildCss',
     'buildJs',
+    'buildApi',
     'buildImage',
     'buildTemplate',
 ));
 
 gulp.task('deploy', gulp.series(
+    'buildApiMoveProduction',
     'buildCssMinify',
     'buildJsMinify',
-    'buildApiJsonMinify',
-    'buildDataBaseJsonMinify',
     'buildTemplateMinify',
 ));
