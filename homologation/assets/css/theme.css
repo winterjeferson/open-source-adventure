@@ -83,13 +83,13 @@ img {
   right: 0;
   top: 0;
   transition: 0.3s;
-  z-index: 4; }
+  z-index: 6; }
   .modal__header {
     display: flex;
     padding: 10px;
     position: relative;
     width: 100%;
-    z-index: 5; }
+    z-index: 7; }
   .modal__box {
     align-items: center;
     background-color: #ffffff;
@@ -185,7 +185,7 @@ img {
   position: absolute;
   top: 0;
   width: 100%;
-  z-index: 3; }
+  z-index: 5; }
   .interface__bar, .interface__directional, .interface__action {
     display: flex;
     padding: 10px;
@@ -219,7 +219,7 @@ img {
   text-align: center;
   top: 0;
   width: 100%;
-  z-index: 6; }
+  z-index: 8; }
   .loading-main .loading {
     border-radius: 50%;
     color: #bec3c7;
@@ -264,9 +264,33 @@ img {
   .tile--2 {
     background-color: #68de99; }
 
+.enemy {
+  border-radius: 50%;
+  font-size: 10px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  z-index: 3; }
+  .enemy--0 {
+    background-color: #3297db; }
+  .enemy--1 {
+    background-color: #217cb9; }
+
+.item {
+  border-radius: 50%;
+  font-size: 10px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  z-index: 2; }
+  .item--0 {
+    background-color: #f1c50e; }
+  .item--1 {
+    background-color: #c19e0b; }
+
 .player {
   background-color: #e14b4a;
   left: 0;
   position: absolute;
   top: 0;
-  z-index: 2; }
+  z-index: 4; }

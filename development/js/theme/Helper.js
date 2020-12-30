@@ -65,6 +65,14 @@ class Helper {
         }
     }
 
+    raffleNumber(obj) {
+        return obj.minimum + Math.round((obj.maximum - obj.minimum) * Math.random());
+    }
+
+    raffleArray(array) {
+        return array[Math.floor(Math.random() * array.length)];
+    }
+
     remove(target) {
         if (target !== null) {
             target.parentNode.removeChild(target);

@@ -1,21 +1,20 @@
 class Data {
-    constructor(api) {
-        this.api = api;
-        this.apiUrl = `./api/${this.api}/`;
-    }
-
     loadMap(map) {
         const parameter = {
             controller: `${this.apiUrl}map-${map}.${this.api}`,
         };
         let data = window.helper.ajax(parameter);
 
-        data.then((result) =>
-                window.map.buildMap(result)
-            )
-            .then(() =>
-                this.loadPlayer()
-            );
+        data
+            .then((result) => {
+                window.map.buildMap(result);
+            })
+            .then(() => {
+                this.loadPlayer();
+            })
+            .then(() => {
+                window.enemy.build();
+            });
     }
 
     loadPlayer() {
@@ -33,8 +32,15 @@ class Data {
         };
         let data = window.helper.ajax(parameter);
 
-        data.then((result) => window.player.buildPlayer(result));
+        data.then((result) => {
+            window.player.buildPlayer(result);
+        });
+    }
+
+    update(api) {
+        this.api = api;
+        this.apiUrl = `./api/${this.api}/`;
     }
 }
 
-window.data = new Data('json');
+window.data = new Data();
