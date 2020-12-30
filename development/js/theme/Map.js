@@ -102,8 +102,13 @@ class Map {
     }
 
     position(obj) {
-        const tile = this.tileIdPrefix + obj.position;
         const elTarget = obj.target;
+
+        if (!elTarget) {
+            return;
+        }
+
+        const tile = this.tileIdPrefix + obj.position;
         const elTile = document.querySelector(`#${tile}`);
         const elTilePosition = window.helper.getOffset(elTile);
         const elCameraPosition = window.helper.getOffset(window.interface.elCamera);
@@ -167,6 +172,7 @@ class Map {
     update() {
         this.tileId = 0;
         this.tileTotal = window.map.json.row * window.map.json.column;
+        this.arrForbidden = [];
     }
 }
 

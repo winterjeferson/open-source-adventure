@@ -23,6 +23,10 @@ class Helper {
     }
 
     getOffset(target) {
+        if (!target) {
+            return;
+        }
+
         const rect = target.getBoundingClientRect();
 
         return {
