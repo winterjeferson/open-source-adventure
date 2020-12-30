@@ -5,12 +5,16 @@ class Data {
         };
         let data = window.helper.ajax(parameter);
 
-        data.then((result) =>
-                window.map.buildMap(result)
-            )
-            .then(() =>
-                this.loadPlayer()
-            );
+        data
+            .then((result) => {
+                window.map.buildMap(result);
+            })
+            .then(() => {
+                this.loadPlayer();
+            })
+            .then(() => {
+                window.enemy.build();
+            });
     }
 
     loadPlayer() {
@@ -28,7 +32,9 @@ class Data {
         };
         let data = window.helper.ajax(parameter);
 
-        data.then((result) => window.player.buildPlayer(result));
+        data.then((result) => {
+            window.player.buildPlayer(result);
+        });
     }
 
     update(api) {

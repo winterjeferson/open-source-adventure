@@ -16,9 +16,11 @@ class Enemy {
         let html = '';
 
         for (let i = 0; i < this.enemyLength; i++) {
+            let random = window.helper.raffleArray(window.map.json.enemy.kind);
+
             html += `
-                <div id="${this.cssEnemy}_${i}" class="${this.cssEnemy} ${this.cssEnemy}-${i} tile center">
-                    ${i}
+                <div id="${this.cssEnemy}_${i}" class="${this.cssEnemy} ${this.cssEnemy}--${random} tile center">
+                    Enemy ${i}
                 </div>
             `;
         }
@@ -28,11 +30,12 @@ class Enemy {
 
     setPosition() {
         for (let i = 0; i < this.enemyLength; i++) {
-            const el = document.querySelector(`#${this.cssEnemy}_${i}`);
+            const target = document.querySelector(`#${this.cssEnemy}_${i}`);
+            const position = window.map.rafflePosition();
 
             window.map.position({
-                'target': el,
-                'position': i,
+                target,
+                position,
             });
         }
     }

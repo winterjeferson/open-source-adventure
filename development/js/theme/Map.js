@@ -5,10 +5,12 @@ class Map {
         this.arr = [];
         this.arrWalkFalse = [0];
         this.arrDoor = [2];
+        this.arrForbidden = [];
         this.tileSize = 50;
         this.tileSizeHalf = this.tileSize / 2;
         this.tileId = 0;
         this.tileIdPrefix = 'tile_';
+        this.tileTotal = 0;
     }
 
     buildMap(data) {
@@ -17,6 +19,7 @@ class Map {
         this.height = this.tileSize * this.json.row;
 
         window.camera.update();
+        this.update();
         this.convertArray();
         this.buildHtml();
         window.enemy.build();
@@ -50,7 +53,13 @@ class Map {
 
         for (let j = 0; j < this.json.column; j++) {
             let tile = this.arr[i][j];
-            let trim = tile.trim();
+            let trim = Number(tile.trim());
+            let isWalkFalse = this.arrWalkFalse.includes(trim);
+            let isDoor = this.arrDoor.includes(trim);
+
+            if (isWalkFalse || isDoor) {
+                this.arrForbidden.push(this.tileId);
+            }
 
             template += `<div class="tile tile--${trim}" data-tile="${trim}" id="${this.tileIdPrefix}${this.tileId}"></div>`;
             this.tileId++;
@@ -89,7 +98,6 @@ class Map {
         this.update();
         window.player.tileCurrent = nextTile;
         window.data.loadMap(nextMap);
-        window.enemy.build();
     }
 
     position(obj) {
@@ -108,6 +116,24 @@ class Map {
             'vertical': Math.round(positionReset.top),
             'horizontal': Math.round(positionReset.left),
             'speed': 0,
+        });
+    }
+
+    rafflePosition() {
+        let result = this.rafflePositionRandom();
+
+        while (this.arrForbidden.includes(result)) {
+            result = this.rafflePositionRandom();
+        }
+
+        this.arrForbidden.push(result);
+        return result;
+    }
+
+    rafflePositionRandom() {
+        return window.helper.raffleNumber({
+            'minimum': 0,
+            'maximum': window.map.tileTotal
         });
     }
 
@@ -139,6 +165,7 @@ class Map {
 
     update() {
         this.tileId = 0;
+        this.tileTotal = window.map.json.row * window.map.json.column;
     }
 }
 
