@@ -3,11 +3,6 @@ class Data {
         this.folderDefault = './api/';
     }
 
-    buildJavascript() {
-        this.extension = 'json';
-        this.apiUrl = `${this.folderDefault}js/`;
-    }
-
     loadMap(map) {
         const parameter = {
             controller: `${this.apiUrl}map-${map}.${this.extension}`,
@@ -19,11 +14,11 @@ class Data {
                 window.map.buildMap(result);
             })
             .then(() => {
-                this.save();
                 this.loadPlayer();
             })
             .then(() => {
                 window.enemy.build();
+                this.save();
             });
     }
 
@@ -48,14 +43,21 @@ class Data {
     }
 
     save() {
-        console.log('save');
+        const parameter = {
+            controller: `${this.apiUrl}save.${this.extension}`,
+        };
+        let data = window.helper.ajax(parameter);
+
+        data
+            .then((result) => {
+                console.log(result);
+            });
     }
 
-    update(api) {
-        const capitalize = window.helper.capitalize(api);
-        const method = `build${capitalize}`;
-
-        this[method]();
+    update(obj) {
+        this.extension = obj.extension;
+        this.dataBase = obj.extension;
+        this.apiUrl = `${this.folderDefault + this.extension}/`;
     }
 }
 
