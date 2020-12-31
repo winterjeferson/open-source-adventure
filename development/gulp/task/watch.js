@@ -3,8 +3,7 @@ const css = require('./css.js');
 const img = require('./image.js');
 const js = require('./js.js');
 const template = require('./template.js');
-const apiJson = require('./api-json.js');
-const dataBaseJson = require('./data-base-json.js');
+const api = require('./api.js');
 const configuration = require('./configuration.js');
 
 gulp.task('watch', (callback) => {
@@ -28,14 +27,10 @@ gulp.task('watch', (callback) => {
             console.log(event);
         });
 
-    gulp.watch(apiJson.fileAll, gulp.series('buildApiJson'))
+    gulp.watch(api.fileAll, gulp.series('buildApi'))
         .on('change', (event) => {
             console.log(event);
         });
 
-    gulp.watch(dataBaseJson.fileAll, gulp.series('buildDataBaseJson'))
-        .on('change', (event) => {
-            console.log(event);
-        });
     callback();
 });

@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    window.data.update('json');
+    window.data.update({
+        'extension': 'js',
+        'dataBase': 'localStorage'
+    });
     window.loadingMain.update();
     window.modal.build();
     window.map.update();
