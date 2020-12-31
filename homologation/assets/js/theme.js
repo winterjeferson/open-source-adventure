@@ -195,9 +195,13 @@ class Craft {
 
 window.craft = new Craft();
 class Data {
+    constructor() {
+        this.folderDefault = './api/';
+    }
+
     loadMap(map) {
         const parameter = {
-            controller: `${this.apiUrl}map-${map}.${this.api}`,
+            controller: `${this.apiUrl}map-${map}.${this.extension}`,
         };
         let data = window.helper.ajax(parameter);
 
@@ -210,6 +214,7 @@ class Data {
             })
             .then(() => {
                 window.enemy.build();
+                this.save();
             });
     }
 
@@ -224,7 +229,7 @@ class Data {
 
     loadPlayerInitial() {
         const parameter = {
-            controller: `${this.apiUrl}player.${this.api}`,
+            controller: `${this.apiUrl}player.${this.extension}`,
         };
         let data = window.helper.ajax(parameter);
 
@@ -233,9 +238,22 @@ class Data {
         });
     }
 
-    update(api) {
-        this.api = api;
-        this.apiUrl = `./api/${this.api}/`;
+    save() {
+        const parameter = {
+            controller: `${this.apiUrl}save.${this.extension}`,
+        };
+        let data = window.helper.ajax(parameter);
+
+        data
+            .then((result) => {
+                console.log(result);
+            });
+    }
+
+    update(obj) {
+        this.extension = obj.extension;
+        this.dataBase = obj.extension;
+        this.apiUrl = `${this.folderDefault + this.extension}/`;
     }
 }
 
@@ -320,6 +338,10 @@ class Helper {
     }
 
     getOffset(target) {
+        if (!target) {
+            return;
+        }
+
         const rect = target.getBoundingClientRect();
 
         return {
@@ -623,8 +645,13 @@ class Map {
     }
 
     position(obj) {
-        const tile = this.tileIdPrefix + obj.position;
         const elTarget = obj.target;
+
+        if (!elTarget) {
+            return;
+        }
+
+        const tile = this.tileIdPrefix + obj.position;
         const elTile = document.querySelector(`#${tile}`);
         const elTilePosition = window.helper.getOffset(elTile);
         const elCameraPosition = window.helper.getOffset(window.interface.elCamera);
@@ -688,6 +715,7 @@ class Map {
     update() {
         this.tileId = 0;
         this.tileTotal = window.map.json.row * window.map.json.column;
+        this.arrForbidden = [];
     }
 }
 
@@ -935,7 +963,10 @@ class Resource {
 
 window.resource = new Resource();
 document.addEventListener('DOMContentLoaded', () => {
-    window.data.update('json');
+    window.data.update({
+        'extension': 'js',
+        'dataBase': 'localStorage'
+    });
     window.loadingMain.update();
     window.modal.build();
     window.map.update();
