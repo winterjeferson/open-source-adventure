@@ -1,0 +1,17 @@
+.item-wrapper {
+    align-items: center;
+    border: 1px solid $color-grey;
+    display: inline-flex;
+    flex-direction: column;
+    padding: $regular;
+
+    .item {
+        position: relative;
+    }
+
+    .input {
+        margin-top: $regular;
+        padding: $regular;
+        text-align: center;
+    }
+}

@@ -60,6 +60,7 @@ class Player {
 
     moveSuccess(obj) {
         const isDoor = window.map.verifyDoor(obj.tileNext);
+        const isResource = window.map.verifyResource(obj.tileNext);
 
         this.updatePosition({
             'tileNext': obj.tileNext,
@@ -69,6 +70,8 @@ class Player {
         if (isDoor) {
             window.map.change();
         }
+
+        window.pick.setPick(isResource);
     }
 
     moveCoordinates(side) {
@@ -104,10 +107,6 @@ class Player {
             'position': this.tileCurrent,
         });
         window.camera.center();
-    }
-
-    pick() {
-        console.log('pick');
     }
 
     updatePosition(data) {

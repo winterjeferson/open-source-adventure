@@ -9,7 +9,7 @@ class Resource {
 
         const html = this.buildHtml();
 
-        this.elItem.innerHTML = html;
+        window.interface.elResource.innerHTML = html;
         this.setPosition();
     }
 
@@ -20,7 +20,11 @@ class Resource {
             let random = window.helper.raffleArray(window.map.json.resource.kind);
 
             html += `
-                <div id="${this.cssItem}_${i}" class="${this.cssItem} ${this.cssItem}--${random} tile center">
+                <div id="${this.cssItem}_${i}"
+                    class="${this.cssItem} ${this.cssItem}--${random} tile center" data-item="${random}"
+                    data-amount="1"
+                    data-tile=""
+                >
                     Item ${i}
                 </div>
             `;
@@ -34,15 +38,13 @@ class Resource {
             const target = document.querySelector(`#${this.cssItem}_${i}`);
             const position = window.map.rafflePosition();
 
+            target.setAttribute('data-tile', position);
+            window.map.arrResource.push(position);
             window.map.position({
                 target,
                 position,
             });
         }
-    }
-
-    update() {
-        this.elItem = document.querySelector(`#${this.cssResource}`);
     }
 }
 

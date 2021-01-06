@@ -8,7 +8,7 @@ class Enemy {
 
         const html = this.buildHtml();
 
-        this.elEnemy.innerHTML = html;
+        window.interface.elEnemy.innerHTML = html;
         this.setPosition();
     }
 
@@ -19,7 +19,11 @@ class Enemy {
             let random = window.helper.raffleArray(window.map.json.enemy.kind);
 
             html += `
-                <div id="${this.cssEnemy}_${i}" class="${this.cssEnemy} ${this.cssEnemy}--${random} tile center">
+                <div id="${this.cssEnemy}_${i}"
+                    class="tile center ${this.cssEnemy} ${this.cssEnemy}--${random}"
+                    data-amount="1"
+                    data-tile=""
+                >
                     Enemy ${i}
                 </div>
             `;
@@ -33,15 +37,12 @@ class Enemy {
             const target = document.querySelector(`#${this.cssEnemy}_${i}`);
             const position = window.map.rafflePosition();
 
+            target.setAttribute('data-tile', position);
             window.map.position({
                 target,
                 position,
             });
         }
-    }
-
-    update() {
-        this.elEnemy = document.querySelector(`#${this.cssEnemy}`);
     }
 }
 

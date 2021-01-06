@@ -31,7 +31,55 @@ class Animation {
 }
 
 window.animation = new Animation();
-class Backpack {}
+class Backpack {
+    constructor() {
+        this.objItem = {};
+        this.isUpdate = false;
+    }
+
+    addItem(target) {
+        const item = Number(target.getAttribute('data-item'));
+        const amount = Number(target.getAttribute('data-amount'));
+
+        this.isUpdate = true;
+
+        if (typeof this.objItem[item] === 'undefined') {
+            this.objItem[item] = amount;
+        } else {
+            this.objItem[item] += amount;
+        }
+    }
+
+    build() {
+        let html = '';
+
+        for (let i in this.objItem) {
+            html += this.buildHtml(i, this.objItem[i]);
+        }
+
+        window.interface.elPageBackpackContent.innerHTML = html;
+    }
+
+    buildHtml(index, value) {
+        return `
+            <div class="item-wrapper">
+                <div class="item item--${index} tile center"></div>
+                <input class="input" type="number" value="${value}" aria-label="number">
+            </div>
+        `;
+    }
+
+    open() {
+        window.modal.open('backpack');
+
+        if (!this.isUpdate) {
+            return;
+        }
+
+        this.isUpdate = false;
+        this.build();
+    }
+}
 
 window.backpack = new Backpack();
 class Camera {
@@ -191,6 +239,10 @@ class Camera {
 
 window.camera = new Camera();
 class Craft {
+
+    open() {
+        window.modal.open('craft');
+    }
 }
 
 window.craft = new Craft();
@@ -268,7 +320,7 @@ class Enemy {
 
         const html = this.buildHtml();
 
-        this.elEnemy.innerHTML = html;
+        window.interface.elEnemy.innerHTML = html;
         this.setPosition();
     }
 
@@ -279,7 +331,11 @@ class Enemy {
             let random = window.helper.raffleArray(window.map.json.enemy.kind);
 
             html += `
-                <div id="${this.cssEnemy}_${i}" class="${this.cssEnemy} ${this.cssEnemy}--${random} tile center">
+                <div id="${this.cssEnemy}_${i}"
+                    class="tile center ${this.cssEnemy} ${this.cssEnemy}--${random}"
+                    data-amount="1"
+                    data-tile=""
+                >
                     Enemy ${i}
                 </div>
             `;
@@ -293,15 +349,12 @@ class Enemy {
             const target = document.querySelector(`#${this.cssEnemy}_${i}`);
             const position = window.map.rafflePosition();
 
+            target.setAttribute('data-tile', position);
             window.map.position({
                 target,
                 position,
             });
         }
-    }
-
-    update() {
-        this.elEnemy = document.querySelector(`#${this.cssEnemy}`);
     }
 }
 
@@ -410,15 +463,15 @@ class Interface {
 
     buildAction() {
         this.elActionBackpack.onclick = () => {
-            window.modal.open('backpack');
+            window.backpack.open();
         };
 
         this.elActionCraft.onclick = () => {
-            window.modal.open('craft');
+            window.craft.open();
         };
 
         this.elActionPick.onclick = () => {
-            window.player.pick();
+            window.pick.pick();
         };
 
         this.elActionHit.onclick = () => {
@@ -449,6 +502,12 @@ class Interface {
         this.elGame = document.querySelector('#game');
         this.elMap = document.querySelector('#map');
         this.elPlayer = document.querySelector('#player');
+        this.elEnemy = document.querySelector(`#${window.enemy.cssEnemy}`);
+        this.elResource = document.querySelector(`#${window.resource.cssResource}`);
+        this.elPageBackpack = document.querySelector('#page_backpack');
+        this.elPageBackpackContent = this.elPageBackpack.querySelector('.content');
+        this.elPageCraft = document.querySelector('#page_craft');
+        this.elPageCraftContent = this.elPageCraft.querySelector('.content');
 
         this.elBarLife = document.querySelector('[data-id="bar-life"]');
         this.elBarHunger = document.querySelector('[data-id="bar-hunger"]');
@@ -513,6 +572,18 @@ class Keyboard {
             case 'Escape':
                 window.modal.close();
                 break;
+            case 'b':
+                window.backpack.open();
+                break;
+            case 'c':
+                window.craft.open();
+                break;
+            case 'p':
+                window.pick.pick();
+                break;
+            case 'h':
+                window.player.hit();
+                break;
         }
     }
 }
@@ -548,7 +619,6 @@ class Map {
         this.arr = [];
         this.arrWalkFalse = [0];
         this.arrDoor = [2];
-        this.arrForbidden = [];
         this.tileSize = 50;
         this.tileSizeHalf = this.tileSize / 2;
         this.tileId = 0;
@@ -686,11 +756,21 @@ class Map {
         });
     }
 
+    removeItem(target) {
+        window.helper.remove(target);
+    }
+
     verifyDoor(tile) {
         return this.verifyTile({
             tile,
             'arr': 'arrDoor'
         });
+    }
+
+    verifyResource(tile) {
+        const isInArray = this.arrResource.includes(tile);
+
+        return isInArray;
     }
 
     verifyWalk(tile) {
@@ -716,6 +796,7 @@ class Map {
         this.tileId = 0;
         this.tileTotal = window.map.json.row * window.map.json.column;
         this.arrForbidden = [];
+        this.arrResource = [];
     }
 }
 
@@ -768,6 +849,33 @@ class Modal {
 }
 
 window.modal = new Modal();
+class Pick {
+    constructor() {
+        this.isPick = false;
+    }
+
+    pick() {
+        if (!this.isPick) {
+            return;
+        }
+
+        const playerPosition = window.player.tileCurrent;
+        const item = window.interface.elResource.querySelector(`[data-tile="${playerPosition}"]`);
+
+        window.map.removeItem(item);
+        window.backpack.addItem(item);
+    }
+
+    setPick(status) {
+        const buttonPick = window.interface.elActionPick;
+        const attribute = 'disabled';
+
+        status ? buttonPick.removeAttribute(attribute) : buttonPick.setAttribute(attribute, '');
+        this.isPick = status;
+    }
+}
+
+window.pick = new Pick();
 class Player {
     constructor() {
         this.speed = 0;
@@ -830,6 +938,7 @@ class Player {
 
     moveSuccess(obj) {
         const isDoor = window.map.verifyDoor(obj.tileNext);
+        const isResource = window.map.verifyResource(obj.tileNext);
 
         this.updatePosition({
             'tileNext': obj.tileNext,
@@ -839,6 +948,8 @@ class Player {
         if (isDoor) {
             window.map.change();
         }
+
+        window.pick.setPick(isResource);
     }
 
     moveCoordinates(side) {
@@ -874,10 +985,6 @@ class Player {
             'position': this.tileCurrent,
         });
         window.camera.center();
-    }
-
-    pick() {
-        console.log('pick');
     }
 
     updatePosition(data) {
@@ -924,7 +1031,7 @@ class Resource {
 
         const html = this.buildHtml();
 
-        this.elItem.innerHTML = html;
+        window.interface.elResource.innerHTML = html;
         this.setPosition();
     }
 
@@ -935,7 +1042,11 @@ class Resource {
             let random = window.helper.raffleArray(window.map.json.resource.kind);
 
             html += `
-                <div id="${this.cssItem}_${i}" class="${this.cssItem} ${this.cssItem}--${random} tile center">
+                <div id="${this.cssItem}_${i}"
+                    class="${this.cssItem} ${this.cssItem}--${random} tile center" data-item="${random}"
+                    data-amount="1"
+                    data-tile=""
+                >
                     Item ${i}
                 </div>
             `;
@@ -949,15 +1060,13 @@ class Resource {
             const target = document.querySelector(`#${this.cssItem}_${i}`);
             const position = window.map.rafflePosition();
 
+            target.setAttribute('data-tile', position);
+            window.map.arrResource.push(position);
             window.map.position({
                 target,
                 position,
             });
         }
-    }
-
-    update() {
-        this.elItem = document.querySelector(`#${this.cssResource}`);
     }
 }
 
@@ -971,8 +1080,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.modal.build();
     window.map.update();
     window.interface.build();
-    window.enemy.update();
-    window.resource.update();
     window.keyboard.build();
     window.game.initialize();
 });

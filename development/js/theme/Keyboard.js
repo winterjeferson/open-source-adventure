@@ -30,6 +30,18 @@ class Keyboard {
             case 'Escape':
                 window.modal.close();
                 break;
+            case 'b':
+                window.backpack.open();
+                break;
+            case 'c':
+                window.craft.open();
+                break;
+            case 'p':
+                window.pick.pick();
+                break;
+            case 'h':
+                window.player.hit();
+                break;
         }
     }
 }
