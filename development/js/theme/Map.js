@@ -5,7 +5,6 @@ class Map {
         this.arr = [];
         this.arrWalkFalse = [0];
         this.arrDoor = [2];
-        this.arrForbidden = [];
         this.tileSize = 50;
         this.tileSizeHalf = this.tileSize / 2;
         this.tileId = 0;
@@ -143,11 +142,21 @@ class Map {
         });
     }
 
+    removeItem(target) {
+        window.helper.remove(target);
+    }
+
     verifyDoor(tile) {
         return this.verifyTile({
             tile,
             'arr': 'arrDoor'
         });
+    }
+
+    verifyResource(tile) {
+        const isInArray = this.arrResource.includes(tile);
+
+        return isInArray;
     }
 
     verifyWalk(tile) {
@@ -173,6 +182,7 @@ class Map {
         this.tileId = 0;
         this.tileTotal = window.map.json.row * window.map.json.column;
         this.arrForbidden = [];
+        this.arrResource = [];
     }
 }
 

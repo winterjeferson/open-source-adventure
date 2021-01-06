@@ -7,8 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.modal.build();
     window.map.update();
     window.interface.build();
-    window.enemy.update();
-    window.resource.update();
     window.keyboard.build();
     window.game.initialize();
 });

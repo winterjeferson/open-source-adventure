@@ -171,13 +171,6 @@ img {
   top: 0;
   z-index: 1; }
 
-.map {
-  display: flex;
-  flex-wrap: wrap;
-  left: 0;
-  position: absolute;
-  top: 0; }
-
 .interface {
   display: flex;
   height: 100%;
@@ -294,3 +287,16 @@ img {
   position: absolute;
   top: 0;
   z-index: 4; }
+
+.item-wrapper {
+  align-items: center;
+  border: 1px solid #bec3c7;
+  display: inline-flex;
+  flex-direction: column;
+  padding: 10px; }
+  .item-wrapper .item {
+    position: relative; }
+  .item-wrapper .input {
+    margin-top: 10px;
+    padding: 10px;
+    text-align: center; }

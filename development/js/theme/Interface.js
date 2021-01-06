@@ -8,15 +8,15 @@ class Interface {
 
     buildAction() {
         this.elActionBackpack.onclick = () => {
-            window.modal.open('backpack');
+            window.backpack.open();
         };
 
         this.elActionCraft.onclick = () => {
-            window.modal.open('craft');
+            window.craft.open();
         };
 
         this.elActionPick.onclick = () => {
-            window.player.pick();
+            window.pick.pick();
         };
 
         this.elActionHit.onclick = () => {
@@ -47,6 +47,12 @@ class Interface {
         this.elGame = document.querySelector('#game');
         this.elMap = document.querySelector('#map');
         this.elPlayer = document.querySelector('#player');
+        this.elEnemy = document.querySelector(`#${window.enemy.cssEnemy}`);
+        this.elResource = document.querySelector(`#${window.resource.cssResource}`);
+        this.elPageBackpack = document.querySelector('#page_backpack');
+        this.elPageBackpackContent = this.elPageBackpack.querySelector('.content');
+        this.elPageCraft = document.querySelector('#page_craft');
+        this.elPageCraftContent = this.elPageCraft.querySelector('.content');
 
         this.elBarLife = document.querySelector('[data-id="bar-life"]');
         this.elBarHunger = document.querySelector('[data-id="bar-hunger"]');
