@@ -2,8 +2,8 @@ const gulp = require('gulp');
 const css = require('./css.js');
 const img = require('./image.js');
 const js = require('./js.js');
-const template = require('./template.js');
-const api = require('./api.js');
+const html = require('./html.js');
+const apiJs = require('./apiJs.js');
 const configuration = require('./configuration.js');
 
 gulp.task('watch', (callback) => {
@@ -17,7 +17,7 @@ gulp.task('watch', (callback) => {
             console.log(event);
         });
 
-    gulp.watch(template.fileAll, gulp.series('buildTemplate'))
+    gulp.watch(html.fileAll, gulp.series('buildHtml'))
         .on('change', (event) => {
             console.log(event);
         });
@@ -27,7 +27,7 @@ gulp.task('watch', (callback) => {
             console.log(event);
         });
 
-    gulp.watch(api.fileAll, gulp.series('buildApi'))
+    gulp.watch(apiJs.fileAll, gulp.series('buildApiJs'))
         .on('change', (event) => {
             console.log(event);
         });

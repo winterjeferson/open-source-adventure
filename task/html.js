@@ -11,39 +11,39 @@ const configuration = require('./configuration.js');
 const helper = require('./helper.js');
 
 const extension = 'html';
-const folder = `${configuration.development}template/`;
+const folder = `${configuration.src}html/`;
 const file = `${folder}*.${extension}`;
 const fileAll = folder + configuration.allFolderFile;
-const fileClean = `${configuration.homologation}*.${extension}`;
+const fileClean = `${configuration.dist}*.${extension}`;
 
 
 
 
-gulp.task('buildTemplateClean', (done) => {
+gulp.task('buildHtmlClean', (done) => {
     clean(fileClean);
     done();
 });
 
 
-gulp.task('buildTemplateInclude', () => {
+gulp.task('buildHtmlInclude', () => {
     return gulp
         .src(file)
         .pipe(nunjucksRender({
             path: [folder]
         }))
-        .pipe(gulp.dest(configuration.homologation));
+        .pipe(gulp.dest(configuration.dist));
 });
 
-gulp.task('buildTemplateMinify', () => {
+gulp.task('buildHtmlMinify', () => {
     return gulp
-        .src(`${configuration.homologation}*.${extension}`)
+        .src(`${configuration.dist}*.${extension}`)
         .pipe(htmlmin({
             collapseWhitespace: true
         }))
-        .pipe(gulp.dest(configuration.production));
+        .pipe(gulp.dest(configuration.dist));
 });
 
-gulp.task('buildTemplateLint', () => {
+gulp.task('buildHtmlLint', () => {
     return gulp.src(fileAll)
         .pipe(htmllint({}, htmllintReporter));
 });
@@ -64,10 +64,10 @@ function htmllintReporter(filepath, issues) {
     }
 }
 
-gulp.task('buildTemplate', gulp.series(
-    'buildTemplateLint',
-    'buildTemplateClean',
-    'buildTemplateInclude',
+gulp.task('buildHtml', gulp.series(
+    'buildHtmlLint',
+    'buildHtmlClean',
+    'buildHtmlInclude',
 ));
 
 

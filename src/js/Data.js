@@ -1,8 +1,4 @@
 class Data {
-    constructor() {
-        this.folderDefault = './api/';
-    }
-
     loadMap(map) {
         const parameter = {
             controller: `${this.apiUrl}map-${map}.${this.extension}`,
@@ -57,7 +53,8 @@ class Data {
     update(obj) {
         this.extension = obj.extension;
         this.dataBase = obj.extension;
-        this.apiUrl = `${this.folderDefault + this.extension}/`;
+        this.folderDefault = `./api-${this.extension}/`;
+        this.apiUrl = `${this.folderDefault}/`;
     }
 }
 

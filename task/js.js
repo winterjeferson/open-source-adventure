@@ -5,11 +5,11 @@ const eslint = require('gulp-eslint'); //npm install gulp-eslint --save-dev //ht
 const configuration = require('./configuration.js');
 
 const extension = 'js';
-const filePrefix = `${configuration.prefix}${configuration.theme}`;
-const folder = `${configuration.development}${extension}/`;
+const filePrefix = `${configuration.prefix + configuration.theme}`;
+const folder = `${configuration.src + extension}/`;
 const file = [
-    `${folder}${filePrefix}/!(${configuration.index})*.${extension}`,
-    `${folder}${filePrefix}/${configuration.index}.${extension}`,
+    `${folder}/!(${configuration.index})*.${extension}`,
+    `${folder}/${configuration.index}.${extension}`,
 ];
 const fileName = `${filePrefix}.${extension}`;
 const fileAll = folder + configuration.allFolderFile;
@@ -18,12 +18,12 @@ gulp.task('buildJsConcat', () => {
     return gulp
         .src(file)
         .pipe(concat(fileName))
-        .pipe(gulp.dest(`${configuration.homologation}${configuration.assets}${extension}/`));
+        .pipe(gulp.dest(`${configuration.dist + configuration.assets + extension}/`));
 });
 
 gulp.task('buildJsLint', () => {
     return gulp
-        .src(`${configuration.development}${extension}/${configuration.allFolderFile}`)
+        .src(`${configuration.src + extension}/${configuration.allFolderFile}`)
         .pipe(eslint({
             "extends": "eslint:recommended",
             configFile: 'eslint.json'
@@ -33,9 +33,9 @@ gulp.task('buildJsLint', () => {
 });
 
 gulp.task('buildJsMinify', function () {
-    return gulp.src(`${configuration.homologation}${configuration.assets}${extension}/*.*`)
+    return gulp.src(`${configuration.dist + configuration.assets + extension}/*.*`)
         .pipe(uglify())
-        .pipe(gulp.dest(`${configuration.production}${configuration.assets}${extension}`));
+        .pipe(gulp.dest(`${configuration.dist + configuration.assets + extension}`));
 });
 
 gulp.task('buildJs', gulp.series(

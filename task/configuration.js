@@ -1,12 +1,11 @@
-const path = '../../';
+const path = './';
 const allFile = '*.*';
 
 module.exports = {
     allFile: allFile,
     allFolderFile: `**/${allFile}`,
-    development: `${path}development/`,
-    homologation: `${path}homologation/`,
-    production: `${path}production/`,
+    src: `${path}src/`,
+    dist: `${path}dist/`,
     index: 'index',
     theme: 'theme',
     plugin: 'plugin',

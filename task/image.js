@@ -7,8 +7,8 @@ const configuration = require('./configuration.js');
 const helper = require('./helper.js');
 
 const folder = 'img/';
-const fileAll = configuration.development + folder + configuration.allFolderFile;
-const fileClean = `${configuration.homologation}${configuration.assets}${folder}!(dynamic)*`;
+const fileAll = configuration.src + folder + configuration.allFolderFile;
+const fileClean = `${configuration.dist + configuration.assets + folder}!(dynamic)*`;
 
 
 
@@ -21,15 +21,15 @@ gulp.task('buildImageClean', (done) => {
 gulp.task('buildImageMove', (done) => {
     return gulp
         .src(fileAll)
-        .pipe(gulp.dest(`${configuration.homologation}${configuration.assets}${folder}`));
+        .pipe(gulp.dest(`${configuration.dist + configuration.assets + folder}`));
     done();
 });
 
 // fix enoent problem: node node_modules/optipng-bin/lib/install.js
 gulp.task('buildImageMinify', () => {
     return gulp
-        .src(`${configuration.homologation}${configuration.assets}${folder}**`)
-        .pipe(newer(`${configuration.production}${configuration.assets}${folder}`))
+        .src(`${configuration.dist + configuration.assets + folder}**`)
+        .pipe(newer(`${configuration.dist + configuration.assets + folder}`))
         .pipe(imagemin([
             imagemin.svgo({
                 plugins: [{
@@ -41,7 +41,7 @@ gulp.task('buildImageMinify', () => {
                 ]
             })
         ]))
-        .pipe(gulp.dest(`${configuration.production}${configuration.assets}${folder}`));
+        .pipe(gulp.dest(`${configuration.dist + configuration.assets + folder}`));
 });
 
 gulp.task('buildImage', gulp.series(

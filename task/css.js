@@ -8,17 +8,17 @@ const configuration = require('./configuration.js');
 
 const extension = 'css';
 const extensionSass = `s${extension}`;
-const filePrefix = `${configuration.prefix}${configuration.theme}`;
-const folder = `${configuration.development}${extension}/`;
+const filePrefix = `${configuration.prefix + configuration.theme}`;
+const folder = `${configuration.src + extension}/`;
 const file = folder + `${filePrefix}/${configuration.index}.${extensionSass}`;
 const fileName = `${filePrefix}.${extension}`;
 const fileAll = folder + configuration.allFolderFile;
 
 gulp.task('buildCssMinify', function () {
     return gulp
-        .src(`${configuration.homologation}${configuration.assets}${extension}/*.*`)
+        .src(`${configuration.dist + configuration.assets + extension}/*.*`)
         .pipe(csso())
-        .pipe(gulp.dest(`${configuration.production}${configuration.assets}${extension}/`));
+        .pipe(gulp.dest(`${configuration.dist + configuration.assets + extension}/`));
 });
 
 gulp.task('buildCssSass', function () {
@@ -26,7 +26,7 @@ gulp.task('buildCssSass', function () {
         .src(file)
         .pipe(sass.sync().on('error', sass.logError))
         .pipe(rename(fileName))
-        .pipe(gulp.dest(`${configuration.homologation}${configuration.assets}${extension}/`));
+        .pipe(gulp.dest(`${configuration.dist + configuration.assets + extension}/`));
 });
 
 gulp.task('buildCssLint', function lintCssTask(done) {

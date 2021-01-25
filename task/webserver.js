@@ -4,7 +4,7 @@ const webserver = require('gulp-webserver'); //npm install --save-dev gulp-webse
 const configuration = require('./configuration.js');
 
 gulp.task('webserver', () => {
-    gulp.src(configuration.homologation)
+    gulp.src(configuration.dist)
         .pipe(webserver({
             port: configuration.port,
             livereload: true,
