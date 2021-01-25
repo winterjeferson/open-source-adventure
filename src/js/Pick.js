@@ -24,4 +24,6 @@ class Pick {
     }
 }
 
-window.pick = new Pick();
+export {
+    Pick
+};

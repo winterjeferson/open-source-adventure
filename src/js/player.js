@@ -141,4 +141,6 @@ class Player {
     }
 }
 
-window.player = new Player();
+export {
+    Player
+};

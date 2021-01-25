@@ -153,4 +153,6 @@ class Camera {
     }
 }
 
-window.camera = new Camera();
+export {
+    Camera
+};

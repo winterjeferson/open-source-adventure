@@ -4,4 +4,6 @@ class Game {
     }
 }
 
-window.game = new Game();
+export {
+    Game
+};

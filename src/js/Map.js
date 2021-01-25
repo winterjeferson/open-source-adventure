@@ -186,4 +186,6 @@ class Map {
     }
 }
 
-window.map = new Map();
+export {
+    Map
+};

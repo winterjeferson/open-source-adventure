@@ -5,4 +5,6 @@ class Craft {
     }
 }
 
-window.craft = new Craft();
+export {
+    Craft
+};

@@ -58,4 +58,6 @@ class Data {
     }
 }
 
-window.data = new Data();
+export {
+    Data
+};

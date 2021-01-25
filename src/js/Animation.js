@@ -30,4 +30,6 @@ class Animation {
     }
 }
 
-window.animation = new Animation();
+export {
+    Animation
+};

@@ -45,4 +45,6 @@ class Modal {
     }
 }
 
-window.modal = new Modal();
+export {
+    Modal
+};

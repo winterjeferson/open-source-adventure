@@ -48,4 +48,6 @@ class Resource {
     }
 }
 
-window.resource = new Resource();
+export {
+    Resource
+};

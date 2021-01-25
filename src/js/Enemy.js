@@ -46,4 +46,6 @@ class Enemy {
     }
 }
 
-window.enemy = new Enemy();
+export {
+    Enemy
+};

@@ -84,4 +84,6 @@ class Helper {
     }
 }
 
-window.helper = new Helper();
+export {
+    Helper
+};

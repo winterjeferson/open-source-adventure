@@ -84,4 +84,6 @@ class Interface {
     }
 }
 
-window.interface = new Interface();
+export {
+    Interface
+};

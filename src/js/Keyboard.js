@@ -46,4 +46,6 @@ class Keyboard {
     }
 }
 
-window.keyboard = new Keyboard();
+export {
+    Keyboard
+};
