@@ -4,9 +4,7 @@ class Pick {
     }
 
     pick() {
-        if (!this.isPick) {
-            return;
-        }
+        if (!this.isPick) return;
 
         const playerPosition = window.player.tileCurrent;
         const item = window.interface.elResource.querySelector(`[data-tile="${playerPosition}"]`);

@@ -4,6 +4,7 @@ const img = require('./image.js');
 const js = require('./js.js');
 const html = require('./html.js');
 const apiJs = require('./apiJs.js');
+const apiPhp = require('./apiPhp.js');
 const configuration = require('./configuration.js');
 
 gulp.task('watch', (callback) => {
@@ -28,6 +29,11 @@ gulp.task('watch', (callback) => {
         });
 
     gulp.watch(apiJs.fileAll, gulp.series('buildApiJs'))
+        .on('change', (event) => {
+            console.log(event);
+        });
+
+    gulp.watch(apiPhp.fileAll, gulp.series('buildApiPhp'))
         .on('change', (event) => {
             console.log(event);
         });
