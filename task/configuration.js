@@ -5,7 +5,7 @@ module.exports = {
     allFile: allFile,
     allFolderFile: `**/${allFile}`,
     src: `${path}src/`,
-    dist: `${path}dist/`,
+    dist: `${path}docs/`,
     index: 'index',
     theme: 'theme',
     plugin: 'plugin',

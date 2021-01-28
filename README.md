@@ -1,5 +1,5 @@
 # **Confira o jogo em sua última versão:**
-https://winterjeferson.github.io/open-source-adventure/production/
+https://winterjeferson.github.io/open-source-adventure/
 
 # **Wiki:**
 https://github.com/winterjeferson/open-source-adventure/wiki
