@@ -8,9 +8,12 @@ class Pick {
 
         const playerPosition = window.player.tileCurrent;
         const item = window.interface.elResource.querySelector(`[data-tile="${playerPosition}"]`);
+        const itemId = item.getAttribute('data-tile');
 
         window.map.removeItem(item);
+        window.map.removeResource(itemId);
         window.backpack.addItem(item);
+        this.setPick(false);
     }
 
     setPick(status) {

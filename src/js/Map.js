@@ -146,6 +146,15 @@ class Map {
         window.helper.remove(target);
     }
 
+    removeResource(target) {
+        const array = this.arrResource;
+        const index = array.indexOf(Number(target));
+
+        if (index > -1) {
+            array.splice(index, 1);
+        }
+    }
+
     verifyDoor(tile) {
         return this.verifyTile({
             tile,
