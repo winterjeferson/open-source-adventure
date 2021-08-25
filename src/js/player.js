@@ -31,6 +31,7 @@ export class Player {
 
     move(side) {
         const coordinates = this.moveCoordinates(side);
+        let animation;
         let obj = {
             'target': platform.elPlayer
         };
@@ -41,8 +42,7 @@ export class Player {
         if (this.isMoving) return;
         this.isMoving = true;
 
-        const animation = window.animate.move(obj);
-
+        animation = window.animate.move(obj);
         animation.then(() => this.moveSuccess({
             tileNext,
             side
