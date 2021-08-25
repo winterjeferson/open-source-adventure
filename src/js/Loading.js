@@ -1,4 +1,4 @@
-class LoadingMain {
+export class LoadingMain {
     constructor() {
         this.cssHide = 'hide';
         this.cssAnimation = 'animate';
@@ -19,7 +19,3 @@ class LoadingMain {
         this.elLoading.classList.add(this.cssAnimation);
     }
 }
-
-export {
-    LoadingMain
-};

@@ -1,4 +1,4 @@
-class Helper {
+export class Helper {
     ajax(obj) {
         return new Promise((resolve, reject) => {
             let xhr = new XMLHttpRequest();
@@ -23,9 +23,7 @@ class Helper {
     }
 
     getOffset(target) {
-        if (!target) {
-            return;
-        }
+        if (!target) return;
 
         const rect = target.getBoundingClientRect();
 
@@ -38,7 +36,7 @@ class Helper {
     }
 
     getTranslateValue(target) {
-        const style = window.getComputedStyle(target);
+        const style = getComputedStyle(target);
         const matrix = style['transform'];
 
         if (matrix === 'none') {
@@ -78,12 +76,6 @@ class Helper {
     }
 
     remove(target) {
-        if (target !== null) {
-            target.parentNode.removeChild(target);
-        }
+        if (target !== null) target.parentNode.removeChild(target);
     }
 }
-
-export {
-    Helper
-};

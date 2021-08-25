@@ -1,4 +1,4 @@
-class Interface {
+export class Platform {
     build() {
         this.update();
         this.resize();
@@ -8,47 +8,47 @@ class Interface {
 
     buildAction() {
         this.elActionBackpack.onclick = () => {
-            window.backpack.open();
+            backpack.open();
         };
 
         this.elActionCraft.onclick = () => {
-            window.craft.open();
+            craft.open();
         };
 
         this.elActionPick.onclick = () => {
-            window.pick.pick();
+            pick.pick();
         };
 
         this.elActionHit.onclick = () => {
-            window.player.hit();
+            player.hit();
         };
     }
 
     buildDirection() {
         this.elDirectionalUp.onclick = () => {
-            window.camera.move('up');
+            camera.move('up');
         };
 
         this.elDirectionalDown.onclick = () => {
-            window.camera.move('down');
+            camera.move('down');
         };
 
         this.elDirectionalLeft.onclick = () => {
-            window.camera.move('left');
+            camera.move('left');
         };
 
         this.elDirectionalRight.onclick = () => {
-            window.camera.move('right');
+            camera.move('right');
         };
     }
 
     update() {
         this.elCamera = document.querySelector('#camera');
         this.elGame = document.querySelector('#game');
-        this.elMap = document.querySelector('#map');
+        this.elTerrain = document.querySelector('#terrain');
         this.elPlayer = document.querySelector('#player');
-        this.elEnemy = document.querySelector(`#${window.enemy.cssEnemy}`);
-        this.elResource = document.querySelector(`#${window.resource.cssResource}`);
+        this.elEnemy = document.querySelector(`#${enemy.cssEnemy}`);
+        this.elResource = document.querySelector(`#${resource.cssResource}`);
         this.elPageBackpack = document.querySelector('#page_backpack');
         this.elPageBackpackContent = this.elPageBackpack.querySelector('.content');
         this.elPageCraft = document.querySelector('#page_craft');
@@ -83,7 +83,3 @@ class Interface {
         this.elGameHeight = this.elGame.offsetHeight;
     }
 }
-
-export {
-    Interface
-};

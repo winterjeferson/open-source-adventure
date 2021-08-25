@@ -1,15 +1,15 @@
-class Resource {
+export class Resource {
     constructor() {
         this.cssResource = 'resource';
         this.cssItem = 'item';
     }
 
     build() {
-        this.resourceLength = window.map.json.resource.quantity;
+        this.resourceLength = terrain.json.resource.quantity;
 
         const html = this.buildHtml();
 
-        window.interface.elResource.innerHTML = html;
+        platform.elResource.innerHTML = html;
         this.setPosition();
     }
 
@@ -17,7 +17,7 @@ class Resource {
         let html = '';
 
         for (let i = 0; i < this.resourceLength; i++) {
-            let random = window.helper.raffleArray(window.map.json.resource.kind);
+            let random = helper.raffleArray(terrain.json.resource.kind);
 
             html += `
                 <div id="${this.cssItem}_${i}"
@@ -36,18 +36,14 @@ class Resource {
     setPosition() {
         for (let i = 0; i < this.resourceLength; i++) {
             const target = document.querySelector(`#${this.cssItem}_${i}`);
-            const position = window.map.rafflePosition();
+            const position = terrain.rafflePosition();
 
             target.setAttribute('data-tile', position);
-            window.map.arrResource.push(position);
-            window.map.position({
+            terrain.arrResource.push(position);
+            terrain.position({
                 target,
                 position,
             });
         }
     }
 }
-
-export {
-    Resource
-};
