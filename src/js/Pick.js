@@ -1,4 +1,4 @@
-class Pick {
+export class Pick {
     constructor() {
         this.isPick = false;
     }
@@ -6,25 +6,21 @@ class Pick {
     pick() {
         if (!this.isPick) return;
 
-        const playerPosition = window.player.tileCurrent;
-        const item = window.interface.elResource.querySelector(`[data-tile="${playerPosition}"]`);
+        const playerPosition = player.tileCurrent;
+        const item = platform.elResource.querySelector(`[data-tile="${playerPosition}"]`);
         const itemId = item.getAttribute('data-tile');
 
-        window.map.removeItem(item);
-        window.map.removeResource(itemId);
-        window.backpack.addItem(item);
+        terrain.removeItem(item);
+        terrain.removeResource(itemId);
+        backpack.addItem(item);
         this.setPick(false);
     }
 
     setPick(status) {
-        const buttonPick = window.interface.elActionPick;
+        const buttonPick = platform.elActionPick;
         const attribute = 'disabled';
 
         status ? buttonPick.removeAttribute(attribute) : buttonPick.setAttribute(attribute, '');
         this.isPick = status;
     }
 }
-
-export {
-    Pick
-};

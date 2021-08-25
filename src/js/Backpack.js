@@ -1,4 +1,4 @@
-class Backpack {
+export class Backpack {
     constructor() {
         this.objItem = {};
         this.isUpdate = false;
@@ -24,7 +24,7 @@ class Backpack {
             html += this.buildHtml(i, this.objItem[i]);
         }
 
-        window.interface.elPageBackpackContent.innerHTML = html;
+        platform.elPageBackpackContent.innerHTML = html;
     }
 
     buildHtml(index, value) {
@@ -37,17 +37,11 @@ class Backpack {
     }
 
     open() {
-        window.modal.open('backpack');
+        modal.open('backpack');
 
-        if (!this.isUpdate) {
-            return;
-        }
+        if (!this.isUpdate) return;
 
         this.isUpdate = false;
         this.build();
     }
 }
-
-export {
-    Backpack
-};

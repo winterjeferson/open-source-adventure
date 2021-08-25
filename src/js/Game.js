@@ -1,9 +1,5 @@
-class Game {
+export class Game {
     initialize() {
-        window.data.loadMap(window.map.current);
+        data.loadMap(terrain.current);
     }
 }
-
-export {
-    Game
-};

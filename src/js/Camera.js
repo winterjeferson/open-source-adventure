@@ -1,11 +1,11 @@
-class Camera {
+export class Camera {
     center() {
-        const positionPlayer = window.helper.getTranslateValue(window.interface.elPlayer);
+        const positionPlayer = helper.getTranslateValue(platform.elPlayer);
 
         this.update();
 
-        window.animation.move({
-            'target': window.interface.elCamera,
+        animate.move({
+            'target': platform.elCamera,
             'vertical': this.centerVertical(positionPlayer),
             'horizontal': this.centerHorizontal(positionPlayer),
             'speed': 0
@@ -13,52 +13,43 @@ class Camera {
     }
 
     centerHorizontal(positionPlayer) {
-        const position = Number(-positionPlayer.x + (window.interface.elGameWidth / 2) - window.map.tileSizeHalf);
+        const position = Number(-positionPlayer.x + (platform.elGameWidth / 2) - terrain.tileSizeHalf);
 
         return this.centerLimit(position, this.limit.centerHorizontal);
     }
 
     centerVertical(positionPlayer) {
-        const position = Number(-positionPlayer.y + (window.interface.elGameHeight / 2) - window.map.tileSizeHalf);
+        const position = Number(-positionPlayer.y + (platform.elGameHeight / 2) - terrain.tileSizeHalf);
 
         return this.centerLimit(position, this.limit.centerVertical);
     }
 
     centerLimit(position, limit) {
-        if (position < limit) {
-            return limit;
-        }
-
-        if (position > 0) {
-            return 0;
-        }
+        if (position < limit) return limit;
+        if (position > 0) return 0;
 
         return position;
     }
 
     move(side) {
-        const isWalkFalse = window.player.verifyWalk(side);
+        const isWalkFalse = player.verifyWalk(side);
 
-        if (isWalkFalse || window.player.isMoving) {
-            return;
-        }
+        if (isWalkFalse || player.isMoving) return;
 
-        window.player.move(side);
+        player.move(side);
         this.moveCamera(side);
     }
 
     moveCamera(side) {
         const limit = this.limit[side];
-        const capitalize = window.helper.capitalize(side);
-        const currentPosition = window.helper.getTranslateValue(window.interface.elCamera);
+        const capitalize = helper.capitalize(side);
+        const currentPosition = helper.getTranslateValue(platform.elCamera);
         const isLimit = this[`verifyLimit${capitalize}`]({
             limit,
             currentPosition
         });
 
-        if (isLimit) {
-            return;
-        }
+        if (isLimit) return;
 
         this.moveCameraAnimate({
             side,
@@ -71,60 +62,52 @@ class Camera {
         const vertical = args.currentPosition.y;
         let value;
         let obj = {
-            'target': window.interface.elCamera
+            'target': platform.elCamera
         };
 
         switch (args.side) {
             case 'down':
                 value = Math.round(vertical - this.distance);
 
-                if (Math.abs(window.camera.limit.down) - (Math.abs(vertical)) < this.distance) {
-                    value = window.camera.limit.down;
-                }
+                if (Math.abs(camera.limit.down) - (Math.abs(vertical)) < this.distance) value = camera.limit.down;
 
                 obj.vertical = value;
                 break;
             case 'left':
                 value = Math.round(horizontal + this.distance);
 
-                if (Math.abs(horizontal) < this.distance) {
-                    value = window.camera.limit.left;
-                }
+                if (Math.abs(horizontal) < this.distance) value = camera.limit.left;
 
                 obj.horizontal = value;
                 break;
             case 'up':
                 value = Math.round(vertical + this.distance);
 
-                if (Math.abs(value) <= this.distance) {
-                    value = this.limit.up;
-                }
+                if (Math.abs(value) <= this.distance) value = this.limit.up;
 
                 obj.vertical = value;
                 break;
             case 'right':
                 value = Math.round(horizontal - this.distance);
 
-                if ((window.interface.elGameWidth / 2) - this.distance - (Math.abs(horizontal)) < this.distance) {
-                    value = window.camera.limit.right * -1;
-                }
+                if ((platform.elGameWidth / 2) - this.distance - (Math.abs(horizontal)) < this.distance) value = camera.limit.right * -1;
 
                 obj.horizontal = value;
                 break;
         }
 
-        window.animation.move(obj);
+        animate.move(obj);
     }
 
     update() {
-        this.distance = window.map.tileSize;
+        this.distance = terrain.tileSize;
         this.limit = {
-            'centerVertical': Number(-(window.map.height - window.interface.elGameHeight)),
-            'centerHorizontal': Number(-(window.map.width - window.interface.elGameWidth)),
+            'centerVertical': Number(-(terrain.height - platform.elGameHeight)),
+            'centerHorizontal': Number(-(terrain.width - platform.elGameWidth)),
             'up': 0,
-            'down': Math.abs(window.map.tileSize * window.map.json.row - window.interface.elGameHeight) * -1,
+            'down': Math.abs(terrain.tileSize * terrain.json.row - platform.elGameHeight) * -1,
             'left': 0,
-            'right': window.map.tileSize * window.map.json.column - window.interface.elGameWidth,
+            'right': terrain.tileSize * terrain.json.column - platform.elGameWidth,
         };
     }
 
@@ -152,7 +135,3 @@ class Camera {
         return obj.limit < limit ? true : false;
     }
 }
-
-export {
-    Camera
-};

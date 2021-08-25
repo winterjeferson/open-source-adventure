@@ -1,10 +1,6 @@
-class Craft {
+export class Craft {
 
     open() {
-        window.modal.open('craft');
+        modal.open('craft');
     }
 }
-
-export {
-    Craft
-};

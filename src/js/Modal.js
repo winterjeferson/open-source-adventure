@@ -1,4 +1,4 @@
-class Modal {
+export class Modal {
     constructor() {
         this.cssModal = 'modal';
         this.cssClose = `${this.cssModal}--close`;
@@ -30,10 +30,8 @@ class Modal {
     }
 
     hidePage() {
-        Array.prototype.forEach.call(this.elPage, (item) => {
-            if (!item.classList.contains(this.cssHide)) {
-                item.classList.add(this.cssHide);
-            }
+        this.elPage.forEach((item) => {
+            if (!item.classList.contains(this.cssHide)) item.classList.add(this.cssHide);
         });
     }
 
@@ -44,7 +42,3 @@ class Modal {
         this.elCloseButton = document.querySelector('#modal_close');
     }
 }
-
-export {
-    Modal
-};

@@ -1,4 +1,4 @@
-window.animation = new Animation();
+window.animate = new Animate();
 window.backpack = new Backpack();
 window.camera = new Camera();
 window.craft = new Craft();
@@ -6,31 +6,30 @@ window.data = new Data();
 window.enemy = new Enemy();
 window.game = new Game();
 window.helper = new Helper();
-window.interface = new Interface();
 window.keyboard = new Keyboard();
 window.loadingMain = new LoadingMain();
-window.map = new Map();
 window.modal = new Modal();
 window.pick = new Pick();
+window.platform = new Platform();
 window.player = new Player();
 window.resource = new Resource();
-
+window.terrain = new Terrain();
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    window.data.update({
+    data.update({
         'extension': 'js',
         'dataBase': 'localStorage'
     });
-    window.loadingMain.update();
-    window.modal.build();
-    window.map.update();
-    window.interface.build();
-    window.keyboard.build();
-    window.game.initialize();
+    loadingMain.update();
+    modal.build();
+    terrain.update();
+    platform.build();
+    keyboard.build();
+    game.initialize();
 });
 
-window.addEventListener('resize', () => {
-    window.interface.resize();
-    window.camera.center();
+addEventListener('resize', () => {
+    platform.resize();
+    camera.center();
 });

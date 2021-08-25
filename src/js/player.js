@@ -1,4 +1,4 @@
-class Player {
+export class Player {
     constructor() {
         this.speed = 0;
         this.isMoving = false;
@@ -7,9 +7,9 @@ class Player {
 
     buildPlayer(data) {
         this.buildVariable(data);
-        window.interface.updateBar();
+        platform.updateBar();
         this.position();
-        window.loadingMain.hide();
+        loadingMain.hide();
     }
 
     buildVariable(data) {
@@ -21,7 +21,7 @@ class Player {
         this.hungerCurrent = json.hungerCurrent;
         this.thirst = json.thirst;
         this.thirstCurrent = json.thirstCurrent;
-        this.tileCurrent = window.map.json.position.player;
+        this.tileCurrent = terrain.json.position.player;
         this.speed = json.speed;
     }
 
@@ -31,70 +31,59 @@ class Player {
 
     move(side) {
         const coordinates = this.moveCoordinates(side);
-        let animate;
         let obj = {
-            'target': window.interface.elPlayer
+            'target': platform.elPlayer
         };
         const tileNext = typeof coordinates.tileNext !== 'undefined' ? obj.tileNext = coordinates.tileNext : undefined;
 
-        if (typeof coordinates.vertical !== 'undefined') {
-            obj.vertical = coordinates.vertical;
-        }
+        if (typeof coordinates.vertical !== 'undefined') obj.vertical = coordinates.vertical;
+        if (typeof coordinates.horizontal !== 'undefined') obj.horizontal = coordinates.horizontal;
+        if (this.isMoving) return;
+        this.isMoving = true;
 
-        if (typeof coordinates.horizontal !== 'undefined') {
-            obj.horizontal = coordinates.horizontal;
-        }
+        const animation = window.animate.move(obj);
 
-        if (this.isMoving) {
-            return;
-        } else {
-            this.isMoving = true;
-        }
-
-        animate = window.animation.move(obj);
-        animate.then(() => this.moveSuccess({
+        animation.then(() => this.moveSuccess({
             tileNext,
             side
         }));
     }
 
     moveSuccess(obj) {
-        const isDoor = window.map.verifyDoor(obj.tileNext);
-        const isResource = window.map.verifyResource(obj.tileNext);
+        const isDoor = terrain.verifyDoor(obj.tileNext);
+        const isResource = terrain.verifyResource(obj.tileNext);
 
         this.updatePosition({
             'tileNext': obj.tileNext,
             'side': obj
         });
 
-        if (isDoor) {
-            window.map.change();
-        }
+        if (isDoor) terrain.change();
 
-        window.pick.setPick(isResource);
+        pick.setPick(isResource);
     }
 
     moveCoordinates(side) {
-        const tileColumn = window.map.json.column;
-        const playerPosition = window.helper.getTranslateValue(window.interface.elPlayer);
+        const tileColumn = terrain.json.column;
+        const playerPosition = helper.getTranslateValue(platform.elPlayer);
         let obj = {};
 
         switch (side) {
             case 'up':
                 obj.tileNext = this.tileCurrent - tileColumn;
-                obj.vertical = playerPosition.y - window.camera.distance;
+                obj.vertical = playerPosition.y - camera.distance;
                 break;
             case 'down':
                 obj.tileNext = this.tileCurrent + tileColumn;
-                obj.vertical = playerPosition.y + window.camera.distance;
+                obj.vertical = playerPosition.y + camera.distance;
                 break;
             case 'left':
                 obj.tileNext = this.tileCurrent - 1;
-                obj.horizontal = playerPosition.x - window.camera.distance;
+                obj.horizontal = playerPosition.x - camera.distance;
                 break;
             case 'right':
                 obj.tileNext = this.tileCurrent + 1;
-                obj.horizontal = playerPosition.x + window.camera.distance;
+                obj.horizontal = playerPosition.x + camera.distance;
                 break;
         }
 
@@ -102,11 +91,11 @@ class Player {
     }
 
     position() {
-        window.map.position({
-            'target': window.interface.elPlayer,
+        terrain.position({
+            'target': platform.elPlayer,
             'position': this.tileCurrent,
         });
-        window.camera.center();
+        camera.center();
     }
 
     updatePosition(data) {
@@ -115,16 +104,16 @@ class Player {
 
         switch (data.side) {
             case 'up':
-                this.currentVertical -= window.map.tileSize;
+                this.currentVertical -= terrain.tileSize;
                 break;
             case 'down':
-                this.currentVertical += window.map.tileSize;
+                this.currentVertical += terrain.tileSize;
                 break;
             case 'left':
-                this.currentHorizontal -= window.map.tileSize;
+                this.currentHorizontal -= terrain.tileSize;
                 break;
             case 'right':
-                this.currentHorizontal += window.map.tileSize;
+                this.currentHorizontal += terrain.tileSize;
                 break;
         }
     }
@@ -132,15 +121,11 @@ class Player {
     verifyWalk(side) {
         const coordinates = this.moveCoordinates(side);
         let obj = {
-            'target': window.interface.elPlayer
+            'target': platform.elPlayer
         };
         const tileNext = typeof coordinates.tileNext !== 'undefined' ? obj.tileNext = coordinates.tileNext : undefined;
-        const isWalk = window.map.verifyWalk(tileNext);
+        const isWalk = terrain.verifyWalk(tileNext);
 
         return isWalk;
     }
 }
-
-export {
-    Player
-};
