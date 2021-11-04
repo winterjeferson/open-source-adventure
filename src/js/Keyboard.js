@@ -1,31 +1,25 @@
 export class Keyboard {
-    build() {
-        document.addEventListener('keydown', (event) => {
-            this.buildAction(event.key);
-        });
-    }
-
     buildAction(key) {
         switch (key) {
             case 'Up':
             case 'ArrowUp':
             case 'w':
-                camera.move('up');
+                player.walk('up');
                 break;
             case 'Left':
             case 'ArrowLeft':
             case 'a':
-                camera.move('left');
+                player.walk('left');
                 break;
             case 'Down':
             case 'ArrowDown':
             case 's':
-                camera.move('down');
+                player.walk('down');
                 break;
             case 'Right':
             case 'ArrowRight':
             case 'd':
-                camera.move('right');
+                player.walk('right');
                 break;
             case 'Escape':
                 modal.close();
@@ -43,5 +37,14 @@ export class Keyboard {
                 player.hit();
                 break;
         }
+    }
+
+    init() {
+        document.addEventListener('keydown', (event) => {
+            this.buildAction(event.key);
+        });
+        document.addEventListener('keyup', () => {
+            player.walkStop();
+        });
     }
 }

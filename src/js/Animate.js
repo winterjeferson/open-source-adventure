@@ -1,4 +1,17 @@
 export class Animate {
+    constructor() {
+        this.arrCssWalk = [
+            'walk--top',
+            'walk--right',
+            'walk--bottom',
+            'walk--left',
+            'stand--top',
+            'stand--right',
+            'stand--bottom',
+            'stand--left',
+        ];
+    }
+
     move(obj) {
         return new Promise((resolve) => {
             const currentValue = helper.getTranslateValue(obj.target);
@@ -25,6 +38,12 @@ export class Animate {
                 resolve(event);
             };
         });
+    }
 
+    walk(el, css) {
+        this.arrCssWalk.forEach((item) => {
+            helper.removeClass(el, item);
+        });
+        helper.addClass(el, css);
     }
 }

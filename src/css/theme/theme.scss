@@ -17,18 +17,16 @@
     display: flex;
     height: 100%;
     max-height: $break-point-tablet;
-    max-width: $break-point-notebook;
+    max-width: $break-point-tablet-landscape;
     width: 100%;
 }
 
 .game-wrapper {
-    box-shadow: inset 0px 0px 0px 1px rgb(17, 0, 255);
     overflow: hidden;
     position: relative;
 }
 
 .game {
-    box-shadow: inset 0px 0px 0px 1px rgb(221, 23, 23);
     left: 0;
     position: absolute;
     top: 0;

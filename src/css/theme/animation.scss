@@ -1,0 +1,119 @@
+.walk--top {
+    animation: walk--top $animation-time steps($animation-steps) infinite;
+
+    @keyframes walk--top {
+        0% {
+            background-position: (-$tile * 0) (-$tile * 3);
+        }
+
+        100% {
+            background-position: (-$tile * $animation-steps) (-$tile * 3);
+        }
+    }
+}
+
+.walk--bottom {
+    animation: walk--bottom $animation-time steps($animation-steps) infinite;
+
+    @keyframes walk--bottom {
+        0% {
+            background-position: (-$tile * 0) (-$tile * 0);
+        }
+
+        100% {
+            background-position: (-$tile * $animation-steps) (-$tile * 0);
+        }
+    }
+}
+
+.walk--right {
+    animation: walk--right $animation-time steps($animation-steps) infinite;
+
+    @keyframes walk--right {
+        0% {
+            background-position: (-$tile * 0) (-$tile);
+        }
+
+        100% {
+            background-position: (-$tile * $animation-steps) (-$tile * 1);
+        }
+    }
+}
+
+.walk--left {
+    animation: walk--left $animation-time steps($animation-steps) infinite;
+
+    @keyframes walk--left {
+        0% {
+            background-position: (-$tile * 0) (-$tile * 2);
+        }
+
+        100% {
+            background-position: (-$tile * $animation-steps) (-$tile * 2);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+.stand--top {
+    animation: stand--top $animation-time steps($animation-steps) infinite;
+
+    @keyframes stand--top {
+        0% {
+            background-position: (-$tile * 1) (-$tile * 3);
+        }
+
+        100% {
+            background-position: (-$tile * 1) (-$tile * 3);
+        }
+    }
+}
+
+.stand--bottom {
+    animation: stand--bottom $animation-time steps($animation-steps) infinite;
+
+    @keyframes stand--bottom {
+        0% {
+            background-position: (-$tile * 1) (-$tile * 0);
+        }
+
+        100% {
+            background-position: (-$tile * 1) (-$tile * 0);
+        }
+    }
+}
+
+.stand--right {
+    animation: stand--right $animation-time steps($animation-steps) infinite;
+
+    @keyframes stand--right {
+        0% {
+            background-position: (-$tile * 1) (-$tile * 1);
+        }
+
+        100% {
+            background-position: (-$tile * 1) (-$tile * 1);
+        }
+    }
+}
+
+.stand--left {
+    animation: stand--left $animation-time steps($animation-steps) infinite;
+
+    @keyframes stand--left {
+        0% {
+            background-position: (-$tile * 1) (-$tile * 2);
+        }
+
+        100% {
+            background-position: (-$tile * 1) (-$tile * 2);
+        }
+    }
+}

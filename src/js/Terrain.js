@@ -5,7 +5,7 @@ export class Terrain {
         this.arr = [];
         this.arrWalkFalse = [0];
         this.arrDoor = [2];
-        this.tileSize = 50;
+        this.tileSize = 48;
         this.tileSizeHalf = this.tileSize / 2;
         this.tileId = 0;
         this.tileIdPrefix = 'tile_';

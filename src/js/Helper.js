@@ -1,4 +1,11 @@
 export class Helper {
+    addClass(el, css) {
+        if (!el) return;
+        if (el.classList.contains(css)) return;
+
+        el.classList.add(css);
+    }
+
     ajax(obj) {
         return new Promise((resolve, reject) => {
             let xhr = new XMLHttpRequest();
@@ -77,5 +84,12 @@ export class Helper {
 
     remove(target) {
         if (target !== null) target.parentNode.removeChild(target);
+    }
+
+    removeClass(el, css) {
+        if (!el) return;
+        if (!el.classList.contains(css)) return;
+
+        el.classList.remove(css);
     }
 }
