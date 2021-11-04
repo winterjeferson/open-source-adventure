@@ -17,17 +17,22 @@ https://discord.gg/y8WyWmVSfv
 
 
 
-CREDITOS:
+# **CREDITOS:**
 
-Designer:
+**Designer:**
+<br/>
 On discord: liang#2210
 
-Desenvolvedores:
+**Desenvolvedores:**
+<br/>
 https://github.com/winterjeferson
+<br/>
 https://github.com/thfalmeida
 
-Estrutura de projeto:
+**Estrutura de projeto:**
+<br/>
 https://github.com/LucasRodriguesOliveira
 
-Roteiro
-instagram.com/samirazorkot
+**Roteiro**
+<br/>
+https://instagram.com/samirazorkot
