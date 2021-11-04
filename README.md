@@ -19,15 +19,15 @@ https://discord.gg/y8WyWmVSfv
 
 # **CREDITOS:**
 
-Designer:
+**Designer:**
 On discord: liang#2210
 
-Desenvolvedores:
+**Desenvolvedores:**
 https://github.com/winterjeferson
 https://github.com/thfalmeida
 
-Estrutura de projeto:
+**Estrutura de projeto:**
 https://github.com/LucasRodriguesOliveira
 
-Roteiro
+**Roteiro**
 instagram.com/samirazorkot
