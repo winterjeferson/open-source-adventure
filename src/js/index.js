@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.build();
     terrain.update();
     platform.build();
-    keyboard.build();
+    keyboard.init();
     game.initialize();
 });
 

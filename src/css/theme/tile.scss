@@ -5,34 +5,14 @@
     width: $tile;
 
     &--0 {
-        background-color: $color-green-dark-3;
+        background-color: $color-green-dark-2;
     }
 
     &--1 {
-        $size: 3px;
-
         background-color: $color-green;
-
-        &:after {
-            @include pseudo-element();
-            background-color: $color-green-light-1;
-            height: $size;
-            right: $size * 2;
-            top: $size * 2;
-            width: $size;
-        }
-
-        &:before {
-            @include pseudo-element();
-            background-color: $color-green-light-2;
-            bottom: $size * 2;
-            height: $size;
-            left: $size * 2;
-            width: $size;
-        }
     }
 
     &--2 {
-        background-color: $color-green-light-3;
+        background-color: $color-green-light-2;
     }
 }

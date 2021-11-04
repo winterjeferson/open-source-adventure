@@ -1,2 +1,5 @@
-$tile: 50px;
+$tile: 48px;
+$tile-half: $tile / 2;
+$animation-time: .4s;
+$animation-steps: 3;
 $arr-z-index: ("loading-main", "modal-header", "modal", "interface", "player", "enemy", "resource", "map");

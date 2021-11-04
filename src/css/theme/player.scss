@@ -1,7 +1,10 @@
 .player {
-    background-color: $color-red;
+    background: url('../img/player.png') no-repeat;
+    display: inline-flex;
+    height: $tile;
     left: 0;
     position: absolute;
     top: 0;
+    width: $tile;
     z-index: z-index("player");
 }

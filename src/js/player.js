@@ -128,4 +128,39 @@ export class Player {
 
         return isWalk;
     }
+
+    walk(side) {
+        const capitalize = helper.capitalize(side);
+
+        this[`walk${capitalize}`]();
+        this.lastWalkSide = side;
+        camera.move(side);
+    }
+
+    walkDown() {
+        animate.walk(platform.elPlayer, animate.arrCssWalk[2]);
+    }
+
+    walkUp() {
+        animate.walk(platform.elPlayer, animate.arrCssWalk[0]);
+    }
+
+    walkRight() {
+        animate.walk(platform.elPlayer, animate.arrCssWalk[1]);
+    }
+
+    walkLeft() {
+        animate.walk(platform.elPlayer, animate.arrCssWalk[3]);
+    }
+
+    walkStop() {
+        let index;
+
+        if (this.lastWalkSide === 'up') index = 4;
+        if (this.lastWalkSide === 'right') index = 5;
+        if (this.lastWalkSide === 'down') index = 6;
+        if (this.lastWalkSide === 'left') index = 7;
+
+        animate.walk(platform.elPlayer, animate.arrCssWalk[index]);
+    }
 }
