@@ -17,7 +17,7 @@ https://discord.gg/y8WyWmVSfv
 
 
 
-CREDITOS:
+# **CREDITOS:**
 
 Designer:
 On discord: liang#2210
