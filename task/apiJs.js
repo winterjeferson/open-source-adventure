@@ -6,8 +6,6 @@ const folderApi = `api-js/`;
 const folder = `${configuration.src + folderApi}`;
 const fileAll = folder + '**/*.*';
 
-console.log(fileAll);
-
 gulp.task('buildApiJsMoveDist', function () {
     return gulp.src(fileAll)
         .pipe(gulp.dest(`${configuration.dist + folderApi}`));

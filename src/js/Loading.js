@@ -10,8 +10,10 @@ export class LoadingMain {
     }
 
     hide() {
-        this.elWrapper.classList.add(this.cssHide);
-        this.elLoading.classList.remove(this.cssAnimation);
+        setTimeout(() => {
+            this.elWrapper.classList.add(this.cssHide);
+            this.elLoading.classList.remove(this.cssAnimation);
+        }, configuration.delayTransition);
     }
 
     show() {

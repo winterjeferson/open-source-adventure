@@ -6,8 +6,6 @@ const folderApi = `api-php/`;
 const folder = `${configuration.src + folderApi}`;
 const fileAll = folder + '**/*.*';
 
-console.log(fileAll);
-
 gulp.task('buildApiPhpMoveDist', function () {
     return gulp.src(fileAll)
         .pipe(gulp.dest(`${configuration.dist + folderApi}`));

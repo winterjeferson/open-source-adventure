@@ -2,6 +2,7 @@ window.animate = new Animate();
 window.backpack = new Backpack();
 window.camera = new Camera();
 window.craft = new Craft();
+window.configuration = new Configuration();
 window.data = new Data();
 window.enemy = new Enemy();
 window.game = new Game();
