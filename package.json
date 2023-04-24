@@ -30,7 +30,7 @@
     "gulp-stylelint": "^13.0.0",
     "gulp-webserver": "^0.9.1",
     "open": "^7.3.0",
-    "stylelint": "^13.8.0",
+    "stylelint": "^15.6.0",
     "stylelint-order": "^4.1.0",
     "yargs-parser": "^20.2.4"
   },
